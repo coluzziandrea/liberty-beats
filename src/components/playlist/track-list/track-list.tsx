@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { TracksCommands } from "./tracks-commands/tracks-commands";
-import type { Track } from "~/model/track/track";
+import type { Track } from "~/core/model/track/track";
 import { TrackItem } from "./track-item/track-item";
 
 export const TrackList = component$(() => {

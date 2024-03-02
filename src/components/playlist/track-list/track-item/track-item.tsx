@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import type { Track } from "~/model/track/track";
+import type { Track } from "~/core/model/track/track";
 
 export type TrackItemProps = {
   track: Track;
