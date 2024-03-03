@@ -1,15 +1,10 @@
-import { TracksCommands } from "./tracks-commands/tracks-commands";
-import { TrackItem } from "./track-item/track-item";
-import { Track } from "../../../model/track/track";
+import { TracksCommands } from './tracks-commands/tracks-commands'
+import { TrackItem } from './track-item/track-item'
+import { useSelector } from 'react-redux'
+import { selectTracks } from '../store/selectors'
 
 export const TrackList = () => {
-  const tracks: Track[] = [
-    {
-      id: "1",
-      title: "Piano 1",
-      instrumentType: "PIANO",
-    },
-  ];
+  const tracks = useSelector(selectTracks)
 
   return (
     <div className="flex flex-col justify-between gap-2">
@@ -23,5 +18,5 @@ export const TrackList = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import playerBarReducer from '../features/player-bar/store/playerBarSlice'
+import playlistSlice from '../features/playlist/store/playlistSlice'
 
 export const store = configureStore({
   reducer: {
     playerBar: playerBarReducer,
+    playlist: playlistSlice,
   },
 })
 

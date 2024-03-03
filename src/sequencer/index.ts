@@ -10,9 +10,7 @@ export default class Sequencer {
   constructor(store: RootStore) {
     this.store = store
 
-    observeStore(store, selectIsPlaying, (newState, oldState) => {
-      console.log('Counter changed from', oldState, 'to', newState)
-
+    observeStore(store, selectIsPlaying, (newState, _) => {
       if (newState) {
         this.play()
       } else {
