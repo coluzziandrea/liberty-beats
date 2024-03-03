@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { selectTracks } from '../store/selectors'
 import { Track } from '../../../../model/track/track'
-import { Ruler } from '../../playlist-header/ruler/ruler'
+import { TrackBoard } from './track-board/track-board'
 
 export const Flatboard = () => {
   const tracks = useSelector(selectTracks)
@@ -10,7 +10,7 @@ export const Flatboard = () => {
     <div className="flex flex-col gap-2">
       <div>
         {tracks.map((track: Track) => (
-          <Ruler key={track.id} />
+          <TrackBoard key={track.id} />
         ))}
       </div>
     </div>
