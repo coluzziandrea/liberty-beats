@@ -1,6 +1,6 @@
 import { RootStore } from '../store'
 import { observeStore } from '../store/observers'
-import { selectIsPlaying } from '../features/player-bar/store/selectors'
+import { selectIsPlaying } from '../features/daw/player-bar/store/selectors'
 
 import * as Tone from 'tone'
 
@@ -10,7 +10,7 @@ export default class Sequencer {
   constructor(store: RootStore) {
     this.store = store
 
-    observeStore(store, selectIsPlaying, (newState, _) => {
+    observeStore(store, selectIsPlaying, (newState) => {
       if (newState) {
         this.play()
       } else {

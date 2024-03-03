@@ -3,10 +3,12 @@ import { Track } from '../../../model/track/track'
 
 export interface PlaylistSlice {
   tracks: Track[]
+  maxBars: number
 }
 
 const initialState: PlaylistSlice = {
   tracks: [],
+  maxBars: 20,
 }
 
 export const playlistSlice = createSlice({

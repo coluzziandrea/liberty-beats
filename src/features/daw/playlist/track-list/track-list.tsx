@@ -7,12 +7,12 @@ export const TrackList = () => {
   const tracks = useSelector(selectTracks)
 
   return (
-    <div className="flex flex-col justify-between gap-2">
+    <div className="flex flex-col gap-2">
       <div>
         <TracksCommands />
       </div>
 
-      <div className="flex flex-row">
+      <div className="flex flex-col">
         {tracks.map((track) => (
           <TrackItem key={track.id} track={track} />
         ))}

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import playerBarReducer from '../features/player-bar/store/playerBarSlice'
-import playlistSlice from '../features/playlist/store/playlistSlice'
+import playerBarReducer from '../features/daw/player-bar/store/playerBarSlice'
+import playlistSlice from '../features/daw/playlist/store/playlistSlice'
 
 export const store = configureStore({
   reducer: {
