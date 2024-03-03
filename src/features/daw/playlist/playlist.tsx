@@ -8,7 +8,7 @@ export const Playlist = () => {
   const handleRulerScroll = useRulerScroll(rulerDivRef)
 
   return (
-    <div className="flex flex-row justify-between gap-2 divide-x divide-slate-600 w-full ">
+    <div className="flex flex-row justify-between gap-1 divide-x divide-slate-600 w-full ">
       <div className="flex max-w-56 min-w-56">
         <TrackList />
       </div>
