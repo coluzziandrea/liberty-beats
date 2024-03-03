@@ -6,7 +6,7 @@ export interface PlaylistHeaderSlice {
 }
 
 const initialState: PlaylistHeaderSlice = {
-  maxBars: 20,
+  maxBars: 40,
   rulerScrollPosition: 0,
 }
 

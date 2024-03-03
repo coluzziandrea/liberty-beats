@@ -7,12 +7,10 @@ export const Flatboard = () => {
   const tracks = useSelector(selectTracks)
 
   return (
-    <div className="flex">
-      <div className="flex flex-col gap-1">
-        {tracks.map((track: Track) => (
-          <TrackBoard key={track.id} />
-        ))}
-      </div>
+    <div className="flex flex-col gap-1">
+      {tracks.map((track: Track) => (
+        <TrackBoard key={track.id} />
+      ))}
     </div>
   )
 }
