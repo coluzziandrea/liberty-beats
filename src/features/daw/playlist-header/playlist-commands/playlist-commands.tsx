@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
-import { addTrack } from '../../store/playlistSlice'
+import { addTrack } from '../../playlist/store/playlist-slice'
 
-export const TracksCommands = () => {
+export const PlaylistCommands = () => {
   const dispatch = useDispatch()
 
   return (

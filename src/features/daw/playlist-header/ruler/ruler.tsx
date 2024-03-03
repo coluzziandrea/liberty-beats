@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { selectMaxBars } from '../../store/selectors'
+import { selectMaxBars } from '../store/selectors'
 import { SUB_BAR_NUM } from '../constants'
 
 export const Ruler = () => {

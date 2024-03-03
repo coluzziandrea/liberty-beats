@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { Track } from '../../../model/track/track'
+import { Track } from '../../../../model/track/track'
 
 export interface PlaylistSlice {
   tracks: Track[]
