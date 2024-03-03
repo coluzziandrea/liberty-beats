@@ -9,15 +9,20 @@ export const Ruler = () => {
       {Array.from({ length: maxBars }).map((_, i) => (
         <div
           key={i + 1}
-          className="flex flex-col w-16 border-l border-slate-300"
+          className={`flex flex-col justify-end gap-4 w-16 border-l border-slate-300 ${
+            i == maxBars - 1 ? 'border-r' : ''
+          }`}
         >
-          <span className="px-2 text-slate-300">{i + 1}</span>
+          <div className="px-2 text-slate-300 select-none">{i + 1}</div>
 
-          <div className="flex flex-row">
-            {Array.from({ length: SUB_BAR_NUM }).map((_, i) => (
-              <span key={i} className="w-16 border-l border-slate-300">
-                c
-              </span>
+          <div className="flex flex-row h-4">
+            {Array.from({ length: SUB_BAR_NUM }).map((_, j) => (
+              <p
+                key={j}
+                className={`w-16 border-slate-300 ${
+                  j == SUB_BAR_NUM - 1 ? '' : 'border-r'
+                }`}
+              ></p>
             ))}
           </div>
         </div>
