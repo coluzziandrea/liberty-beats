@@ -7,7 +7,29 @@ export interface PlaylistSlice {
 }
 
 const initialState: PlaylistSlice = {
-  tracks: [],
+  tracks: [
+    {
+      id: '1',
+      title: 'Piano Lead',
+      instrumentType: 'PIANO',
+      bars: [
+        {
+          id: '1',
+          startAtTick: 5,
+          endAtTick: 10,
+          notes: [
+            {
+              id: '1',
+              startAtTick: 5,
+              endAtTick: 7,
+              durationTicks: 2,
+              sound: 'C4',
+            },
+          ],
+        },
+      ],
+    },
+  ],
   flatboardScroll: 0,
 }
 
