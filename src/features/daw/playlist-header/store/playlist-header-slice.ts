@@ -19,9 +19,13 @@ export const playlistHeaderSlice = createSlice({
     setRulerScrollPosition: (state, action: PayloadAction<number>) => {
       state.rulerScrollPosition = action.payload
     },
+    setCurrentTick: (state, action: PayloadAction<number>) => {
+      state.currentTick = action.payload
+    },
   },
 })
 
-export const { setRulerScrollPosition } = playlistHeaderSlice.actions
+export const { setRulerScrollPosition, setCurrentTick } =
+  playlistHeaderSlice.actions
 
 export default playlistHeaderSlice.reducer

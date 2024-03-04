@@ -1,16 +1,23 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentTick, selectMaxBars } from '../store/selectors'
 import { SUB_BAR_NUM } from '../constants'
+import { setCurrentTick } from '../store/playlist-header-slice'
+
+type RulerBarProps = {
+  barIndex: number
+  maxBars: number
+  currentTick: number
+  onSelectTick: (tick: number) => void
+}
 
 const RulerSubBar = ({
   barIndex,
   subBarIndex,
   currentTick,
+  onSelectTick,
 }: {
-  barIndex: number
   subBarIndex: number
-  currentTick: number
-}) => {
+} & RulerBarProps) => {
   const tick = barIndex * SUB_BAR_NUM + subBarIndex
   return (
     <div
@@ -18,13 +25,14 @@ const RulerSubBar = ({
       className={`w-16 relative border-slate-400 ${
         subBarIndex == SUB_BAR_NUM - 1 ? '' : 'border-r'
       }`}
+      onDoubleClick={() => onSelectTick(tick)}
     >
       {tick == currentTick && (
         <div
           className="w-0 h-0 
-  border-l-[7px] border-l-transparent
-  border-t-[18px] border-t-white-500
-  border-r-[7px] border-r-transparent absolute -left-2"
+  border-l-[8px] border-l-transparent
+  border-t-[17px] border-t-white-500
+  border-r-[8px] border-r-transparent absolute -left-2"
         ></div>
       )}
     </div>
@@ -35,11 +43,8 @@ const RulerBar = ({
   barIndex,
   maxBars,
   currentTick,
-}: {
-  barIndex: number
-  maxBars: number
-  currentTick: number
-}) => {
+  onSelectTick,
+}: RulerBarProps) => {
   return (
     <div
       key={barIndex + 1}
@@ -54,8 +59,10 @@ const RulerBar = ({
           <RulerSubBar
             key={j}
             barIndex={barIndex}
+            maxBars={maxBars}
             subBarIndex={j}
             currentTick={currentTick}
+            onSelectTick={onSelectTick}
           />
         ))}
       </div>
@@ -66,6 +73,13 @@ const RulerBar = ({
 export const Ruler = () => {
   const maxBars = useSelector(selectMaxBars)
   const currentTick = useSelector(selectCurrentTick)
+
+  const dispatch = useDispatch()
+
+  const handleSelectTick = (tick: number) => {
+    dispatch(setCurrentTick(tick))
+  }
+
   return (
     <div className="h-full flex flex-row">
       {Array.from({ length: maxBars }).map((_, i) => (
@@ -74,6 +88,7 @@ export const Ruler = () => {
           barIndex={i}
           maxBars={maxBars}
           currentTick={currentTick}
+          onSelectTick={handleSelectTick}
         />
       ))}
     </div>
