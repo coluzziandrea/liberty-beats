@@ -25,7 +25,7 @@ const RulerSubBar = ({
       className={`w-[60px] relative border-slate-400 ${
         subBarIndex == SUB_BAR_NUM - 1 ? '' : 'border-r'
       }`}
-      onDoubleClick={() => onSelectTick(tick)}
+      onClick={() => onSelectTick(tick)}
     >
       {tick == currentTick && (
         <div
