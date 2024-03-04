@@ -8,8 +8,8 @@ export const TickPlaceholder = () => {
   const barOffsetStyle = `${barOffsetPixel}px`
   return (
     <div
-      className={`absolute top-0 h-[100%] z-50 bg-white`}
-      style={{ width: '2px', left: barOffsetStyle }}
+      className="absolute top-0 h-[100%] w-[1px] z-50 bg-white"
+      style={{ left: barOffsetStyle }}
     >
       <div
         className={`flex flex-col h-full h-24 min-h-24 max-h-24 bg-white-500`}
