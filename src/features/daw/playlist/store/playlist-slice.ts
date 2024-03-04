@@ -11,12 +11,14 @@ const initialState: PlaylistSlice = {
     {
       id: '1',
       title: 'Piano Lead',
+      color: 'green',
       instrumentType: 'PIANO',
       bars: [
         {
           id: '1',
+          title: 'Solo',
           startAtTick: 5,
-          endAtTick: 10,
+          endAtTick: 20,
           notes: [
             {
               id: '1',
