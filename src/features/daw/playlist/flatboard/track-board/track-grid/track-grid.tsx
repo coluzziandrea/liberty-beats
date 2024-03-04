@@ -3,16 +3,19 @@ import { SUB_BAR_NUM } from '../../../../playlist-header/constants'
 export type TrackGridProps = {
   maxBars: number
   onSelectTick: (tick: number) => void
+  onCreateBar: (startTick: number) => void
 }
 
 const TrackBoardItem = ({
   barIndex,
   currentSubBar,
   onSelectTick,
+  onCreateBar,
 }: {
   barIndex: number
   currentSubBar: number
   onSelectTick: (tick: number) => void
+  onCreateBar: (startTick: number) => void
 }) => {
   const tick = barIndex * SUB_BAR_NUM + currentSubBar
   return (
@@ -22,11 +25,16 @@ const TrackBoardItem = ({
         currentSubBar == SUB_BAR_NUM - 1 ? '' : 'border-r'
       }`}
       onClick={() => onSelectTick(tick)}
+      onDoubleClick={() => onCreateBar(tick)}
     ></p>
   )
 }
 
-export const TrackGrid = ({ maxBars, onSelectTick }: TrackGridProps) => {
+export const TrackGrid = ({
+  maxBars,
+  onSelectTick,
+  onCreateBar,
+}: TrackGridProps) => {
   return (
     <>
       {Array.from({ length: maxBars }).map((_, i) => (
@@ -43,6 +51,7 @@ export const TrackGrid = ({ maxBars, onSelectTick }: TrackGridProps) => {
                 barIndex={i}
                 currentSubBar={j}
                 onSelectTick={onSelectTick}
+                onCreateBar={onCreateBar}
               />
             ))}
           </div>

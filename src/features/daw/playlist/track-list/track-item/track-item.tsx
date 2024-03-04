@@ -2,11 +2,18 @@ import { Track } from '../../../../../model/track/track'
 
 export type TrackItemProps = {
   track: Track
+  selectedTrack?: Track | null
 }
 
-export const TrackItem = ({ track }: TrackItemProps) => {
+export const TrackItem = ({ track, selectedTrack }: TrackItemProps) => {
+  const isSelected = selectedTrack?.id === track.id
+
   return (
-    <div className="flex flex-row w-full h-24 min-h-24 max-h-24 bg-zinc-900">
+    <div
+      className={`flex flex-row w-full h-24 min-h-24 max-h-24 ${
+        isSelected ? 'bg-zinc-600' : 'bg-zinc-900'
+      }`}
+    >
       <div className="flex flex-col">
         <button>{'M'}</button>
         <button>{'S'}</button>
