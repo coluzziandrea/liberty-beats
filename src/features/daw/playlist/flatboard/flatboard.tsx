@@ -9,7 +9,7 @@ export const Flatboard = () => {
   return (
     <div className="flex flex-col gap-1">
       {tracks.map((track: Track) => (
-        <TrackBoard key={track.id} />
+        <TrackBoard key={track.id} track={track} />
       ))}
     </div>
   )

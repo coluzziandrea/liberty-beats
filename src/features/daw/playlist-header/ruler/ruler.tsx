@@ -22,7 +22,7 @@ const RulerSubBar = ({
   return (
     <div
       key={subBarIndex}
-      className={`w-16 relative border-slate-400 ${
+      className={`w-[60px] relative border-slate-400 ${
         subBarIndex == SUB_BAR_NUM - 1 ? '' : 'border-r'
       }`}
       onDoubleClick={() => onSelectTick(tick)}
@@ -48,7 +48,7 @@ const RulerBar = ({
   return (
     <div
       key={barIndex + 1}
-      className={`flex flex-col justify-end gap-4 w-16 border-l border-slate-400 ${
+      className={`flex flex-col justify-end gap-4 w-[80px] border-l border-slate-400 ${
         barIndex == maxBars - 1 ? 'border-r' : ''
       }`}
     >
