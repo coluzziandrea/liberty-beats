@@ -16,7 +16,7 @@ export const TrackBar = ({ track, bar }: { track: Track; bar: Bar }) => {
       style={{ width: barWidthStyle, left: barOffsetStyle }}
     >
       <div
-        className={`flex flex-col h-24 min-h-24 max-h-24 bg-${track.color}-500 opacity-80 rounded-md`}
+        className={`flex flex-col h-20 min-h-20 max-h-20 bg-${track.color}-500 opacity-80 rounded-md`}
         style={{ width: barLengthPixel }}
       >
         <div

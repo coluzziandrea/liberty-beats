@@ -9,7 +9,7 @@ export const PlaylistHeader = () => {
 
   return (
     <div className="flex flex-row justify-between gap-1 divide-x divide-slate-600 w-full">
-      <div className="flex my-2 max-w-56 min-w-56">
+      <div className="flex my-2 max-w-72 min-w-72">
         <PlaylistCommands />
       </div>
 

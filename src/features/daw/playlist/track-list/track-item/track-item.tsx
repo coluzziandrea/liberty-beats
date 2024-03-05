@@ -3,23 +3,31 @@ import { Track } from '../../../../../model/track/track'
 export type TrackItemProps = {
   track: Track
   selectedTrack?: Track | null
+  onSelectTrack: (track: Track) => void
 }
 
-export const TrackItem = ({ track, selectedTrack }: TrackItemProps) => {
+export const TrackItem = ({
+  track,
+  selectedTrack,
+  onSelectTrack,
+}: TrackItemProps) => {
   const isSelected = selectedTrack?.id === track.id
+
+  const trackColorClass = `bg-${track.color}-500`
 
   return (
     <div
-      className={`flex flex-row w-full h-24 min-h-24 max-h-24 ${
-        isSelected ? 'bg-zinc-600' : 'bg-zinc-900'
+      className={`flex flex-row justify-between w-full h-20 min-h-20 max-h-20 ${
+        isSelected ? 'bg-zinc-800' : 'bg-zinc-900'
       }`}
+      onClick={() => onSelectTrack(track)}
     >
-      <div className="flex flex-col">
-        <button>{'M'}</button>
-        <button>{'S'}</button>
+      <div className="flex flex-col divide-y border-r border-slate-600 divide-slate-600 w-8 cursor-pointer">
+        <div className="flex flex-1 w-full justify-center items-center">M</div>
+        <div className="flex flex-1 w-full justify-center items-center">S</div>
       </div>
 
-      <div className="flex flex-col py-2">
+      <div className="flex flex-col p-2 py-2">
         <div>{track.title}</div>
 
         <div>
@@ -38,6 +46,8 @@ export const TrackItem = ({ track, selectedTrack }: TrackItemProps) => {
       <div>
         <button>{'...'}</button>
       </div>
+
+      <div className={`h-full w-1 ${isSelected && trackColorClass}`} />
     </div>
   )
 }

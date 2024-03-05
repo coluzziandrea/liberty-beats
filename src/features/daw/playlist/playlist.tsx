@@ -14,7 +14,7 @@ export const Playlist = () => {
   return (
     <div className="flex flex-row justify-between gap-1 divide-x divide-slate-600 w-full ">
       <div
-        className="flex max-w-56 min-w-56 no-scrollbar overflow-y-scroll"
+        className="flex max-w-72 min-w-72 no-scrollbar overflow-y-scroll"
         onScroll={handleTracklistScroll}
         ref={trackListDivRef}
       >

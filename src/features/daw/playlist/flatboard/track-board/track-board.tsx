@@ -7,8 +7,16 @@ import { TrackBar } from './track-bar/track-bar'
 import { setCurrentTick } from '../../../playlist-header/store/playlist-header-slice'
 import { addTrackBar, selectTrack } from '../../store/playlist-slice'
 
-export const TrackBoard = ({ track }: { track: Track }) => {
+export const TrackBoard = ({
+  track,
+  selectedTrack,
+}: {
+  track: Track
+  selectedTrack?: Track
+}) => {
   const maxBars = useSelector(selectMaxBars)
+
+  const isSelected = selectedTrack?.id === track.id
 
   const dispatch = useDispatch()
 
@@ -39,11 +47,13 @@ export const TrackBoard = ({ track }: { track: Track }) => {
 
   return (
     <div className="relative">
-      <div className="flex flex-row h-24 min-h-24 max-h-24">
+      <div className="flex flex-row h-20 min-h-20 max-h-20">
         <TrackGrid
+          track={track}
           maxBars={maxBars}
           onSelectTick={handleSelectTick}
           onCreateBar={handleCreateBar}
+          isSelected={isSelected}
         />
 
         {track.bars.map((bar: Bar) => (
