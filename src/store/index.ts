@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import playerBarReducer from '../features/daw/player-bar/store/playerBarSlice'
 import playlistSlice from '../features/daw/playlist/store/playlist-slice'
 import playlistHeaderSlice from '../features/daw/playlist-header/store/playlist-header-slice'
+import bottomBarSlice from '../features/daw/bottom-bar/store/bottom-bar-slice'
 
 export const store = configureStore({
   reducer: {
     playerBar: playerBarReducer,
     playlist: playlistSlice,
     playlistHeader: playlistHeaderSlice,
+    bottomBar: bottomBarSlice,
   },
 })
 
