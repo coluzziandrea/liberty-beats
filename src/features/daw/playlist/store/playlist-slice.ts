@@ -1,10 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { Track } from '../../../../model/track/track'
 import { Bar } from '../../../../model/bar/bar'
+import { INSTRUMENT_PRESETS } from '../../../../model/instrument/preset/preset'
 
 export interface PlaylistSlice {
   tracks: Track[]
   selectedTrackId: string | null
+  selectedBarId: string | null
   flatboardScroll: number
 }
 
@@ -14,7 +16,7 @@ const initialState: PlaylistSlice = {
       id: '1',
       title: 'Piano Lead',
       color: 'green',
-      instrumentType: 'PIANO',
+      instrumentPreset: INSTRUMENT_PRESETS[0],
       bars: [
         {
           id: '1',
@@ -27,14 +29,15 @@ const initialState: PlaylistSlice = {
               startAtTick: 5,
               endAtTick: 7,
               durationTicks: 2,
-              sound: 'C4',
+              key: 'C4',
             },
           ],
         },
       ],
     },
   ],
-  selectedTrackId: null,
+  selectedTrackId: '1',
+  selectedBarId: null,
   flatboardScroll: 0,
 }
 
@@ -53,13 +56,21 @@ export const playlistSlice = createSlice({
     selectTrack: (state, action: PayloadAction<Track>) => {
       state.selectedTrackId = action.payload.id
     },
+    selectBar: (state, action: PayloadAction<Bar>) => {
+      state.selectedBarId = action.payload.id
+    },
     setFlatboardScroll: (state, action: PayloadAction<number>) => {
       state.flatboardScroll = action.payload
     },
   },
 })
 
-export const { addTrack, selectTrack, addTrackBar, setFlatboardScroll } =
-  playlistSlice.actions
+export const {
+  addTrack,
+  selectTrack,
+  selectBar,
+  addTrackBar,
+  setFlatboardScroll,
+} = playlistSlice.actions
 
 export default playlistSlice.reducer

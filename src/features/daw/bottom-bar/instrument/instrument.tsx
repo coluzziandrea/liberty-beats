@@ -4,10 +4,13 @@ import {
   closeAllBottomUpPanels,
   selectBottomUpPanel,
 } from '../store/bottom-bar-slice'
+import { Track } from '../../../../model/track/track'
 
 export const Instrument = ({
+  selectedTrack,
   selectedBottomUpPanel,
 }: {
+  selectedTrack?: Track
   selectedBottomUpPanel: BottomUpPanel | null
 }) => {
   const dispatch = useDispatch()
@@ -24,8 +27,11 @@ export const Instrument = ({
   return (
     <div className="flex">
       <button
+        disabled={!selectedTrack}
         onClick={handleInstrumentSelection}
-        className={`text-xs font-bold ${isSelected && 'bg-white text-black'}`}
+        className={`text-xs font-bold  ${!selectedTrack && 'bg-gray-600'} ${
+          isSelected && 'bg-white text-black'
+        }`}
       >
         Instrument
       </button>

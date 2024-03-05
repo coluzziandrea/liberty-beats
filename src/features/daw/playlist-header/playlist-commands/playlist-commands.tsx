@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux'
 import { addTrack, selectTrack } from '../../playlist/store/playlist-slice'
 import { TRACK_COLORS } from '../../../../model/track/track-color'
 import { Track } from '../../../../model/track/track'
+import { INSTRUMENT_PRESETS } from '../../../../model/instrument/preset/preset'
 
 export const PlaylistCommands = () => {
   const dispatch = useDispatch()
@@ -11,7 +12,7 @@ export const PlaylistCommands = () => {
       id: Date.now().toString(),
       title: 'New Track',
       color: TRACK_COLORS[Math.floor(Math.random() * TRACK_COLORS.length)],
-      instrumentType: 'PIANO',
+      instrumentPreset: INSTRUMENT_PRESETS[0],
       bars: [
         {
           id: Date.now().toString(),

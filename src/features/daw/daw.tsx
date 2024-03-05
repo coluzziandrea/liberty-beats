@@ -1,5 +1,5 @@
 import { BottomBar } from './bottom-bar/bottom-bar'
-import { InstrumentSetup } from './instrument/instrument'
+import { InstrumentSetup } from './instrument/instrument-setup'
 import { PlayerBar } from './player-bar/player-bar'
 import { PlaylistHeader } from './playlist-header/playlist-header'
 import { Playlist } from './playlist/playlist'

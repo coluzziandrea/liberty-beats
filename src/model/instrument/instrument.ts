@@ -1,3 +1,8 @@
-export const INSTRUMENT_TYPES = ["GUITAR", "BASS", "DRUMS", "PIANO"] as const;
+export const INSTRUMENT_TYPES = [
+  'GUITAR',
+  'BASS',
+  'DRUMS',
+  'KEYBOARDS',
+] as const
 
-export type InstrumentType = (typeof INSTRUMENT_TYPES)[number];
+export type InstrumentType = (typeof INSTRUMENT_TYPES)[number]

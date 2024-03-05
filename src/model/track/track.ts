@@ -1,5 +1,5 @@
 import { Bar } from '../bar/bar'
-import type { InstrumentType } from '../instrument/instrument'
+import { InstrumentPreset } from '../instrument/preset/preset'
 import { TrackColor } from './track-color'
 
 export interface Track {
@@ -11,6 +11,6 @@ export interface Track {
    * @example 'green'
    */
   color: TrackColor
-  instrumentType: InstrumentType
+  instrumentPreset: InstrumentPreset
   bars: Bar[]
 }
