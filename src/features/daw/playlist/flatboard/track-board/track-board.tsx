@@ -45,6 +45,16 @@ export const TrackBoard = ({
     )
   }
 
+  const handleSelectBar = () => {
+    dispatch(selectTrack(track))
+  }
+
+  const handleBarDetails = (bar: Bar) => {
+    dispatch(selectTrack(track))
+
+    dispatch(setCurrentTick(bar.startAtTick))
+  }
+
   return (
     <div className="relative">
       <div className="flex flex-row h-20 min-h-20 max-h-20">
@@ -57,7 +67,13 @@ export const TrackBoard = ({
         />
 
         {track.bars.map((bar: Bar) => (
-          <TrackBar key={bar.id} track={track} bar={bar} />
+          <TrackBar
+            key={bar.id}
+            track={track}
+            bar={bar}
+            onSelectBar={handleSelectBar}
+            onBarDetails={handleBarDetails}
+          />
         ))}
       </div>
     </div>

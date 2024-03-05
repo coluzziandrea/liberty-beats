@@ -2,7 +2,17 @@ import { Bar } from '../../../../../../model/bar/bar'
 import { Track } from '../../../../../../model/track/track'
 import { TICK_WIDTH_PIXEL } from '../../../constants'
 
-export const TrackBar = ({ track, bar }: { track: Track; bar: Bar }) => {
+export const TrackBar = ({
+  track,
+  bar,
+  onSelectBar,
+  onBarDetails,
+}: {
+  track: Track
+  bar: Bar
+  onSelectBar: (bar: Bar) => void
+  onBarDetails: (bar: Bar) => void
+}) => {
   const barLengthPixel = (bar.endAtTick - bar.startAtTick) * TICK_WIDTH_PIXEL
   const barWidthStyle = `${barLengthPixel}px`
 
@@ -16,8 +26,10 @@ export const TrackBar = ({ track, bar }: { track: Track; bar: Bar }) => {
       style={{ width: barWidthStyle, left: barOffsetStyle }}
     >
       <div
-        className={`flex flex-col h-20 min-h-20 max-h-20 bg-${track.color}-500 opacity-80 rounded-md`}
+        className={`flex flex-col h-20 min-h-20 max-h-20 bg-${track.color}-500 opacity-80 rounded-md cursor-grab`}
         style={{ width: barLengthPixel }}
+        onClick={() => onSelectBar(bar)}
+        onDoubleClick={() => onBarDetails(bar)}
       >
         <div
           className={`flex flex-row bg-${track.color}-700 pl-2 rounded-t-md text-white text-sm font-bold select-none`}
