@@ -3,6 +3,8 @@ import { observeStore } from '../store/observers'
 import { selectIsPlaying } from '../features/daw/player-bar/store/selectors'
 
 import * as Tone from 'tone'
+import { selectPlayingKeys } from '../features/daw/instrument/store/selectors'
+import { Key } from '../model/note/note'
 
 export default class Sequencer {
   store: RootStore
@@ -17,6 +19,18 @@ export default class Sequencer {
         this.stop()
       }
     })
+
+    observeStore(store, selectPlayingKeys, (newState) => {
+      console.log('playing keys', newState)
+      newState.forEach((key: Key) => {
+        this.playKey(key)
+      })
+    })
+  }
+
+  playKey(key: Key) {
+    const synthA = new Tone.FMSynth().toDestination()
+    synthA.triggerAttackRelease(key, '8n')
   }
 
   play() {

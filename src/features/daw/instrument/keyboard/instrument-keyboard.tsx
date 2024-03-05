@@ -3,6 +3,9 @@ import { KEYS } from '../../../../model/note/note'
 import { Track } from '../../../../model/track/track'
 import { KeyItem } from './key/key-item'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectPlayingKeys } from '../store/selectors'
+import { addPlayingKey, removePlayingKey } from '../store/instrument-slice'
 
 export type InstrumentKeyboardProps = {
   selectedTrack: Track
@@ -15,6 +18,9 @@ export const InstrumentKeyboard = () => {
   const keyboardRef = useRef<HTMLDivElement>(null)
   const [keySize, setKeySize] = React.useState(0)
   const showedKeys = KEYS.slice(0, SHOWED_KEYS)
+
+  const playingKeys = useSelector(selectPlayingKeys)
+  const dispatch = useDispatch()
 
   const handleResize = () => {
     const keyboard = keyboardRef.current
@@ -33,15 +39,17 @@ export const InstrumentKeyboard = () => {
   }, [])
 
   const generateIsSelected = (key: string) => {
-    return key === 'C#2'
+    return playingKeys.includes(key)
   }
 
   const handleAttackTriggered = (key: string) => {
     console.log('attack triggered', key)
+    dispatch(addPlayingKey(key))
   }
 
   const handleReleaseTriggered = (key: string) => {
     console.log('release triggered', key)
+    dispatch(removePlayingKey(key))
   }
 
   return (
