@@ -1,3 +1,4 @@
+import { BottomBar } from './bottom-bar/bottom-bar'
 import { PlayerBar } from './player-bar/player-bar'
 import { PlaylistHeader } from './playlist-header/playlist-header'
 import { Playlist } from './playlist/playlist'
@@ -15,6 +16,10 @@ export const DAW = () => {
 
       <div className="flex flex-grow overflow-y-auto">
         <Playlist />
+      </div>
+
+      <div>
+        <BottomBar />
       </div>
     </main>
   )
