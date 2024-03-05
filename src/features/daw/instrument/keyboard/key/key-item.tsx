@@ -1,6 +1,6 @@
 import { Key } from '../../../../../model/note/note'
 
-export type KeyProps = {
+export type KeyItemProps = {
   keyToRender: Key
   startingKey: Key
 }
@@ -39,35 +39,31 @@ const getRelativeOffset = (key: Key, startingKey: Key) => {
   return keyOffset - startingOffset
 }
 
-const getCommonClasses = () => {
-  return 'select-none absolute flex items-end justify-center'
-}
-
-const BlackKeyItem = (props: KeyProps) => {
-  const finalOffset = getRelativeOffset(props.keyToRender, props.startingKey)
-  return (
-    <div
-      className={`${getCommonClasses()} select-none absolute bg-black h-[60%] z-10`}
-      style={{ left: `${finalOffset}px`, width: `${BLACK_KEY_WIDTH}px` }}
-    >
-      {props.keyToRender}
-    </div>
-  )
-}
-
-const WhiteKeyItem = (props: KeyProps) => {
-  const finalOffset = getRelativeOffset(props.keyToRender, props.startingKey)
-  return (
-    <div
-      className={`${getCommonClasses()} bg-white h-full text-black border-r border-black`}
-      style={{ left: `${finalOffset}px`, width: `${WHITE_KEY_WIDTH}px` }}
-    >
-      {props.keyToRender}
-    </div>
-  )
-}
-
-export const KeyItem = (props: KeyProps) => {
+export const KeyItem = (props: KeyItemProps) => {
   const isBlackKey = props.keyToRender.includes('#')
-  return isBlackKey ? <BlackKeyItem {...props} /> : <WhiteKeyItem {...props} />
+  const getKeyClasses = () =>
+    isBlackKey
+      ? 'bg-black h-[60%] z-10 text-slate-300'
+      : 'bg-white h-full text-slate-700 border-r border-black'
+  const getKeyWidth = () => (isBlackKey ? BLACK_KEY_WIDTH : WHITE_KEY_WIDTH)
+  return (
+    <div
+      className={`${getKeyClasses()} select-none absolute flex flex-col items-center justify-end  gap-1 cursor-pointer rounded-b-md`}
+      style={{
+        left: `${getRelativeOffset(props.keyToRender, props.startingKey)}px`,
+        width: `${getKeyWidth()}px`,
+      }}
+    >
+      {!isBlackKey && (
+        <p className="text-sm font-light border-slate-300 border-[1px] rounded-md px-1">
+          {props.keyToRender}
+        </p>
+      )}
+      <div
+        className={`w-full rounded-b-md h-2 ${
+          isBlackKey ? 'bg-slate-800' : 'bg-slate-200'
+        }`}
+      />
+    </div>
+  )
 }
