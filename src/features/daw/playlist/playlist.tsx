@@ -9,13 +9,16 @@ export const Playlist = () => {
   const trackListDivRef = React.useRef<HTMLDivElement>(null)
 
   const handleRulerScroll = useRulerScroll(flatboardRef)
-  const handleTracklistScroll = useFlatboardScroll(trackListDivRef)
+  const handleTrackListScroll = useFlatboardScroll([
+    trackListDivRef,
+    flatboardRef,
+  ])
 
   return (
     <div className="flex flex-row justify-between gap-1 divide-x divide-slate-600 w-full ">
       <div
         className="flex max-w-72 min-w-72 no-scrollbar overflow-y-scroll"
-        onScroll={handleTracklistScroll}
+        onScroll={handleTrackListScroll}
         ref={trackListDivRef}
       >
         <TrackList />
@@ -25,7 +28,7 @@ export const Playlist = () => {
         className="flex flex-grow px-2 overflow-auto"
         onScroll={(e) => {
           handleRulerScroll(e)
-          handleTracklistScroll(e)
+          handleTrackListScroll(e)
         }}
         ref={flatboardRef}
       >

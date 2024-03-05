@@ -43,11 +43,9 @@ export const playlistSlice = createSlice({
   initialState,
   reducers: {
     addTrack: (state, action: PayloadAction<Track>) => {
-      console.warn('Adding track', action.payload)
       state.tracks.push(action.payload)
     },
     addTrackBar: (state, action: PayloadAction<{ track: Track; bar: Bar }>) => {
-      console.warn('Adding track', action.payload)
       state.tracks
         .find((t) => t.id === action.payload.track.id)
         ?.bars.push(action.payload.bar)
