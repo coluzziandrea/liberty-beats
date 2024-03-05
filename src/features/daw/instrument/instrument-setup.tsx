@@ -20,7 +20,7 @@ export const InstrumentSetup = () => {
 
         <InstrumentConfig selectedTrack={selectedTrack} />
 
-        <div className="flex w-full">
+        <div className="flex w-full overflow-auto">
           <InstrumentKeyboard />
         </div>
       </div>

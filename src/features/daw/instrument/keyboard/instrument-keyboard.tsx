@@ -8,6 +8,19 @@ export type InstrumentKeyboardProps = {
 
 export const InstrumentKeyboard = () => {
   const showedKeys = KEYS.slice(0, 32)
+
+  const generateIsSelected = (key: string) => {
+    return key === 'C#2'
+  }
+
+  const handleAttackTriggered = (key: string) => {
+    console.log('attack triggered', key)
+  }
+
+  const handleReleaseTriggered = (key: string) => {
+    console.log('release triggered', key)
+  }
+
   return (
     <div className="relative h-64">
       {showedKeys.map((keyToRender) => (
@@ -15,6 +28,9 @@ export const InstrumentKeyboard = () => {
           key={keyToRender}
           keyToRender={keyToRender}
           startingKey={showedKeys[0]}
+          onAttackTriggered={handleAttackTriggered}
+          onReleaseTriggered={handleReleaseTriggered}
+          isSelected={generateIsSelected(keyToRender)}
         />
       ))}
     </div>
