@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { KEYS } from '../../../../model/note/note'
+import { KEYS, Key } from '../../../../model/note/note'
 import { Track } from '../../../../model/track/track'
 import { KeyItem } from './key/key-item'
 import React from 'react'
@@ -17,6 +17,8 @@ const SHOWED_WHITE_KEYS = 19
 export const InstrumentKeyboard = () => {
   const keyboardRef = useRef<HTMLDivElement>(null)
   const [keySize, setKeySize] = React.useState(0)
+  const [isMouseDown, setIsMouseDown] = React.useState(false)
+
   const showedKeys = KEYS.slice(0, SHOWED_KEYS)
 
   const playingKeys = useSelector(selectPlayingKeys)
@@ -38,30 +40,48 @@ export const InstrumentKeyboard = () => {
     }
   }, [])
 
-  const generateIsSelected = (key: string) => {
+  const generateIsSelected = (key: Key) => {
     return playingKeys.includes(key)
   }
 
-  const handleAttackTriggered = (key: string) => {
-    console.log('attack triggered', key)
+  const handleOnKeyItemMouseDown = (key: Key) => {
+    setIsMouseDown(true)
     dispatch(addPlayingKey(key))
   }
 
-  const handleReleaseTriggered = (key: string) => {
-    console.log('release triggered', key)
-    dispatch(removePlayingKey(key))
+  const handleOnKeyItemMouseUp = () => {
+    setIsMouseDown(false)
+  }
+
+  const handleOnMouseEnter = (key: Key) => {
+    if (isMouseDown) {
+      dispatch(addPlayingKey(key))
+    }
+  }
+
+  const handleOnMouseLeave = (key: Key) => {
+    if (playingKeys.includes(key)) {
+      dispatch(removePlayingKey(key))
+    }
   }
 
   return (
-    <div className="relative h-64 w-full" ref={keyboardRef}>
+    <div
+      className="relative h-64 w-full"
+      ref={keyboardRef}
+      onMouseDown={() => setIsMouseDown(true)}
+      onMouseUp={() => setIsMouseDown(false)}
+    >
       {showedKeys.map((keyToRender) => (
         <KeyItem
           key={keyToRender}
           keyToRender={keyToRender}
           startingKey={showedKeys[0]}
           keySize={keySize}
-          onAttackTriggered={handleAttackTriggered}
-          onReleaseTriggered={handleReleaseTriggered}
+          onMouseDown={handleOnKeyItemMouseDown}
+          onMouseUp={handleOnKeyItemMouseUp}
+          onMouseEnter={handleOnMouseEnter}
+          onMouseLeave={handleOnMouseLeave}
           isSelected={generateIsSelected(keyToRender)}
         />
       ))}

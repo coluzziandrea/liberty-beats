@@ -5,8 +5,10 @@ export type KeyItemProps = {
   startingKey: Key
   keySize: number
   isSelected: boolean
-  onAttackTriggered: (key: Key) => void
-  onReleaseTriggered: (key: Key) => void
+  onMouseDown: (key: Key) => void
+  onMouseUp: (key: Key) => void
+  onMouseEnter: (key: Key) => void
+  onMouseLeave: (key: Key) => void
 }
 
 const MIN_WHITE_KEY_WIDTH = 50
@@ -62,15 +64,15 @@ export const KeyItem = (props: KeyItemProps) => {
   const isBlackKey = props.keyToRender.includes('#')
   const getKeyClasses = () =>
     isBlackKey
-      ? `bg-black h-[60%] z-10 text-slate-300`
-      : `bg-white h-full text-slate-700 border-r border-black`
+      ? `h-[60%] z-10 ${props.isSelected ? 'bg-orange-400' : 'bg-black'}`
+      : `h-full border-r border-black ${
+          props.isSelected ? 'bg-orange-400' : 'bg-white'
+        }`
   const getKeyWidth = () =>
     isBlackKey ? getBlackKeyWidth(whiteKeyWidth) : whiteKeyWidth
   return (
     <div
-      className={`${getKeyClasses()} select-none absolute flex flex-col items-center justify-end  gap-1 cursor-pointer rounded-b-md ${
-        props.isSelected && 'bg-orange-400'
-      }`}
+      className={`${getKeyClasses()} select-none absolute flex flex-col items-center justify-end  gap-1 cursor-pointer rounded-b-md`}
       style={{
         left: `${getRelativeOffset(
           props.keyToRender,
@@ -79,13 +81,15 @@ export const KeyItem = (props: KeyItemProps) => {
         )}px`,
         width: `${getKeyWidth()}px`,
       }}
-      onMouseDown={() => props.onAttackTriggered(props.keyToRender)}
-      onMouseUp={() => props.onReleaseTriggered(props.keyToRender)}
+      onMouseLeave={() => props.onMouseLeave(props.keyToRender)}
+      onMouseEnter={() => props.onMouseEnter(props.keyToRender)}
+      onMouseDown={() => props.onMouseDown(props.keyToRender)}
+      onMouseUp={() => props.onMouseUp(props.keyToRender)}
     >
       {!isBlackKey && (
         <p
-          className={`text-sm font-light border-slate-300 border-[1px] rounded-md px-1 ${
-            props.isSelected && 'border-white text-white'
+          className={`text-sm border-slate-300 border-[1px] rounded-md px-1 ${
+            props.isSelected ? 'border-white text-white' : 'text-slate-400'
           }`}
         >
           {props.keyToRender}
