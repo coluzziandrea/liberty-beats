@@ -49,8 +49,11 @@ export const InstrumentKeyboard = () => {
     dispatch(addPlayingKey(key))
   }
 
-  const handleOnKeyItemMouseUp = () => {
+  const handleOnKeyItemMouseUp = (key: Key) => {
     setIsMouseDown(false)
+    if (playingKeys.includes(key)) {
+      dispatch(removePlayingKey(key))
+    }
   }
 
   const handleOnMouseEnter = (key: Key) => {
