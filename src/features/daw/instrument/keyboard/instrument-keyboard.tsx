@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { KEYS, Key } from '../../../../model/note/note'
+import { KEYS, Key, Octave } from '../../../../model/note/note'
 import { Track } from '../../../../model/track/track'
 import { KeyItem } from './key/key-item'
 import React from 'react'
@@ -9,17 +9,27 @@ import { addPlayingKey, removePlayingKey } from '../store/instrument-slice'
 
 export type InstrumentKeyboardProps = {
   selectedTrack: Track
+  selectedOctave: Octave
 }
 
-const SHOWED_KEYS = 32
+const SHOWED_KEYS_NUMBER = 32
 const SHOWED_WHITE_KEYS = 19
 
-export const InstrumentKeyboard = () => {
+const getShowedKeys = (selectedOctave: Octave) => {
+  const startingKey = KEYS.find((k) =>
+    k.endsWith(Number(selectedOctave).toString())
+  )
+  if (!startingKey) return []
+  const startingKeyIndex = KEYS.indexOf(startingKey)
+  return KEYS.slice(startingKeyIndex, startingKeyIndex + SHOWED_KEYS_NUMBER)
+}
+
+export const InstrumentKeyboard = (props: InstrumentKeyboardProps) => {
   const keyboardRef = useRef<HTMLDivElement>(null)
   const [keySize, setKeySize] = React.useState(0)
   const [isMouseDown, setIsMouseDown] = React.useState(false)
 
-  const showedKeys = KEYS.slice(0, SHOWED_KEYS)
+  const showedKeys = getShowedKeys(props.selectedOctave)
 
   const playingKeys = useSelector(selectPlayingKeys)
   const dispatch = useDispatch()
