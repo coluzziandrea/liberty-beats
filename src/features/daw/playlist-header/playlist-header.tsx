@@ -14,7 +14,7 @@ export const PlaylistHeader = () => {
       </div>
 
       <div
-        className="flex flex-grow px-2 no-scrollbar overflow-x-scroll"
+        className="flex flex-grow px-2 bg-slate-950 no-scrollbar overflow-x-scroll"
         onScroll={handleRulerScroll}
         ref={rulerDivRef}
       >

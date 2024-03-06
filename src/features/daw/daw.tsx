@@ -6,7 +6,7 @@ import { Playlist } from './playlist/playlist'
 
 export const DAW = () => {
   return (
-    <main className="flex flex-col h-screen p-2">
+    <main className="flex flex-col h-screen p-2 bg-black">
       <div className="pb-2">
         <PlayerBar />
       </div>
