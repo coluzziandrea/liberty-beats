@@ -79,10 +79,34 @@ export const KEYS = [
   'A6',
   'A#6',
   'B6',
+  'C7',
+  'C#7',
+  'D7',
+  'D#7',
+  'E7',
+  'F7',
+  'F#7',
+  'G7',
+  'G#7',
+  'A7',
+  'A#7',
+  'B7',
+  'C8',
+  'C#8',
+  'D8',
+  'D#8',
+  'E8',
+  'F8',
+  'F#8',
+  'G8',
+  'G#8',
+  'A8',
+  'A#8',
+  'B8',
 ] as const
 
 export type Key = (typeof KEYS)[number]
 
-export const OCTAVES = [1, 2, 3, 4, 5, 6] as const
+export const OCTAVES = [1, 2, 3, 4, 5, 6, 7, 8] as const
 
 export type Octave = (typeof OCTAVES)[number]

@@ -25,7 +25,7 @@ export const InstrumentSetup = () => {
 
         <InstrumentConfig selectedTrack={selectedTrack} />
 
-        <div className="flex w-full overflow-auto">
+        <div className="flex w-full overflow-auto bg-zinc-800">
           <InstrumentKeyboard
             selectedTrack={selectedTrack}
             selectedOctave={selectedOctave}
