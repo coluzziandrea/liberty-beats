@@ -87,6 +87,7 @@ export const InstrumentKeyboard = (props: InstrumentKeyboardProps) => {
     >
       {showedKeys.map((keyToRender) => (
         <KeyItem
+          selectedTrack={props.selectedTrack}
           key={keyToRender}
           keyToRender={keyToRender}
           startingKey={showedKeys[0]}

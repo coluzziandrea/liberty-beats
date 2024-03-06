@@ -1,6 +1,8 @@
 import { Key } from '../../../../../model/note/note'
+import { Track } from '../../../../../model/track/track'
 
 export type KeyItemProps = {
+  selectedTrack: Track
   keyToRender: Key
   startingKey: Key
   keySize: number
@@ -64,9 +66,11 @@ export const KeyItem = (props: KeyItemProps) => {
   const isBlackKey = props.keyToRender.includes('#')
   const getKeyClasses = () =>
     isBlackKey
-      ? `h-[60%] z-10 ${props.isSelected ? 'bg-orange-400' : 'bg-black'}`
+      ? `h-[60%] z-10 ${
+          props.isSelected ? `bg-${props.selectedTrack.color}-400` : 'bg-black'
+        }`
       : `h-full border-r border-black ${
-          props.isSelected ? 'bg-orange-400' : 'bg-white'
+          props.isSelected ? `bg-${props.selectedTrack.color}-400` : 'bg-white'
         }`
   const getKeyWidth = () =>
     isBlackKey ? getBlackKeyWidth(whiteKeyWidth) : whiteKeyWidth
