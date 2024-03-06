@@ -1,5 +1,5 @@
 import { Track } from '../../../../../../model/track/track'
-import { SUB_BAR_NUM } from '../../../../playlist-header/constants'
+import { SUB_BAR_NUM } from '../../../../common/components/ruler/constants'
 
 export type TrackGridProps = {
   track: Track

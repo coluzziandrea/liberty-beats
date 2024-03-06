@@ -1,6 +1,6 @@
+import { Ruler } from '../common/components/ruler/ruler'
 import { useRulerScroll } from '../common/hooks/use-ruler-scroll'
 import { PlaylistCommands } from './playlist-commands/playlist-commands'
-import { Ruler } from './ruler/ruler'
 import React from 'react'
 
 export const PlaylistHeader = () => {
@@ -14,7 +14,7 @@ export const PlaylistHeader = () => {
       </div>
 
       <div
-        className="flex flex-grow px-2 bg-slate-950 no-scrollbar overflow-x-scroll"
+        className="flex flex-grow px-2 overflow-x-scroll no-scrollbar"
         onScroll={handleRulerScroll}
         ref={rulerDivRef}
       >

@@ -1,7 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { selectCurrentTick, selectMaxBars } from '../store/selectors'
-import { SUB_BAR_NUM } from '../constants'
-import { setCurrentTick } from '../store/playlist-header-slice'
+import { SUB_BAR_NUM } from './constants'
+import {
+  selectCurrentTick,
+  selectMaxBars,
+} from '../../../playlist-header/store/selectors'
+import { setCurrentTick } from '../../../playlist-header/store/playlist-header-slice'
 
 type RulerBarProps = {
   barIndex: number
@@ -54,7 +57,7 @@ const RulerBar = ({
     >
       <div className="px-2 text-slate-400 select-none">{barIndex + 1}</div>
 
-      <div className="flex flex-row h-4">
+      <div className="flex flex-row min-h-[20px] h-[30%]">
         {Array.from({ length: SUB_BAR_NUM }).map((_, j) => (
           <RulerSubBar
             key={j}
@@ -81,7 +84,7 @@ export const Ruler = () => {
   }
 
   return (
-    <div className="h-full flex flex-row">
+    <div className="h-full flex flex-row bg-slate-950">
       {Array.from({ length: maxBars }).map((_, i) => (
         <RulerBar
           key={i}
