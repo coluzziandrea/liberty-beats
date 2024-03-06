@@ -57,7 +57,7 @@ const RulerBar = ({
     >
       <div className="px-2 text-slate-400 select-none">{barIndex + 1}</div>
 
-      <div className="flex flex-row min-h-[20px] h-[30%]">
+      <div className="flex flex-row h-[40%]">
         {Array.from({ length: SUB_BAR_NUM }).map((_, j) => (
           <RulerSubBar
             key={j}

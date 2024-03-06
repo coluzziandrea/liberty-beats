@@ -80,7 +80,7 @@ export const InstrumentKeyboard = (props: InstrumentKeyboardProps) => {
 
   return (
     <div
-      className="relative h-64 w-full"
+      className="relative h-full w-full"
       ref={keyboardRef}
       onMouseDown={() => setIsMouseDown(true)}
       onMouseUp={() => setIsMouseDown(false)}

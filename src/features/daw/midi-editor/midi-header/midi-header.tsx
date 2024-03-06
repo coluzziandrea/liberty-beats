@@ -10,7 +10,7 @@ export type MidiHeaderProps = {
 export const MidiHeader = ({ selectedTrack }: MidiHeaderProps) => {
   const dispatch = useDispatch()
   return (
-    <div className="flex  flex-row justify-between">
+    <div className="flex h-full w-full flex-row justify-between">
       <div
         className="cursor-pointer w-[5%]"
         onClick={() => dispatch(closeAllBottomUpPanels())}

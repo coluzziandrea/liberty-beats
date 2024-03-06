@@ -17,7 +17,7 @@ export const InstrumentSetup = () => {
 
   return (
     <div className={`${!isSelected && 'hidden'}`}>
-      <div className="flex flex-col gap-2 p-2 bg-stone-900">
+      <div className="flex flex-col gap-2 p-2 bg-stone-900 h-96">
         <InstrumentHeader
           selectedTrack={selectedTrack}
           selectedOctave={selectedOctave}
@@ -25,7 +25,7 @@ export const InstrumentSetup = () => {
 
         <InstrumentConfig selectedTrack={selectedTrack} />
 
-        <div className="flex w-full overflow-auto bg-zinc-800">
+        <div className="flex w-full h-full overflow-auto bg-zinc-800">
           <InstrumentKeyboard
             selectedTrack={selectedTrack}
             selectedOctave={selectedOctave}
