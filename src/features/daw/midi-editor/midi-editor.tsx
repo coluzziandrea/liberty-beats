@@ -14,7 +14,7 @@ export const MidiEditor = () => {
 
   return (
     <div className={`${!isSelected && 'hidden'}`}>
-      <div className="flex flex-col gap-2 p-2 bg-stone-900  h-96">
+      <div className="flex flex-col bg-stone-900  h-96 divide-y divide-slate-600 border-t border-slate-600">
         <div className="flex h-[15%] w-full">
           <MidiHeader selectedTrack={selectedTrack} />
         </div>
