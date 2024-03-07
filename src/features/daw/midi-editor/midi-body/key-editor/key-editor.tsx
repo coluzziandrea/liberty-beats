@@ -22,7 +22,7 @@ export const KeyEditor = () => {
         />
       </div>
 
-      <div className="relative overflow-x-auto">
+      <div className="relative overflow-x-auto pl-2">
         <div className="flex flex-row h-20 min-h-20 max-h-20">
           <MixGrid
             track={selectedTrack}
