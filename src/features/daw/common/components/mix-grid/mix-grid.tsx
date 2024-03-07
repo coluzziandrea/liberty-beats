@@ -48,19 +48,19 @@ export const MixGrid = (props: MixGridProps) => {
   }
   return (
     <>
-      {Array.from({ length: props.maxBars }).map((_, i) => (
+      {Array.from({ length: props.maxBars }).map((_, barIndex) => (
         <div
-          key={i}
-          className={`flex flex-col justify-end opacity-50 w-[80px] border-l border-slate-500 ${
-            i == props.maxBars - 1 ? 'border-r' : ''
-          }  ${getTrackColorClass(i)}`}
+          key={barIndex}
+          className={`flex flex-col justify-end opacity-50 w-[80px] border-l border-slate-400 ${
+            barIndex == props.maxBars - 1 ? 'border-r' : ''
+          }  ${getTrackColorClass(barIndex)}`}
         >
           <div className="flex flex-row h-full">
-            {Array.from({ length: SUB_BAR_NUM }).map((_, j) => (
+            {Array.from({ length: SUB_BAR_NUM }).map((_, subBarIndex) => (
               <MixGridItem
-                key={j}
-                barIndex={i}
-                currentSubBar={j}
+                key={subBarIndex}
+                barIndex={barIndex}
+                currentSubBar={subBarIndex}
                 onSelectTick={props.onSelectTick}
                 onCreateBar={props.onCreateBar}
               />

@@ -12,23 +12,26 @@ export const KeyEditor = () => {
 
   if (!selectedTrack) return null
 
+  const whiteKeySize = 20
+
   return (
     <div className="flex w-full flex-grow  bg-zinc-800">
       <div className="min-w-20 w-20 max-w-20 overflow-auto no-scrollbar">
         <Keyboard
           selectedTrack={selectedTrack}
           showedKeys={KEYS}
-          whiteKeySize={20}
+          whiteKeySize={whiteKeySize}
           orientation="vertical"
         />
       </div>
 
       <div className="overflow-auto pl-2">
         <div className="relative h-max min-h-full">
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col">
             <MidiEditorKeyGrid
               selectedTrack={selectedTrack}
               maxBars={maxBars}
+              whiteKeySize={whiteKeySize}
             />
           </div>
           <TickPlaceholder />
