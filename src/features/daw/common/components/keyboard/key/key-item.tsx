@@ -1,5 +1,5 @@
-import { Key } from '../../../../../model/note/note'
-import { Track } from '../../../../../model/track/track'
+import { Key } from '../../../../../../model/note/note'
+import { Track } from '../../../../../../model/track/track'
 
 export type KeyItemProps = {
   selectedTrack: Track

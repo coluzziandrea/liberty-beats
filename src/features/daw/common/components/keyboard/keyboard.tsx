@@ -1,13 +1,16 @@
 import { useRef } from 'react'
-import { KEYS, Key, Octave } from '../../../../model/note/note'
-import { Track } from '../../../../model/track/track'
-import { KeyItem } from './key/key-item'
+import { KEYS, Key, Octave } from '../../../../../model/note/note'
+import { Track } from '../../../../../model/track/track'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectPlayingKeys } from '../store/selectors'
-import { addPlayingKey, removePlayingKey } from '../store/instrument-slice'
+import { selectPlayingKeys } from '../../../instrument/store/selectors'
+import {
+  addPlayingKey,
+  removePlayingKey,
+} from '../../../instrument/store/instrument-slice'
+import { KeyItem } from './key/key-item'
 
-export type InstrumentKeyboardProps = {
+export type KeyboardProps = {
   selectedTrack: Track
   selectedOctave: Octave
 }
@@ -24,7 +27,7 @@ const getShowedKeys = (selectedOctave: Octave) => {
   return KEYS.slice(startingKeyIndex, startingKeyIndex + SHOWED_KEYS_NUMBER)
 }
 
-export const InstrumentKeyboard = (props: InstrumentKeyboardProps) => {
+export const Keyboard = (props: KeyboardProps) => {
   const keyboardRef = useRef<HTMLDivElement>(null)
   const [keySize, setKeySize] = React.useState(0)
   const [isMouseDown, setIsMouseDown] = React.useState(false)

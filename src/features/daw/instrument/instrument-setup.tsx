@@ -2,9 +2,9 @@ import { useSelector } from 'react-redux'
 import { selectSelectedBottomUpPanel } from '../bottom-bar/store/selectors'
 import { InstrumentHeader } from './header/instrument-header'
 import { InstrumentConfig } from './config/instrument-config'
-import { InstrumentKeyboard } from './keyboard/instrument-keyboard'
 import { selectSelectedTrack } from '../playlist/store/selectors'
 import { selectSelectedOctave } from './store/selectors'
+import { Keyboard } from '../common/components/keyboard/keyboard'
 
 export const InstrumentSetup = () => {
   const selectedBottomUpPanel = useSelector(selectSelectedBottomUpPanel)
@@ -30,7 +30,7 @@ export const InstrumentSetup = () => {
         </div>
 
         <div className="flex w-full flex-grow overflow-auto bg-zinc-800">
-          <InstrumentKeyboard
+          <Keyboard
             selectedTrack={selectedTrack}
             selectedOctave={selectedOctave}
           />
