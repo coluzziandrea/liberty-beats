@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { selectMaxBars } from '../../../playlist-header/store/selectors'
-import { TrackGrid } from './track-grid/track-grid'
 import { Track } from '../../../../../model/track/track'
 import { Bar } from '../../../../../model/bar/bar'
 import { TrackBar } from './track-bar/track-bar'
 import { setCurrentTick } from '../../../playlist-header/store/playlist-header-slice'
 import { addTrackBar, selectTrack } from '../../store/playlist-slice'
+import { MixGrid } from '../../../common/components/mix-grid/mix-grid'
 
 export const TrackBoard = ({
   track,
@@ -58,7 +58,7 @@ export const TrackBoard = ({
   return (
     <div className="relative">
       <div className="flex flex-row h-20 min-h-20 max-h-20">
-        <TrackGrid
+        <MixGrid
           track={track}
           maxBars={maxBars}
           onSelectTick={handleSelectTick}

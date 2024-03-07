@@ -1,7 +1,7 @@
-import { Track } from '../../../../../../model/track/track'
-import { SUB_BAR_NUM } from '../../../../common/components/ruler/constants'
+import { Track } from '../../../../../model/track/track'
+import { SUB_BAR_NUM } from '../ruler/constants'
 
-export type TrackGridProps = {
+export type MixGridProps = {
   track: Track
   isSelected: boolean
   maxBars: number
@@ -9,7 +9,7 @@ export type TrackGridProps = {
   onCreateBar: (startTick: number) => void
 }
 
-const TrackBoardItem = ({
+const MixGridItem = ({
   barIndex,
   currentSubBar,
   onSelectTick,
@@ -33,13 +33,13 @@ const TrackBoardItem = ({
   )
 }
 
-export const TrackGrid = ({
+export const MixGrid = ({
   track,
   maxBars,
   onSelectTick,
   onCreateBar,
   isSelected,
-}: TrackGridProps) => {
+}: MixGridProps) => {
   const getTrackColorClass = (barIndex: number) => {
     if (isSelected) {
       return barIndex % 2 == 0
@@ -60,7 +60,7 @@ export const TrackGrid = ({
         >
           <div className="flex flex-row h-full">
             {Array.from({ length: SUB_BAR_NUM }).map((_, j) => (
-              <TrackBoardItem
+              <MixGridItem
                 key={j}
                 barIndex={i}
                 currentSubBar={j}
