@@ -4,7 +4,7 @@ import { InstrumentHeader } from './header/instrument-header'
 import { InstrumentConfig } from './config/instrument-config'
 import { selectSelectedTrack } from '../playlist/store/selectors'
 import { selectSelectedOctave } from './store/selectors'
-import { Keyboard } from '../common/components/keyboard/keyboard'
+import { InstrumentKeyboard } from './keyboard/instrument-keyboard'
 
 export const InstrumentSetup = () => {
   const selectedBottomUpPanel = useSelector(selectSelectedBottomUpPanel)
@@ -30,7 +30,7 @@ export const InstrumentSetup = () => {
         </div>
 
         <div className="flex w-full flex-grow overflow-auto bg-zinc-800">
-          <Keyboard
+          <InstrumentKeyboard
             selectedTrack={selectedTrack}
             selectedOctave={selectedOctave}
           />

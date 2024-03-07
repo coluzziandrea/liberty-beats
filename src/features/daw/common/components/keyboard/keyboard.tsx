@@ -1,7 +1,6 @@
-import { useRef } from 'react'
-import { KEYS, Key, Octave } from '../../../../../model/note/note'
+import { Key } from '../../../../../model/note/note'
 import { Track } from '../../../../../model/track/track'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectPlayingKeys } from '../../../instrument/store/selectors'
 import {
@@ -12,37 +11,25 @@ import { KeyItem } from './key/key-item'
 
 export type KeyboardProps = {
   selectedTrack: Track
-  selectedOctave: Octave
-}
 
-const SHOWED_KEYS_NUMBER = 32
-const SHOWED_WHITE_KEYS = 19
-
-const getShowedKeys = (selectedOctave: Octave) => {
-  const startingKey = KEYS.find((k) =>
-    k.endsWith(Number(selectedOctave).toString())
-  )
-  if (!startingKey) return []
-  const startingKeyIndex = KEYS.indexOf(startingKey)
-  return KEYS.slice(startingKeyIndex, startingKeyIndex + SHOWED_KEYS_NUMBER)
+  showedKeys: Readonly<Key[]>
+  keySize: number
+  onResize?: (keyboardSize: number) => void
+  orientation?: 'horizontal' | 'vertical'
 }
 
 export const Keyboard = (props: KeyboardProps) => {
-  const keyboardRef = useRef<HTMLDivElement>(null)
-  const [keySize, setKeySize] = React.useState(0)
   const [isMouseDown, setIsMouseDown] = React.useState(false)
-
-  const showedKeys = getShowedKeys(props.selectedOctave)
-
+  const keyboardRef = useRef<HTMLDivElement>(null)
   const playingKeys = useSelector(selectPlayingKeys)
   const dispatch = useDispatch()
 
-  const handleResize = () => {
+  const handleResize = React.useCallback(() => {
     const keyboard = keyboardRef.current
-    setKeySize(
-      keyboard?.clientWidth ? keyboard.clientWidth / SHOWED_WHITE_KEYS : 0
-    )
-  }
+    if (props.onResize) {
+      props.onResize(keyboard?.clientWidth || 0)
+    }
+  }, [props])
 
   React.useEffect(() => {
     handleResize()
@@ -51,7 +38,7 @@ export const Keyboard = (props: KeyboardProps) => {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [])
+  }, [handleResize])
 
   const generateIsSelected = (key: Key) => {
     return playingKeys.includes(key)
@@ -88,13 +75,13 @@ export const Keyboard = (props: KeyboardProps) => {
       onMouseDown={() => setIsMouseDown(true)}
       onMouseUp={() => setIsMouseDown(false)}
     >
-      {showedKeys.map((keyToRender) => (
+      {props.showedKeys.map((keyToRender) => (
         <KeyItem
           selectedTrack={props.selectedTrack}
           key={keyToRender}
           keyToRender={keyToRender}
-          startingKey={showedKeys[0]}
-          keySize={keySize}
+          startingKey={props.showedKeys[0]}
+          keySize={props.keySize}
           onMouseDown={handleOnKeyItemMouseDown}
           onMouseUp={handleOnKeyItemMouseUp}
           onMouseEnter={handleOnMouseEnter}
