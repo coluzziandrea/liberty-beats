@@ -10,7 +10,14 @@ export const KeyEditor = () => {
 
   return (
     <div className="flex w-full flex-grow overflow-auto bg-zinc-800">
-      <Keyboard selectedTrack={selectedTrack} showedKeys={KEYS} keySize={50} />
+      <div className="w-20 max-w-20">
+        <Keyboard
+          selectedTrack={selectedTrack}
+          showedKeys={KEYS}
+          whiteKeySize={20}
+          orientation="vertical"
+        />
+      </div>
     </div>
   )
 }

@@ -34,7 +34,8 @@ export const InstrumentKeyboard = (props: InstrumentKeyboardProps) => {
       <Keyboard
         selectedTrack={props.selectedTrack}
         showedKeys={showedKeys}
-        keySize={keySize}
+        whiteKeySize={keySize}
+        minWhiteKeySize={50}
         onResize={handleResize}
       />
     </>

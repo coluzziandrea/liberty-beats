@@ -13,7 +13,8 @@ export type KeyboardProps = {
   selectedTrack: Track
 
   showedKeys: Readonly<Key[]>
-  keySize: number
+  whiteKeySize: number
+  minWhiteKeySize?: number
   onResize?: (keyboardSize: number) => void
   orientation?: 'horizontal' | 'vertical'
 }
@@ -39,10 +40,6 @@ export const Keyboard = (props: KeyboardProps) => {
       window.removeEventListener('resize', handleResize)
     }
   }, [handleResize])
-
-  const generateIsSelected = (key: Key) => {
-    return playingKeys.includes(key)
-  }
 
   const handleOnKeyItemMouseDown = (key: Key) => {
     setIsMouseDown(true)
@@ -81,12 +78,14 @@ export const Keyboard = (props: KeyboardProps) => {
           key={keyToRender}
           keyToRender={keyToRender}
           startingKey={props.showedKeys[0]}
-          keySize={props.keySize}
+          whiteKeySize={props.whiteKeySize}
+          minWhiteKeySize={props.minWhiteKeySize}
           onMouseDown={handleOnKeyItemMouseDown}
           onMouseUp={handleOnKeyItemMouseUp}
           onMouseEnter={handleOnMouseEnter}
           onMouseLeave={handleOnMouseLeave}
-          isSelected={generateIsSelected(keyToRender)}
+          isSelected={playingKeys.includes(keyToRender)}
+          orientation={props.orientation || 'horizontal'}
         />
       ))}
     </div>

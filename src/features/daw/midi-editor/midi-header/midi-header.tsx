@@ -24,6 +24,9 @@ export const MidiHeader = ({ selectedTrack }: MidiHeaderProps) => {
         </div>
       </div>
 
+      {/* Just used to fill space & align with underlying keyboard */}
+      <div className="w-20 min-w-20" />
+
       <div className="flex flex-grow overflow-x-scroll no-scrollbar pl-2">
         <Ruler />
       </div>
