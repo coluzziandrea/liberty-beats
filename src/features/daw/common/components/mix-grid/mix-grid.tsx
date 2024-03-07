@@ -5,6 +5,9 @@ export type MixGridProps = {
   track: Track
   isSelected: boolean
   maxBars: number
+
+  highlightType?: 'row' | 'column'
+
   onSelectTick: (tick: number) => void
   onCreateBar: (startTick: number) => void
 }
@@ -33,29 +36,23 @@ const MixGridItem = ({
   )
 }
 
-export const MixGrid = ({
-  track,
-  maxBars,
-  onSelectTick,
-  onCreateBar,
-  isSelected,
-}: MixGridProps) => {
+export const MixGrid = (props: MixGridProps) => {
   const getTrackColorClass = (barIndex: number) => {
-    if (isSelected) {
+    if (props.isSelected) {
       return barIndex % 2 == 0
-        ? `bg-${track.color}-800`
-        : `bg-${track.color}-900`
+        ? `bg-${props.track.color}-800`
+        : `bg-${props.track.color}-900`
     } else {
       return barIndex % 2 == 0 ? 'bg-zinc-800' : 'bg-zinc-900'
     }
   }
   return (
     <>
-      {Array.from({ length: maxBars }).map((_, i) => (
+      {Array.from({ length: props.maxBars }).map((_, i) => (
         <div
           key={i}
           className={`flex flex-col justify-end opacity-50 w-[80px] border-l border-slate-500 ${
-            i == maxBars - 1 ? 'border-r' : ''
+            i == props.maxBars - 1 ? 'border-r' : ''
           }  ${getTrackColorClass(i)}`}
         >
           <div className="flex flex-row h-full">
@@ -64,8 +61,8 @@ export const MixGrid = ({
                 key={j}
                 barIndex={i}
                 currentSubBar={j}
-                onSelectTick={onSelectTick}
-                onCreateBar={onCreateBar}
+                onSelectTick={props.onSelectTick}
+                onCreateBar={props.onCreateBar}
               />
             ))}
           </div>

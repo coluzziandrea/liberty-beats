@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { selectCurrentTick } from '../../../playlist-header/store/selectors'
-import { TICK_WIDTH_PIXEL } from '../../constants'
+import { TICK_WIDTH_PIXEL } from '../../../playlist/constants'
 
 export const TickPlaceholder = () => {
   const currentTick = useSelector(selectCurrentTick)

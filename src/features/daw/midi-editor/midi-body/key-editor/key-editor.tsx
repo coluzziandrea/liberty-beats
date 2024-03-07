@@ -2,8 +2,9 @@ import { useSelector } from 'react-redux'
 import { Keyboard } from '../../../common/components/keyboard/keyboard'
 import { selectSelectedTrack } from '../../../playlist/store/selectors'
 import { KEYS } from '../../../../../model/note/note'
-import { MixGrid } from '../../../common/components/mix-grid/mix-grid'
 import { selectMaxBars } from '../../../playlist-header/store/selectors'
+import { MidiEditorKeyGrid } from './midi-editor-key-grid/midi-editor-key-grid'
+import { TickPlaceholder } from '../../../common/components/tick-placeholder/tick-placeholder'
 
 export const KeyEditor = () => {
   const selectedTrack = useSelector(selectSelectedTrack)
@@ -22,15 +23,15 @@ export const KeyEditor = () => {
         />
       </div>
 
-      <div className="relative overflow-x-auto pl-2">
-        <div className="flex flex-row h-20 min-h-20 max-h-20">
-          <MixGrid
-            track={selectedTrack}
-            maxBars={maxBars}
-            onSelectTick={() => {}}
-            onCreateBar={() => {}}
-            isSelected={true}
-          />
+      <div className="overflow-auto pl-2">
+        <div className="relative h-max min-h-full">
+          <div className="flex flex-col gap-1">
+            <MidiEditorKeyGrid
+              selectedTrack={selectedTrack}
+              maxBars={maxBars}
+            />
+          </div>
+          <TickPlaceholder />
         </div>
       </div>
     </div>

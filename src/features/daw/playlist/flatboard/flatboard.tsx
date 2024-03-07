@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import { selectSelectedTrack, selectTracks } from '../store/selectors'
 import { Track } from '../../../../model/track/track'
 import { TrackBoard } from './track-board/track-board'
-import { TickPlaceholder } from './tick-placeholder/tick-placeholder'
+import { TickPlaceholder } from '../../common/components/tick-placeholder/tick-placeholder'
 
 export const Flatboard = () => {
   const tracks = useSelector(selectTracks)
