@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux'
 import { Track } from '../../../../model/track/track'
 import { closeAllBottomUpPanels } from '../../bottom-bar/store/bottom-bar-slice'
 import { Ruler } from '../../common/components/ruler/ruler'
+import { IoClose } from 'react-icons/io5'
 
 export type MidiHeaderProps = {
   selectedTrack: Track
@@ -16,7 +17,7 @@ export const MidiHeader = ({ selectedTrack }: MidiHeaderProps) => {
           className="flex flex-grow cursor-pointer items-center justify-center"
           onClick={() => dispatch(closeAllBottomUpPanels())}
         >
-          <p>X</p>
+          <IoClose />
         </div>
         <div className="flex w-[85%] items-center justify-center">
           <p className="font-semibold text-md">{selectedTrack.title}</p>

@@ -1,5 +1,6 @@
 import { SCALE_KEYS, SCALE_TYPES } from '../../../../model/scale/scale'
 import { Track } from '../../../../model/track/track'
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 
 export type InstrumentConfigProps = {
   selectedTrack: Track
@@ -12,8 +13,12 @@ export const InstrumentConfig = ({ selectedTrack }: InstrumentConfigProps) => {
         <p>{selectedTrack.instrumentPreset.instrument} Preset</p>
         <div>{selectedTrack.instrumentPreset.name}</div>
         <div>
-          <button>{'<-'}</button>
-          <button>{'->'}</button>
+          <button>
+            <IoIosArrowBack />
+          </button>
+          <button>
+            <IoIosArrowForward />
+          </button>
         </div>
       </div>
 

@@ -5,7 +5,7 @@ import { MasterVolume } from './master-volume/master-volume'
 
 export const PlayerBar = () => {
   return (
-    <div className="flex flex-row justify-between">
+    <div className="flex flex-row items-center justify-between">
       <div>
         <UndoRedo />
       </div>

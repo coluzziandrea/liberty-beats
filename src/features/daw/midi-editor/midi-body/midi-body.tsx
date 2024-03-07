@@ -9,12 +9,12 @@ export type MidiBodyProps = {
 export const MidiBody = (props: MidiBodyProps) => {
   console.log(props.selectedTrack)
   return (
-    <div className="flex h-full flex-row">
-      <div>
+    <div className="flex h-full w-full flex-row justify-between">
+      <div className="flex h-full justify-between divide-x divide-slate-600 max-w-72 min-w-72">
         <LeftMenu />
       </div>
 
-      <div>
+      <div className="flex flex-grow overflow-x-auto">
         <KeyEditor />
       </div>
     </div>
