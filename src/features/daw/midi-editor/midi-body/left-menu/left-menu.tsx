@@ -1,31 +1,18 @@
-import { BsFillCursorFill } from 'react-icons/bs'
-import { RiPencilFill } from 'react-icons/ri'
-import { FaHeadphones } from 'react-icons/fa'
+import { LeftMenuHeader } from './left-menu-header/left-menu-header'
+import { LeftMenuNotes } from './left-menu-notes/left-menu-notes'
+import { LeftMenuScaleView } from './left-menu-scale-view/left-menu-scale-view'
+import { LeftMenuTranspose } from './left-menu-transpose/left-menu-transpose'
 
 export const LeftMenu = () => {
   return (
-    <div className="flex flex-col w-full p-2">
-      <div className="flex flex-row justify-between items-center">
-        <div className="flex flex-row gap-1">
-          <button className="w-[40px] h-[40px] text-xs bg-white text-black">
-            <BsFillCursorFill />
-          </button>
+    <div className="flex flex-col w-full p-2 gap-4">
+      <LeftMenuHeader />
 
-          <button className="w-[40px] h-[40px] text-xs bg-zinc-800 text-white">
-            <RiPencilFill />
-          </button>
+      <LeftMenuNotes />
 
-          <button className="w-[40px] h-[40px] text-xs bg-zinc-800 text-white">
-            V
-          </button>
-        </div>
+      <LeftMenuTranspose />
 
-        <div>
-          <button className="rounded-full bg-orange-900 text-orange-400">
-            <FaHeadphones />
-          </button>
-        </div>
-      </div>
+      <LeftMenuScaleView />
     </div>
   )
 }

@@ -1,4 +1,6 @@
 import { Track } from '../../../../../model/track/track'
+import { FaHeadphones } from 'react-icons/fa6'
+import { FaVolumeMute } from 'react-icons/fa'
 
 export type TrackItemProps = {
   track: Track
@@ -23,8 +25,12 @@ export const TrackItem = ({
       onClick={() => onSelectTrack(track)}
     >
       <div className="flex flex-col divide-y border-r border-slate-600 divide-slate-600 w-8 cursor-pointer">
-        <div className="flex flex-1 w-full justify-center items-center">M</div>
-        <div className="flex flex-1 w-full justify-center items-center">S</div>
+        <div className="flex flex-1 w-full justify-center items-center">
+          <FaHeadphones />
+        </div>
+        <div className="flex flex-1 w-full justify-center items-center">
+          <FaVolumeMute />
+        </div>
       </div>
 
       <div className="flex flex-col p-2 py-2">
