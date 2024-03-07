@@ -3,6 +3,7 @@ import { addTrack, selectTrack } from '../../playlist/store/playlist-slice'
 import { TRACK_COLORS } from '../../../../model/track/track-color'
 import { Track } from '../../../../model/track/track'
 import { INSTRUMENT_PRESETS } from '../../../../model/instrument/preset/preset'
+import { FaPlus } from 'react-icons/fa'
 
 export const PlaylistCommands = () => {
   const dispatch = useDispatch()
@@ -29,7 +30,11 @@ export const PlaylistCommands = () => {
 
   return (
     <div className="flex flex-row">
-      <button onClick={handleAddTrack}>{'+ Add Track'}</button>
+      <button onClick={handleAddTrack}>
+        <div className="flex flex-row items-center justify-center gap-2">
+          <FaPlus /> <p>Add Track</p>
+        </div>
+      </button>
     </div>
   )
 }
