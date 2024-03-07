@@ -14,7 +14,7 @@ export const MidiBody = (props: MidiBodyProps) => {
         <LeftMenu />
       </div>
 
-      <div className="flex flex-grow overflow-x-auto">
+      <div className="flex flex-grow overflow-auto">
         <KeyEditor />
       </div>
     </div>

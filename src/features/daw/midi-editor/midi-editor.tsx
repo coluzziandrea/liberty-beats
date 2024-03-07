@@ -19,7 +19,7 @@ export const MidiEditor = () => {
           <MidiHeader selectedTrack={selectedTrack} />
         </div>
 
-        <div className="flex flex-grow">
+        <div className="flex flex-grow overflow-auto">
           <MidiBody selectedTrack={selectedTrack} />
         </div>
       </div>

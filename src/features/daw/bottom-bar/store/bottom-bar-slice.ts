@@ -6,7 +6,7 @@ export interface BottomBarState {
 }
 
 const initialState: BottomBarState = {
-  selectedBottomUpPanel: 'instrument',
+  selectedBottomUpPanel: 'midiEditor',
 }
 
 export const bottomBarSlice = createSlice({

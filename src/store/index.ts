@@ -4,6 +4,7 @@ import playlistSlice from '../features/daw/playlist/store/playlist-slice'
 import playlistHeaderSlice from '../features/daw/playlist-header/store/playlist-header-slice'
 import bottomBarSlice from '../features/daw/bottom-bar/store/bottom-bar-slice'
 import instrumentSlice from '../features/daw/instrument/store/instrument-slice'
+import midiEditorSlice from '../features/daw/midi-editor/store/midi-editor-slice'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     playlistHeader: playlistHeaderSlice,
     bottomBar: bottomBarSlice,
     instrument: instrumentSlice,
+    midiEditor: midiEditorSlice,
   },
 })
 
