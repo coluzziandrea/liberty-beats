@@ -55,15 +55,23 @@ export const TrackBoard = ({
     dispatch(setCurrentTick(bar.startAtTick))
   }
 
+  const getEvenColumnsColor = () => {
+    return isSelected ? `bg-${track.color}-800` : 'bg-zinc-800'
+  }
+
+  const getOddColumnsColor = () => {
+    return isSelected ? `bg-${track.color}-900` : 'bg-zinc-900'
+  }
+
   return (
     <div className="relative">
       <div className="flex flex-row h-20 min-h-20 max-h-20">
         <MixGrid
-          track={track}
           maxBars={maxBars}
           onSelectTick={handleSelectTick}
           onCreateBar={handleCreateBar}
-          isSelected={isSelected}
+          evenColumnsColor={getEvenColumnsColor()}
+          oddColumnsColor={getOddColumnsColor()}
         />
 
         {track.bars.map((bar: Bar) => (

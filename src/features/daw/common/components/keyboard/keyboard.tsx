@@ -1,8 +1,7 @@
 import { Key } from '../../../../../model/note/note'
 import { Track } from '../../../../../model/track/track'
 import React, { useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectPlayingKeys } from '../../../instrument/store/selectors'
+import { useDispatch } from 'react-redux'
 import {
   addPlayingKey,
   removePlayingKey,
@@ -13,6 +12,7 @@ export type KeyboardProps = {
   selectedTrack: Track
 
   showedKeys: Readonly<Key[]>
+  playingKeys: Readonly<Key[]>
   whiteKeySize: number
   minWhiteKeySize?: number
   onResize?: (keyboardSize: number) => void
@@ -22,7 +22,6 @@ export type KeyboardProps = {
 export const Keyboard = (props: KeyboardProps) => {
   const [isMouseDown, setIsMouseDown] = React.useState(false)
   const keyboardRef = useRef<HTMLDivElement>(null)
-  const playingKeys = useSelector(selectPlayingKeys)
   const dispatch = useDispatch()
 
   const handleResize = React.useCallback(() => {
@@ -48,7 +47,7 @@ export const Keyboard = (props: KeyboardProps) => {
 
   const handleOnKeyItemMouseUp = (key: Key) => {
     setIsMouseDown(false)
-    if (playingKeys.includes(key)) {
+    if (props.playingKeys.includes(key)) {
       dispatch(removePlayingKey(key))
     }
   }
@@ -60,7 +59,7 @@ export const Keyboard = (props: KeyboardProps) => {
   }
 
   const handleOnMouseLeave = (key: Key) => {
-    if (playingKeys.includes(key)) {
+    if (props.playingKeys.includes(key)) {
       dispatch(removePlayingKey(key))
     }
   }
@@ -84,7 +83,7 @@ export const Keyboard = (props: KeyboardProps) => {
           onMouseUp={handleOnKeyItemMouseUp}
           onMouseEnter={handleOnMouseEnter}
           onMouseLeave={handleOnMouseLeave}
-          isSelected={playingKeys.includes(keyToRender)}
+          isSelected={props.playingKeys.includes(keyToRender)}
           orientation={props.orientation || 'horizontal'}
         />
       ))}

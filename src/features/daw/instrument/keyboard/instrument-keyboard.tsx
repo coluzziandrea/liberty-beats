@@ -1,7 +1,9 @@
+import { useSelector } from 'react-redux'
 import { KEYS, Octave } from '../../../../model/note/note'
 import { Track } from '../../../../model/track/track'
 import { Keyboard } from '../../common/components/keyboard/keyboard'
 import React from 'react'
+import { selectPlayingKeys } from '../store/selectors'
 
 export type InstrumentKeyboardProps = {
   selectedTrack: Track
@@ -22,6 +24,7 @@ const getShowedKeys = (selectedOctave: Octave) => {
 
 export const InstrumentKeyboard = (props: InstrumentKeyboardProps) => {
   const showedKeys = getShowedKeys(props.selectedOctave)
+  const playingKeys = useSelector(selectPlayingKeys)
 
   const [keySize, setKeySize] = React.useState(0)
 
@@ -34,6 +37,7 @@ export const InstrumentKeyboard = (props: InstrumentKeyboardProps) => {
       <Keyboard
         selectedTrack={props.selectedTrack}
         showedKeys={showedKeys}
+        playingKeys={playingKeys}
         whiteKeySize={keySize}
         minWhiteKeySize={50}
         onResize={handleResize}

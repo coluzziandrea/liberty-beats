@@ -5,10 +5,12 @@ import { KEYS } from '../../../../../model/note/note'
 import { selectMaxBars } from '../../../playlist-header/store/selectors'
 import { MidiEditorKeyGrid } from './midi-editor-key-grid/midi-editor-key-grid'
 import { TickPlaceholder } from '../../../common/components/tick-placeholder/tick-placeholder'
+import { selectPlayingKeys } from '../../../instrument/store/selectors'
 
 export const KeyEditor = () => {
   const selectedTrack = useSelector(selectSelectedTrack)
   const maxBars = useSelector(selectMaxBars)
+  const playingKeys = useSelector(selectPlayingKeys)
 
   if (!selectedTrack) return null
 
@@ -20,6 +22,7 @@ export const KeyEditor = () => {
         <Keyboard
           selectedTrack={selectedTrack}
           showedKeys={KEYS}
+          playingKeys={playingKeys}
           whiteKeySize={whiteKeySize}
           orientation="vertical"
         />
@@ -31,6 +34,8 @@ export const KeyEditor = () => {
             <MidiEditorKeyGrid
               selectedTrack={selectedTrack}
               maxBars={maxBars}
+              showedKeys={KEYS}
+              playingKeys={playingKeys}
               whiteKeySize={whiteKeySize}
             />
           </div>

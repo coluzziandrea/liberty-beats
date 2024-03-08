@@ -1,12 +1,10 @@
-import { Track } from '../../../../../model/track/track'
 import { SUB_BAR_NUM } from '../ruler/constants'
 
 export type MixGridProps = {
-  track: Track
-  isSelected: boolean
   maxBars: number
 
-  highlightType?: 'row' | 'column'
+  evenColumnsColor: string
+  oddColumnsColor: string
 
   onSelectTick: (tick: number) => void
   onCreateBar: (startTick: number) => void
@@ -38,13 +36,7 @@ const MixGridItem = ({
 
 export const MixGrid = (props: MixGridProps) => {
   const getTrackColorClass = (barIndex: number) => {
-    if (props.isSelected) {
-      return barIndex % 2 == 0
-        ? `bg-${props.track.color}-800`
-        : `bg-${props.track.color}-900`
-    } else {
-      return barIndex % 2 == 0 ? 'bg-zinc-800' : 'bg-zinc-900'
-    }
+    return barIndex % 2 == 0 ? props.evenColumnsColor : props.oddColumnsColor
   }
   return (
     <>
