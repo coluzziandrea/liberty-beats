@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Key, isKeyBlack } from '../../../../../../model/note/note'
+import { RULER_BAR_WIDTH } from '../../../../common/components/ruler/constants'
 
 export type MidiEditorKeyGridProps = {
   showedKeys: Readonly<Key[]>
@@ -14,14 +15,15 @@ export const MidiEditorKeyGrid = ({
 }: MidiEditorKeyGridProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  const rectangleWidth = maxBars * 80
-  const rectangleHeight = whiteKeySize * 0.585
+  const keyRectangleHeight = whiteKeySize * 0.585
+  const canvasWidth = maxBars * RULER_BAR_WIDTH
+  const canvasHeight = keyRectangleHeight * showedKeys.length
 
-  const blackKeyRectangleColor = '#18181b'
-  const whiteKeyRectangleColor = '#27272A'
+  const blackKeyRectangleColor = '#18181b' // tailwind zinc-900
+  const whiteKeyRectangleColor = '#27272A' // tailwind zinc-800
 
-  const parentBarBorderColor = '#94A3B8'
-  const subBarBorderColor = '#64748B'
+  const parentBarBorderColor = '#94A3B8' // tailwind slate-500
+  const subBarBorderColor = '#64748B' // tailwind slate-400
 
   useEffect(() => {
     if (!canvasRef.current) return
@@ -33,33 +35,21 @@ export const MidiEditorKeyGrid = ({
 
     if (!context) return
 
-    // draw rectangle with background
-    const drawFillRect = (info, color: string) => {
-      const { x, y, w, h } = info
-      const backgroundColor = color
-
+    const drawKeyRectangle = (y: number, color: string) => {
       context.beginPath()
-      context.fillStyle = backgroundColor
-      context.fillRect(x, y, rectangleWidth, h)
+      context.fillStyle = color
+      context.fillRect(0, y, canvasWidth, keyRectangleHeight)
     }
 
-    const drawGrid = (
-      x,
-      y,
-      width,
-      height,
-      gridCellSize,
-      color,
-      lineWidth = 1
-    ) => {
+    const drawRulerGridLines = (gridCellSize: number, color: string) => {
       context.save()
       context.beginPath()
-      context.lineWidth = lineWidth
+      context.lineWidth = 1
       context.strokeStyle = color
 
-      for (let lx = x; lx <= x + width; lx += gridCellSize) {
-        context.moveTo(lx + 0.5, y)
-        context.lineTo(lx + 0.5, y + height)
+      for (let lx = 0; lx <= canvasWidth; lx += gridCellSize) {
+        context.moveTo(lx + 0.5, 0) // +0.5 to align with ruler
+        context.lineTo(lx + 0.5, canvasHeight)
       }
 
       context.stroke()
@@ -68,42 +58,21 @@ export const MidiEditorKeyGrid = ({
     }
 
     showedKeys.forEach((key, i) => {
-      const rInfo = {
-        x: 0,
-        y: rectangleHeight * i,
-        w: rectangleWidth,
-        h: rectangleHeight,
-      }
-      drawFillRect(
-        rInfo,
+      drawKeyRectangle(
+        keyRectangleHeight * i,
         isKeyBlack(key) ? blackKeyRectangleColor : whiteKeyRectangleColor
       )
     })
 
-    drawGrid(
-      0,
-      0,
-      rectangleWidth,
-      rectangleHeight * showedKeys.length,
-      20,
-      subBarBorderColor
-    )
-
-    drawGrid(
-      0,
-      0,
-      rectangleWidth,
-      rectangleHeight * showedKeys.length,
-      80,
-      parentBarBorderColor
-    )
-  }, [rectangleHeight, rectangleWidth, showedKeys])
+    drawRulerGridLines(RULER_BAR_WIDTH / 4, subBarBorderColor)
+    drawRulerGridLines(RULER_BAR_WIDTH, parentBarBorderColor)
+  }, [keyRectangleHeight, canvasWidth, showedKeys, canvasHeight])
 
   return (
     <canvas
       style={{
-        width: rectangleWidth,
-        height: rectangleHeight * showedKeys.length,
+        width: canvasWidth,
+        height: canvasHeight,
       }}
       ref={canvasRef}
     />

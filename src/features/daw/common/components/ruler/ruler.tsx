@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { SUB_BAR_NUM } from './constants'
+import { RULER_BAR_WIDTH, SUB_BAR_NUM } from './constants'
 import {
   selectCurrentTick,
   selectMaxBars,
@@ -51,7 +51,7 @@ const RulerBar = ({
   return (
     <div
       key={barIndex + 1}
-      className={`flex flex-col justify-end gap-4 w-[80px] border-l border-slate-400 ${
+      className={`flex flex-col justify-end gap-4 w-[${RULER_BAR_WIDTH}px] border-l border-slate-400 ${
         barIndex == maxBars - 1 ? 'border-r' : ''
       }`}
     >
