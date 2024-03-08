@@ -29,8 +29,12 @@ export const MidiEditorKeyGrid = ({
 
   return (
     <>
-      {Array.from({ length: maxBars }).map((_, i) => (
-        <div className="flex flex-row" style={{ height: `${rowHeight}px` }}>
+      {showedKeys.map((_, i) => (
+        <div
+          key={i}
+          className="flex flex-row"
+          style={{ height: `${rowHeight}px` }}
+        >
           <MixGrid
             maxBars={maxBars}
             onSelectTick={() => {}}
