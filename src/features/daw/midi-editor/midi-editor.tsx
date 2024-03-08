@@ -20,7 +20,7 @@ export const MidiEditor = () => {
         </div>
 
         <div className="flex h-[85%] overflow-auto">
-          <MidiBody selectedTrack={selectedTrack} />
+          <MidiBody />
         </div>
       </div>
     </div>

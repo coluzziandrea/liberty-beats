@@ -55,10 +55,8 @@ export const KeyEditor = () => {
         <div className="relative h-max min-h-full">
           <div className="flex flex-col">
             <MidiEditorKeyGrid
-              selectedTrack={selectedTrack}
               maxBars={maxBars}
               showedKeys={KEYS}
-              playingKeys={playingKeys}
               whiteKeySize={whiteKeySize}
             />
           </div>
