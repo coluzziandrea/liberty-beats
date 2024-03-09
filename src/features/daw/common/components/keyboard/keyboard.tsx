@@ -10,7 +10,7 @@ import { KeyItem } from './key/key-item'
 
 export type KeyboardProps = {
   selectedTrack: Track
-
+  paddingTop?: number
   showedKeys: Readonly<Key[]>
   playingKeys: Readonly<Key[]>
   whiteKeySize: number
@@ -68,6 +68,7 @@ export const Keyboard = (props: KeyboardProps) => {
     <div
       className="relative h-full w-full"
       ref={keyboardRef}
+      style={{ marginTop: props.paddingTop }}
       onMouseDown={() => setIsMouseDown(true)}
       onMouseUp={() => setIsMouseDown(false)}
     >

@@ -11,6 +11,9 @@ import React from 'react'
 import { useMidiEditorVerticalScroll } from '../../hooks/useMidiEditorVerticalScroll'
 import { addKeyToCurrentTrack } from '../../../playlist/store/playlist-slice'
 import { selectLastKeyDuration } from '../../store/selectors'
+import { Bar } from '../../../../../model/bar/bar'
+import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../constants'
+import { PianoRollBar } from './piano-roll-bar/piano-roll-bar'
 
 export const KeyEditor = () => {
   const dispatch = useDispatch()
@@ -42,6 +45,7 @@ export const KeyEditor = () => {
         <Keyboard
           selectedTrack={selectedTrack}
           showedKeys={KEYS}
+          paddingTop={PIANO_ROLL_BAR_HEADER_HEIGHT}
           playingKeys={playingKeys}
           whiteKeySize={whiteKeySize}
           orientation="vertical"
@@ -63,7 +67,11 @@ export const KeyEditor = () => {
               showedKeys={KEYS}
               whiteKeySize={whiteKeySize}
               onKeyDoubleClick={(key: Key, beat: number) => {
-                console.log('key double clicked', key, beat)
+                console.log(
+                  'key double clicked from MidiEditorKeyGrid',
+                  key,
+                  beat
+                )
                 dispatch(
                   addKeyToCurrentTrack({
                     key,
@@ -73,7 +81,18 @@ export const KeyEditor = () => {
                 )
               }}
             />
+
+            {selectedTrack.bars.map((bar: Bar) => (
+              <PianoRollBar
+                key={bar.id}
+                track={selectedTrack}
+                bar={bar}
+                onSelectBar={() => {}}
+                onBarDetails={() => {}}
+              />
+            ))}
           </div>
+
           <TickPlaceholder />
         </div>
       </div>

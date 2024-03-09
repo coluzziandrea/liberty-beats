@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Key, isKeyBlack } from '../../../../../../model/note/note'
 import { RULER_BAR_WIDTH } from '../../../../common/components/ruler/constants'
+import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../../constants'
 
 export type MidiEditorKeyGridProps = {
   showedKeys: Readonly<Key[]>
@@ -100,6 +101,7 @@ export const MidiEditorKeyGrid = ({
       style={{
         width: canvasWidth,
         height: canvasHeight,
+        paddingTop: PIANO_ROLL_BAR_HEADER_HEIGHT,
       }}
       ref={canvasRef}
     />
