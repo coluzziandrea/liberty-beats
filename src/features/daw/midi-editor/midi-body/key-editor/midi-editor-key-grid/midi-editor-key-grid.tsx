@@ -6,18 +6,22 @@ export type MidiEditorKeyGridProps = {
   showedKeys: Readonly<Key[]>
   maxBars: number
   whiteKeySize: number
+
+  onKeyDoubleClick: (key: Key, beat: number) => void
 }
 
 export const MidiEditorKeyGrid = ({
   maxBars,
   showedKeys,
   whiteKeySize,
+  onKeyDoubleClick,
 }: MidiEditorKeyGridProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   const keyRectangleHeight = whiteKeySize * 0.585
   const canvasWidth = maxBars * RULER_BAR_WIDTH
   const canvasHeight = keyRectangleHeight * showedKeys.length
+  const beatWidth = RULER_BAR_WIDTH / 4
 
   const blackKeyRectangleColor = '#18181b' // tailwind zinc-900
   const whiteKeyRectangleColor = '#27272A' // tailwind zinc-800
@@ -64,9 +68,32 @@ export const MidiEditorKeyGrid = ({
       )
     })
 
-    drawRulerGridLines(RULER_BAR_WIDTH / 4, subBarBorderColor)
+    const onDoubleClick = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect()
+      const gridDoubleClickX = e.clientX - rect.left
+      const gridDoubleClickY = e.clientY - rect.top
+
+      const keyIndex = Math.floor(gridDoubleClickY / keyRectangleHeight)
+      const bar = Math.floor(gridDoubleClickX / beatWidth)
+      onKeyDoubleClick(showedKeys[keyIndex], bar)
+    }
+
+    canvas.addEventListener('dblclick', onDoubleClick)
+
+    drawRulerGridLines(beatWidth, subBarBorderColor)
     drawRulerGridLines(RULER_BAR_WIDTH, parentBarBorderColor)
-  }, [keyRectangleHeight, canvasWidth, showedKeys, canvasHeight])
+
+    return () => {
+      canvas.removeEventListener('dblclick', onDoubleClick)
+    }
+  }, [
+    keyRectangleHeight,
+    canvasWidth,
+    showedKeys,
+    canvasHeight,
+    onKeyDoubleClick,
+    beatWidth,
+  ])
 
   return (
     <canvas

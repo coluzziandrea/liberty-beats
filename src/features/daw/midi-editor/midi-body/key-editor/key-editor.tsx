@@ -7,7 +7,7 @@ import { MidiEditorKeyGrid } from './midi-editor-key-grid/midi-editor-key-grid'
 import { TickPlaceholder } from '../../../common/components/tick-placeholder/tick-placeholder'
 import { selectPlayingKeys } from '../../../instrument/store/selectors'
 import { useMidiEditorHorizontalScroll } from '../../hooks/useMidiEditorHorizontalScroll'
-import React from 'react'
+import React, { Key } from 'react'
 import { useMidiEditorVerticalScroll } from '../../hooks/useMidiEditorVerticalScroll'
 
 export const KeyEditor = () => {
@@ -58,6 +58,9 @@ export const KeyEditor = () => {
               maxBars={maxBars}
               showedKeys={KEYS}
               whiteKeySize={whiteKeySize}
+              onKeyDoubleClick={(key: Key, beat: number) => {
+                console.log('key double clicked', key, beat)
+              }}
             />
           </div>
           <TickPlaceholder />
