@@ -1,19 +1,23 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Keyboard } from '../../../common/components/keyboard/keyboard'
 import { selectSelectedTrack } from '../../../playlist/store/selectors'
-import { KEYS } from '../../../../../model/note/note'
+import { KEYS, Key } from '../../../../../model/note/note'
 import { selectMaxBars } from '../../../playlist-header/store/selectors'
 import { MidiEditorKeyGrid } from './midi-editor-key-grid/midi-editor-key-grid'
 import { TickPlaceholder } from '../../../common/components/tick-placeholder/tick-placeholder'
 import { selectPlayingKeys } from '../../../instrument/store/selectors'
 import { useMidiEditorHorizontalScroll } from '../../hooks/useMidiEditorHorizontalScroll'
-import React, { Key } from 'react'
+import React from 'react'
 import { useMidiEditorVerticalScroll } from '../../hooks/useMidiEditorVerticalScroll'
+import { addKeyToCurrentTrack } from '../../../playlist/store/playlist-slice'
+import { selectLastKeyDuration } from '../../store/selectors'
 
 export const KeyEditor = () => {
+  const dispatch = useDispatch()
   const selectedTrack = useSelector(selectSelectedTrack)
   const maxBars = useSelector(selectMaxBars)
   const playingKeys = useSelector(selectPlayingKeys)
+  const lastKeyDuration = useSelector(selectLastKeyDuration)
 
   const midiRollRef = React.useRef<HTMLDivElement>(null)
   const keyboardRef = React.useRef<HTMLDivElement>(null)
@@ -60,6 +64,13 @@ export const KeyEditor = () => {
               whiteKeySize={whiteKeySize}
               onKeyDoubleClick={(key: Key, beat: number) => {
                 console.log('key double clicked', key, beat)
+                dispatch(
+                  addKeyToCurrentTrack({
+                    key,
+                    startAtTick: beat,
+                    duration: lastKeyDuration,
+                  })
+                )
               }}
             />
           </div>

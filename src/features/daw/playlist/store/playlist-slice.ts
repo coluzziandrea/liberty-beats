@@ -2,6 +2,8 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { Track } from '../../../../model/track/track'
 import { Bar } from '../../../../model/bar/bar'
 import { INSTRUMENT_PRESETS } from '../../../../model/instrument/preset/preset'
+import { AddKeyToCurrentTrackPayload } from './types'
+import { v4 as uuidv4 } from 'uuid'
 
 export interface PlaylistSlice {
   tracks: Track[]
@@ -62,6 +64,37 @@ export const playlistSlice = createSlice({
     setFlatboardScroll: (state, action: PayloadAction<number>) => {
       state.flatboardScroll = action.payload
     },
+    addKeyToCurrentTrack: (
+      state,
+      action: PayloadAction<AddKeyToCurrentTrackPayload>
+    ) => {
+      const track = state.tracks.find((t) => t.id === state.selectedTrackId)
+      if (!track) return
+
+      let bar = track.bars.find(
+        (bar) =>
+          bar.startAtTick <= action.payload.startAtTick &&
+          bar.endAtTick >= action.payload.startAtTick
+      )
+      if (!bar) {
+        bar = {
+          id: uuidv4(),
+          title: track.title + ' ' + (track.bars.length + 1),
+          startAtTick: action.payload.startAtTick,
+          endAtTick: action.payload.startAtTick + 20,
+          notes: [],
+        }
+        track.bars.push(bar)
+      }
+
+      bar.notes.push({
+        id: uuidv4(),
+        startAtTick: action.payload.startAtTick,
+        endAtTick: action.payload.startAtTick + action.payload.duration,
+        durationTicks: action.payload.duration,
+        key: action.payload.key,
+      })
+    },
   },
 })
 
@@ -71,6 +104,7 @@ export const {
   selectBar,
   addTrackBar,
   setFlatboardScroll,
+  addKeyToCurrentTrack,
 } = playlistSlice.actions
 
 export default playlistSlice.reducer
