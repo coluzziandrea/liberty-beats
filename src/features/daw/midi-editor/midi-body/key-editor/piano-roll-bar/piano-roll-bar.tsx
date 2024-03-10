@@ -33,7 +33,7 @@ export const PianoRollBar = ({
 
     const rect = e.currentTarget.getBoundingClientRect()
     const barDoubleClickX = e.clientX - rect.left
-    const barDoubleClickY = e.clientX - rect.left
+    const barDoubleClickY = e.clientY - rect.top
 
     const keyIndex = Math.floor(
       barDoubleClickY / midiEditorDimensions.keyHeight
@@ -42,8 +42,6 @@ export const PianoRollBar = ({
     const relativeBeat = Math.floor(
       barDoubleClickX / midiEditorDimensions.beatWidth
     )
-
-    // TODO improve this
 
     onAddKey(bar, showedKeys[keyIndex], relativeBeat)
   }
@@ -60,7 +58,7 @@ export const PianoRollBar = ({
       }}
     >
       <div
-        className={`flex flex-col rounded-md`}
+        className={`flex flex-col h-full w-full`}
         style={{ width: barLengthPixel, height: '100%' }}
       >
         <div
@@ -77,11 +75,17 @@ export const PianoRollBar = ({
 
         <div className="flex-grow relative">
           <div
-            className={`absolute left-0 top-0 h-full w-full opacity-30 bg-${track.color}-200 rounded-b-md`}
+            className={`absolute left-0 top-0 h-full w-full opacity-30 bg-${track.color}-200`}
             onDoubleClick={onBarEmptyDoubleClick}
           />
           {bar.notes.map((note) => (
-            <PianoRollNote key={note.id} note={note} />
+            <PianoRollNote
+              key={note.id}
+              track={track}
+              note={note}
+              showedKeys={showedKeys}
+              midiEditorDimensions={midiEditorDimensions}
+            />
           ))}
         </div>
       </div>

@@ -8,7 +8,10 @@ import { selectPlayingKeys } from '../../../instrument/store/selectors'
 import { useMidiEditorHorizontalScroll } from '../../hooks/useMidiEditorHorizontalScroll'
 import React from 'react'
 import { useMidiEditorVerticalScroll } from '../../hooks/useMidiEditorVerticalScroll'
-import { addNoteToCurrentTrack } from '../../../playlist/store/playlist-slice'
+import {
+  addNoteToCurrentBar,
+  addNoteToCurrentTrack,
+} from '../../../playlist/store/playlist-slice'
 import { selectLastKeyDuration } from '../../store/selectors'
 import { Bar } from '../../../../../model/bar/bar'
 import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../constants'
@@ -39,11 +42,17 @@ export const KeyEditor = () => {
     key: Key,
     startAtRelativeTick: number
   ) => {
-    console.log('handleAddKeyFromBar', key, startAtRelativeTick)
+    dispatch(
+      addNoteToCurrentBar({
+        key,
+        barId: bar.id,
+        startAtRelativeTick,
+        duration: lastKeyDuration,
+      })
+    )
   }
 
   const handleAddKeyFromGrid = (key: Key, beat: number) => {
-    console.log('key double clicked from MidiEditorKeyGrid', key, beat)
     dispatch(
       addNoteToCurrentTrack({
         key,

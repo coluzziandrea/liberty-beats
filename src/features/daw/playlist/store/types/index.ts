@@ -5,3 +5,10 @@ export type AddKeyToCurrentTrackPayload = {
   startAtTick: number
   duration: number
 }
+
+export type AddKeyToCurrentBarPayload = {
+  key: Key
+  barId: string
+  startAtRelativeTick: number
+  duration: number
+}

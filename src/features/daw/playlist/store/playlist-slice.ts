@@ -1,8 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { Track } from '../../../../model/track/track'
 import { Bar } from '../../../../model/bar/bar'
-import { INSTRUMENT_PRESETS } from '../../../../model/instrument/preset/preset'
-import { AddKeyToCurrentTrackPayload } from './types'
+import { AddKeyToCurrentBarPayload, AddKeyToCurrentTrackPayload } from './types'
 import { v4 as uuidv4 } from 'uuid'
 
 export interface PlaylistSlice {
@@ -13,31 +12,8 @@ export interface PlaylistSlice {
 }
 
 const initialState: PlaylistSlice = {
-  tracks: [
-    {
-      id: '1',
-      title: 'Piano Lead',
-      color: 'green',
-      instrumentPreset: INSTRUMENT_PRESETS[0],
-      bars: [
-        {
-          id: '1',
-          title: 'Solo',
-          startAtTick: 5,
-          endAtTick: 20,
-          notes: [
-            {
-              id: '1',
-              startsAtRelativeTick: 2,
-              durationTicks: 2,
-              key: 'C4',
-            },
-          ],
-        },
-      ],
-    },
-  ],
-  selectedTrackId: '1',
+  tracks: [],
+  selectedTrackId: null,
   selectedBarId: null,
   flatboardScroll: 0,
 }
@@ -93,6 +69,28 @@ export const playlistSlice = createSlice({
         key: action.payload.key,
       })
     },
+    addNoteToCurrentBar: (
+      state,
+      action: PayloadAction<AddKeyToCurrentBarPayload>
+    ) => {
+      const track = state.tracks.find((t) => t.id === state.selectedTrackId)
+      if (!track) return
+
+      if (!action.payload.barId) return
+
+      const bar = track.bars.find((bar) => bar.id === action.payload.barId)
+      if (!bar) {
+        console.error('Bar not found')
+        return
+      }
+
+      bar.notes.push({
+        id: uuidv4(),
+        startsAtRelativeTick: action.payload.startAtRelativeTick,
+        durationTicks: action.payload.duration,
+        key: action.payload.key,
+      })
+    },
   },
 })
 
@@ -103,6 +101,7 @@ export const {
   addTrackBar,
   setFlatboardScroll,
   addNoteToCurrentTrack,
+  addNoteToCurrentBar,
 } = playlistSlice.actions
 
 export default playlistSlice.reducer

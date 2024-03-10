@@ -14,15 +14,7 @@ export const PlaylistCommands = () => {
       title: 'New Track',
       color: TRACK_COLORS[Math.floor(Math.random() * TRACK_COLORS.length)],
       instrumentPreset: INSTRUMENT_PRESETS[0],
-      bars: [
-        {
-          id: Date.now().toString(),
-          title: 'New Bar',
-          startAtTick: 0,
-          endAtTick: 10,
-          notes: [],
-        },
-      ],
+      bars: [],
     }
     dispatch(addTrack(newTrack))
     dispatch(selectTrack(newTrack))
