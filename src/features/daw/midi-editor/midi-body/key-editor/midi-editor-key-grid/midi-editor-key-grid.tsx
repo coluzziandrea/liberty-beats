@@ -1,28 +1,24 @@
 import { useEffect, useRef } from 'react'
 import { Key, isKeyBlack } from '../../../../../../model/note/note'
-import { RULER_BAR_WIDTH } from '../../../../common/components/ruler/constants'
-import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../../constants'
+import { useMidiEditorDimensions } from '../hooks/useMidiEditorDimensions'
 
 export type MidiEditorKeyGridProps = {
   showedKeys: Readonly<Key[]>
-  maxBars: number
-  whiteKeySize: number
 
   onKeyDoubleClick: (key: Key, beat: number) => void
 }
 
 export const MidiEditorKeyGrid = ({
-  maxBars,
   showedKeys,
-  whiteKeySize,
   onKeyDoubleClick,
 }: MidiEditorKeyGridProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  const keyRectangleHeight = whiteKeySize * 0.585
-  const canvasWidth = maxBars * RULER_BAR_WIDTH
-  const canvasHeight = keyRectangleHeight * showedKeys.length
-  const beatWidth = RULER_BAR_WIDTH / 4
+  const midiEditorDimensions = useMidiEditorDimensions()
+
+  const canvasWidth =
+    midiEditorDimensions.maxBars * midiEditorDimensions.barWidth
+  const canvasHeight = midiEditorDimensions.keyHeight * showedKeys.length
 
   const blackKeyRectangleColor = '#18181b' // tailwind zinc-900
   const whiteKeyRectangleColor = '#27272A' // tailwind zinc-800
@@ -43,7 +39,7 @@ export const MidiEditorKeyGrid = ({
     const drawKeyRectangle = (y: number, color: string) => {
       context.beginPath()
       context.fillStyle = color
-      context.fillRect(0, y, canvasWidth, keyRectangleHeight)
+      context.fillRect(0, y, canvasWidth, midiEditorDimensions.keyHeight)
     }
 
     const drawRulerGridLines = (gridCellSize: number, color: string) => {
@@ -52,9 +48,10 @@ export const MidiEditorKeyGrid = ({
       context.lineWidth = 1
       context.strokeStyle = color
 
-      for (let lx = 0; lx <= canvasWidth; lx += gridCellSize) {
-        context.moveTo(lx + 0.5, 0) // +0.5 to align with ruler
-        context.lineTo(lx + 0.5, canvasHeight)
+      // +0.5 to align with ruler
+      for (let lx = 0.5; lx <= canvasWidth; lx += gridCellSize) {
+        context.moveTo(lx, 0)
+        context.lineTo(lx, canvasHeight)
       }
 
       context.stroke()
@@ -64,7 +61,7 @@ export const MidiEditorKeyGrid = ({
 
     showedKeys.forEach((key, i) => {
       drawKeyRectangle(
-        keyRectangleHeight * i,
+        midiEditorDimensions.keyHeight * i,
         isKeyBlack(key) ? blackKeyRectangleColor : whiteKeyRectangleColor
       )
     })
@@ -72,28 +69,30 @@ export const MidiEditorKeyGrid = ({
     const onDoubleClick = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect()
       const gridDoubleClickX = e.clientX - rect.left
-      const gridDoubleClickY = e.clientY - rect.top
+      const gridDoubleClickY =
+        e.clientY - rect.top - midiEditorDimensions.barHeaderHeight
 
-      const keyIndex = Math.floor(gridDoubleClickY / keyRectangleHeight)
-      const bar = Math.floor(gridDoubleClickX / beatWidth)
+      const keyIndex = Math.floor(
+        gridDoubleClickY / midiEditorDimensions.keyHeight
+      )
+      const bar = Math.floor(gridDoubleClickX / midiEditorDimensions.beatWidth)
       onKeyDoubleClick(showedKeys[keyIndex], bar)
     }
 
     canvas.addEventListener('dblclick', onDoubleClick)
 
-    drawRulerGridLines(beatWidth, subBarBorderColor)
-    drawRulerGridLines(RULER_BAR_WIDTH, parentBarBorderColor)
+    drawRulerGridLines(midiEditorDimensions.beatWidth, subBarBorderColor)
+    drawRulerGridLines(midiEditorDimensions.barWidth, parentBarBorderColor)
 
     return () => {
       canvas.removeEventListener('dblclick', onDoubleClick)
     }
   }, [
-    keyRectangleHeight,
     canvasWidth,
     showedKeys,
     canvasHeight,
     onKeyDoubleClick,
-    beatWidth,
+    midiEditorDimensions,
   ])
 
   return (
@@ -101,7 +100,7 @@ export const MidiEditorKeyGrid = ({
       style={{
         width: canvasWidth,
         height: canvasHeight,
-        paddingTop: PIANO_ROLL_BAR_HEADER_HEIGHT,
+        paddingTop: midiEditorDimensions.barHeaderHeight,
       }}
       ref={canvasRef}
     />

@@ -1,7 +1,11 @@
 export interface Note {
   id: string
-  startAtTick: number
-  endAtTick: number
+
+  /**
+   * starting tick, this is relative to the bar parent
+   *  */
+  startsAtRelativeTick: number
+
   durationTicks: number
   key: Key
 }

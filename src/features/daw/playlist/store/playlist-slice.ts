@@ -28,8 +28,7 @@ const initialState: PlaylistSlice = {
           notes: [
             {
               id: '1',
-              startAtTick: 5,
-              endAtTick: 7,
+              startsAtRelativeTick: 2,
               durationTicks: 2,
               key: 'C4',
             },
@@ -64,7 +63,7 @@ export const playlistSlice = createSlice({
     setFlatboardScroll: (state, action: PayloadAction<number>) => {
       state.flatboardScroll = action.payload
     },
-    addKeyToCurrentTrack: (
+    addNoteToCurrentTrack: (
       state,
       action: PayloadAction<AddKeyToCurrentTrackPayload>
     ) => {
@@ -81,7 +80,7 @@ export const playlistSlice = createSlice({
           id: uuidv4(),
           title: track.title + ' ' + (track.bars.length + 1),
           startAtTick: action.payload.startAtTick,
-          endAtTick: action.payload.startAtTick + 20,
+          endAtTick: action.payload.startAtTick + action.payload.duration + 20,
           notes: [],
         }
         track.bars.push(bar)
@@ -89,8 +88,7 @@ export const playlistSlice = createSlice({
 
       bar.notes.push({
         id: uuidv4(),
-        startAtTick: action.payload.startAtTick,
-        endAtTick: action.payload.startAtTick + action.payload.duration,
+        startsAtRelativeTick: action.payload.startAtTick - bar.startAtTick,
         durationTicks: action.payload.duration,
         key: action.payload.key,
       })
@@ -104,7 +102,7 @@ export const {
   selectBar,
   addTrackBar,
   setFlatboardScroll,
-  addKeyToCurrentTrack,
+  addNoteToCurrentTrack,
 } = playlistSlice.actions
 
 export default playlistSlice.reducer

@@ -1,10 +1,14 @@
-import { Key } from '../../../../../../../model/note/note'
+import { Note } from '../../../../../../../model/note/note'
 
-export type PianoRollKeyProps = {
-  key: Key
+export type PianoRollNoteProps = {
+  note: Note
 }
 
-export const PianoRollKey = (props: PianoRollKeyProps) => {
-  console.log('rendering key', props.key)
-  return <div></div>
+export const PianoRollNote = (props: PianoRollNoteProps) => {
+  console.log('rendering note', props.note)
+  return (
+    <div className="absolute h-8 w-20 bg-green-600 z-20 cursor-move">
+      {props.note.key}
+    </div>
+  )
 }

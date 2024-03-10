@@ -2,23 +2,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Keyboard } from '../../../common/components/keyboard/keyboard'
 import { selectSelectedTrack } from '../../../playlist/store/selectors'
 import { KEYS, Key } from '../../../../../model/note/note'
-import { selectMaxBars } from '../../../playlist-header/store/selectors'
 import { MidiEditorKeyGrid } from './midi-editor-key-grid/midi-editor-key-grid'
 import { TickPlaceholder } from '../../../common/components/tick-placeholder/tick-placeholder'
 import { selectPlayingKeys } from '../../../instrument/store/selectors'
 import { useMidiEditorHorizontalScroll } from '../../hooks/useMidiEditorHorizontalScroll'
 import React from 'react'
 import { useMidiEditorVerticalScroll } from '../../hooks/useMidiEditorVerticalScroll'
-import { addKeyToCurrentTrack } from '../../../playlist/store/playlist-slice'
+import { addNoteToCurrentTrack } from '../../../playlist/store/playlist-slice'
 import { selectLastKeyDuration } from '../../store/selectors'
 import { Bar } from '../../../../../model/bar/bar'
 import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../constants'
 import { PianoRollBar } from './piano-roll-bar/piano-roll-bar'
+import { useMidiEditorDimensions } from './hooks/useMidiEditorDimensions'
 
 export const KeyEditor = () => {
   const dispatch = useDispatch()
   const selectedTrack = useSelector(selectSelectedTrack)
-  const maxBars = useSelector(selectMaxBars)
   const playingKeys = useSelector(selectPlayingKeys)
   const lastKeyDuration = useSelector(selectLastKeyDuration)
 
@@ -31,9 +30,28 @@ export const KeyEditor = () => {
     keyboardRef,
   ])
 
+  const midiEditorDimensions = useMidiEditorDimensions()
+
   if (!selectedTrack) return null
 
-  const whiteKeySize = 20
+  const handleAddKeyFromBar = (
+    bar: Bar,
+    key: Key,
+    startAtRelativeTick: number
+  ) => {
+    console.log('handleAddKeyFromBar', key, startAtRelativeTick)
+  }
+
+  const handleAddKeyFromGrid = (key: Key, beat: number) => {
+    console.log('key double clicked from MidiEditorKeyGrid', key, beat)
+    dispatch(
+      addNoteToCurrentTrack({
+        key,
+        startAtTick: beat,
+        duration: lastKeyDuration,
+      })
+    )
+  }
 
   return (
     <div className="flex w-full flex-grow  bg-zinc-800">
@@ -47,7 +65,7 @@ export const KeyEditor = () => {
           showedKeys={KEYS}
           paddingTop={PIANO_ROLL_BAR_HEADER_HEIGHT}
           playingKeys={playingKeys}
-          whiteKeySize={whiteKeySize}
+          whiteKeySize={midiEditorDimensions.whiteKeySize}
           orientation="vertical"
         />
       </div>
@@ -63,32 +81,17 @@ export const KeyEditor = () => {
         <div className="relative h-max min-h-full">
           <div className="flex flex-col">
             <MidiEditorKeyGrid
-              maxBars={maxBars}
               showedKeys={KEYS}
-              whiteKeySize={whiteKeySize}
-              onKeyDoubleClick={(key: Key, beat: number) => {
-                console.log(
-                  'key double clicked from MidiEditorKeyGrid',
-                  key,
-                  beat
-                )
-                dispatch(
-                  addKeyToCurrentTrack({
-                    key,
-                    startAtTick: beat,
-                    duration: lastKeyDuration,
-                  })
-                )
-              }}
+              onKeyDoubleClick={handleAddKeyFromGrid}
             />
 
             {selectedTrack.bars.map((bar: Bar) => (
               <PianoRollBar
                 key={bar.id}
                 track={selectedTrack}
+                showedKeys={KEYS}
                 bar={bar}
-                onSelectBar={() => {}}
-                onBarDetails={() => {}}
+                onAddKey={handleAddKeyFromBar}
               />
             ))}
           </div>

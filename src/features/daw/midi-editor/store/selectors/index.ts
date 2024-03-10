@@ -5,3 +5,6 @@ export const selectMidiEditorRulerSize = (state: RootState) =>
 
 export const selectLastKeyDuration = (state: RootState) =>
   state.midiEditor.lastKeyDuration
+
+export const selectWhiteKeySize = (state: RootState) =>
+  state.midiEditor.whiteKeySize
