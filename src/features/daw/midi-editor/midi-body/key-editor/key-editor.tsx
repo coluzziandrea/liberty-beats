@@ -37,6 +37,8 @@ export const KeyEditor = () => {
 
   if (!selectedTrack) return null
 
+  console.log(selectedTrack)
+
   const handleAddKeyFromBar = (
     bar: Bar,
     key: Key,

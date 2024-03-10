@@ -1,10 +1,13 @@
 import { RootStore } from '../store'
 import { observeStore } from '../store/observers'
-import { selectIsPlaying } from '../features/daw/player-bar/store/selectors'
+// import { selectIsPlaying } from '../features/daw/player-bar/store/selectors'
 
 import * as Tone from 'tone'
 import { selectPlayingKeys } from '../features/daw/instrument/store/selectors'
 import { Key } from '../model/note/note'
+import { selectTracks } from '../features/daw/playlist/store/selectors'
+import { selectIsPlaying } from '../features/daw/player-bar/store/selectors'
+import { Track } from '../model/track/track'
 
 export default class Sequencer {
   store: RootStore
@@ -12,9 +15,9 @@ export default class Sequencer {
   constructor(store: RootStore) {
     this.store = store
 
-    observeStore(store, selectIsPlaying, (newState) => {
+    observeStore(store, selectIsPlaying, async (newState) => {
       if (newState) {
-        this.play()
+        await this.startTracks()
       } else {
         this.stop()
       }
@@ -26,6 +29,49 @@ export default class Sequencer {
         this.playKey(key)
       })
     })
+
+    observeStore(store, selectTracks, (_, newState) => {
+      console.log('tracks', newState)
+      this.generateTracks(newState)
+    })
+
+    Tone.Transport.bpm.value = 120
+
+    // setInterval(() => {
+    //   console.log(Tone.immediate())
+    // }, 100)
+  }
+
+  async startTracks() {
+    await Tone.start()
+    Tone.Transport.start()
+  }
+
+  generateTracks(_: Readonly<Track[]>) {
+    const synth = new Tone.PolySynth(Tone.FMSynth).toDestination()
+
+    const part = new Tone.Part(
+      (time, note) => {
+        // the notes given as the second element in the array
+        // will be passed in as the second argument
+        synth.triggerAttackRelease(note, '8n', time)
+      },
+      [
+        [0, 'C2'],
+        ['0:1', 'C3'],
+        ['0:2', 'C3'],
+        ['0:3', 'G2'],
+        ['1:0', 'A2'],
+        ['1:0:1', 'A#2'],
+        ['1:0:2', 'G#2'],
+        /**
+         * TransportTime, ("4:3:2") will also provide tempo and time signature relative times in the form BARS:QUARTERS:SIXTEENTHS.
+         * https://tonejs.github.io/docs/14.7.77/type/Time
+         */
+      ]
+    )
+
+    part.start(0)
   }
 
   playKey(key: Key) {

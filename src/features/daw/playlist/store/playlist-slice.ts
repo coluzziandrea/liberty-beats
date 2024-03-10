@@ -43,6 +43,7 @@ export const playlistSlice = createSlice({
       state,
       action: PayloadAction<AddKeyToCurrentTrackPayload>
     ) => {
+      // TODO - refactor this into an epic https://redux-toolkit.js.org/usage/migrating-to-modern-redux#reactive-logic-with-createlistenermiddleware
       const track = state.tracks.find((t) => t.id === state.selectedTrackId)
       if (!track) return
 
@@ -52,14 +53,20 @@ export const playlistSlice = createSlice({
           bar.endAtTick >= action.payload.startAtTick
       )
       if (!bar) {
+        const newBarId = uuidv4()
         bar = {
-          id: uuidv4(),
+          id: newBarId,
           title: track.title + ' ' + (track.bars.length + 1),
           startAtTick: action.payload.startAtTick,
           endAtTick: action.payload.startAtTick + action.payload.duration + 20,
           notes: [],
         }
         track.bars.push(bar)
+        bar = track.bars.find((bar) => bar.id === newBarId)
+        if (!bar) {
+          console.error('Bar not found')
+          return
+        }
       }
 
       bar.notes.push({
