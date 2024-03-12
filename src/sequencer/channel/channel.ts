@@ -66,6 +66,7 @@ export class Channel {
       console.log('sequencerNotes', sequencerNotes)
       const part = new Tone.Part(
         (time, value: ReturnType<typeof this.noteToTone>) => {
+          console.log(time)
           this.synth.triggerAttackRelease(
             value.note,
             value.duration,
@@ -102,7 +103,7 @@ export class Channel {
     const time = this.beatToToneTime(note.startsAtRelativeTick)
     return {
       time,
-      duration: '4n',
+      duration: '2n',
       note: note.key,
       velocity: 1,
     }

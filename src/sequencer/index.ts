@@ -9,13 +9,14 @@ import { selectTracks } from '../features/daw/playlist/store/selectors'
 import { selectIsPlaying } from '../features/daw/player-bar/store/selectors'
 import { Track } from '../model/track/track'
 import { Channel } from './channel/channel'
+import { setCurrentTick } from '../features/daw/playlist-header/store/playlist-header-slice'
 
 export default class Sequencer {
-  store: RootStore
-  channelsByTrackID: Map<string, Channel> = new Map()
+  private _store: RootStore
+  private _channelsByTrackID: Map<string, Channel> = new Map()
 
   constructor(store: RootStore) {
-    this.store = store
+    this._store = store
 
     observeStore(store, selectIsPlaying, async (newState) => {
       if (newState) {
@@ -38,9 +39,11 @@ export default class Sequencer {
 
     Tone.Transport.bpm.value = 120
 
-    // setInterval(() => {
-    //   console.log(Tone.immediate())
-    // }, 100)
+    Tone.Transport.scheduleRepeat((time) => {
+      console.log('tick', Tone.Transport.position)
+      console.log('time', time)
+      // TODO update tick and time
+    }, '16n')
   }
 
   async startTracks() {
@@ -51,13 +54,13 @@ export default class Sequencer {
 
   generateTracks(newTracks: Readonly<Track[]>) {
     newTracks.forEach((track) => {
-      if (this.channelsByTrackID.has(track.id)) {
+      if (this._channelsByTrackID.has(track.id)) {
         console.log('updating track', track.id)
-        this.channelsByTrackID.get(track.id)?.updateFromTrack(track)
+        this._channelsByTrackID.get(track.id)?.updateFromTrack(track)
       } else {
         console.log('creating channel from track', track.id)
         const channel = new Channel(track)
-        this.channelsByTrackID.set(track.id, channel)
+        this._channelsByTrackID.set(track.id, channel)
       }
     })
   }
