@@ -8,9 +8,11 @@ import { Key } from '../model/note/note'
 import { selectTracks } from '../features/daw/playlist/store/selectors'
 import { selectIsPlaying } from '../features/daw/player-bar/store/selectors'
 import { Track } from '../model/track/track'
+import { Channel } from './channel/channel'
 
 export default class Sequencer {
   store: RootStore
+  channelsByTrackID: Map<string, Channel> = new Map()
 
   constructor(store: RootStore) {
     this.store = store
@@ -24,14 +26,13 @@ export default class Sequencer {
     })
 
     observeStore(store, selectPlayingKeys, (newState) => {
-      console.log('playing keys', newState)
       newState.forEach((key: Key) => {
         this.playKey(key)
       })
     })
 
-    observeStore(store, selectTracks, (_, newState) => {
-      console.log('tracks', newState)
+    observeStore(store, selectTracks, (newState, oldState) => {
+      if (oldState === newState) return
       this.generateTracks(newState)
     })
 
@@ -43,35 +44,22 @@ export default class Sequencer {
   }
 
   async startTracks() {
+    console.log('startTracks')
     await Tone.start()
     Tone.Transport.start()
   }
 
-  generateTracks(_: Readonly<Track[]>) {
-    const synth = new Tone.PolySynth(Tone.FMSynth).toDestination()
-
-    const part = new Tone.Part(
-      (time, note) => {
-        // the notes given as the second element in the array
-        // will be passed in as the second argument
-        synth.triggerAttackRelease(note, '8n', time)
-      },
-      [
-        [0, 'C2'],
-        ['0:1', 'C3'],
-        ['0:2', 'C3'],
-        ['0:3', 'G2'],
-        ['1:0', 'A2'],
-        ['1:0:1', 'A#2'],
-        ['1:0:2', 'G#2'],
-        /**
-         * TransportTime, ("4:3:2") will also provide tempo and time signature relative times in the form BARS:QUARTERS:SIXTEENTHS.
-         * https://tonejs.github.io/docs/14.7.77/type/Time
-         */
-      ]
-    )
-
-    part.start(0)
+  generateTracks(newTracks: Readonly<Track[]>) {
+    newTracks.forEach((track) => {
+      if (this.channelsByTrackID.has(track.id)) {
+        console.log('updating track', track.id)
+        this.channelsByTrackID.get(track.id)?.updateFromTrack(track)
+      } else {
+        console.log('creating channel from track', track.id)
+        const channel = new Channel(track)
+        this.channelsByTrackID.set(track.id, channel)
+      }
+    })
   }
 
   playKey(key: Key) {
