@@ -9,20 +9,23 @@ import { selectTracks } from '../features/daw/playlist/store/selectors'
 import { selectIsPlaying } from '../features/daw/player-bar/store/selectors'
 import { Track } from '../model/track/track'
 import { Channel } from './channel/channel'
-import { setCurrentTick } from '../features/daw/playlist-header/store/playlist-header-slice'
+import { Clock } from './time/clock/clock'
 
 export default class Sequencer {
   private _store: RootStore
   private _channelsByTrackID: Map<string, Channel> = new Map()
+  private _clock: Clock
 
   constructor(store: RootStore) {
     this._store = store
+
+    this._clock = new Clock(this._store)
 
     observeStore(store, selectIsPlaying, async (newState) => {
       if (newState) {
         await this.startTracks()
       } else {
-        this.stop()
+        this.pause()
       }
     })
 
@@ -36,14 +39,6 @@ export default class Sequencer {
       if (oldState === newState) return
       this.generateTracks(newState)
     })
-
-    Tone.Transport.bpm.value = 120
-
-    Tone.Transport.scheduleRepeat((time) => {
-      console.log('tick', Tone.Transport.position)
-      console.log('time', time)
-      // TODO update tick and time
-    }, '16n')
   }
 
   async startTracks() {
@@ -90,5 +85,9 @@ export default class Sequencer {
 
   stop() {
     Tone.Transport.stop()
+  }
+
+  pause() {
+    Tone.Transport.pause()
   }
 }

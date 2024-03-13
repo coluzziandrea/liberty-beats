@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { selectIsPlaying } from '../store/selectors'
+import { selectIsPlaying, selectTime } from '../store/selectors'
 import { togglePlay } from '../store/playerBarSlice'
 import { FaPlay, FaPause, FaBackward, FaCircle } from 'react-icons/fa'
 import { TfiLoop } from 'react-icons/tfi'
 
 export const Player = () => {
   const isPlaying = useSelector(selectIsPlaying)
-
+  const time = useSelector(selectTime)
   const dispatch = useDispatch()
 
   return (
@@ -29,7 +29,7 @@ export const Player = () => {
       <button>
         <TfiLoop />
       </button>
-      <span>{'00:00.0'}</span>
+      <span>{time}</span>
     </div>
   )
 }

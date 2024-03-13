@@ -9,7 +9,7 @@ export interface PlaylistHeaderSlice {
 const initialState: PlaylistHeaderSlice = {
   maxBars: 40,
   rulerScrollPosition: 0,
-  currentTick: 11,
+  currentTick: 0,
 }
 
 export const playlistHeaderSlice = createSlice({

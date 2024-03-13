@@ -76,7 +76,6 @@ const RulerBar = ({
 export const Ruler = () => {
   const maxBars = useSelector(selectMaxBars)
   const currentTick = useSelector(selectCurrentTick)
-
   const dispatch = useDispatch()
 
   const handleSelectTick = (tick: number) => {
