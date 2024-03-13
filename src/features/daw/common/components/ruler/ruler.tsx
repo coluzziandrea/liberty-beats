@@ -5,6 +5,7 @@ import {
   selectMaxBars,
 } from '../../../playlist-header/store/selectors'
 import { setCurrentTick } from '../../../playlist-header/store/playlist-header-slice'
+import { TICK_WIDTH_PIXEL } from '../../../playlist/constants'
 
 type RulerBarProps = {
   barIndex: number
@@ -16,7 +17,6 @@ type RulerBarProps = {
 const RulerSubBar = ({
   barIndex,
   subBarIndex,
-  currentTick,
   onSelectTick,
 }: {
   subBarIndex: number
@@ -29,16 +29,7 @@ const RulerSubBar = ({
         subBarIndex == SUB_BAR_NUM - 1 ? '' : 'border-r'
       }`}
       onClick={() => onSelectTick(tick)}
-    >
-      {tick == currentTick && (
-        <div
-          className="w-0 h-0 
-  border-l-[8px] border-l-transparent
-  border-t-[17px] border-t-white-500
-  border-r-[8px] border-r-transparent absolute -left-2"
-        ></div>
-      )}
-    </div>
+    ></div>
   )
 }
 
@@ -73,6 +64,20 @@ const RulerBar = ({
   )
 }
 
+const RulerThumb = ({ currentTick }: { currentTick: number }) => {
+  // -7 is the offset to center the thumb (probably depending on the border width)
+  const leftOffset = currentTick * TICK_WIDTH_PIXEL - 7
+  return (
+    <div
+      className="absolute bottom-0 w-0 h-0 
+  border-l-[8px] border-l-transparent
+  border-t-[17px] border-t-white-500
+  border-r-[8px] border-r-transparent"
+      style={{ left: `${leftOffset}px` }}
+    />
+  )
+}
+
 export const Ruler = () => {
   const maxBars = useSelector(selectMaxBars)
   const currentTick = useSelector(selectCurrentTick)
@@ -83,16 +88,19 @@ export const Ruler = () => {
   }
 
   return (
-    <div className="h-full flex flex-row bg-slate-950">
-      {Array.from({ length: maxBars }).map((_, i) => (
-        <RulerBar
-          key={i}
-          barIndex={i}
-          maxBars={maxBars}
-          currentTick={currentTick}
-          onSelectTick={handleSelectTick}
-        />
-      ))}
+    <div className="relative">
+      <div className="h-full flex flex-row bg-slate-950">
+        {Array.from({ length: maxBars }).map((_, i) => (
+          <RulerBar
+            key={i}
+            barIndex={i}
+            maxBars={maxBars}
+            currentTick={currentTick}
+            onSelectTick={handleSelectTick}
+          />
+        ))}
+      </div>
+      <RulerThumb currentTick={currentTick} />
     </div>
   )
 }

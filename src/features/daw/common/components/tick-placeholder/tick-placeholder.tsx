@@ -12,7 +12,7 @@ export const TickPlaceholder = () => {
       style={{ left: barOffsetStyle }}
     >
       <div
-        className={`flex flex-col h-full h-24 min-h-24 max-h-24 bg-white-500`}
+        className={`flex flex-col h-full min-h-24 max-h-24 bg-white-500`}
       ></div>
     </div>
   )
