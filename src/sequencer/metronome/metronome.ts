@@ -3,6 +3,8 @@ import metronomeDown from '../../assets/metronome_down.wav'
 import metronomeUp from '../../assets/metronome_up.wav'
 import { RootStore } from '../../store'
 import { TimeUtils } from '../time/utils/time-utils'
+import { observeStore } from '../../store/observers'
+import { selectMetronomeActive } from '../../features/daw/player-bar/store/selectors'
 
 export class Metronome {
   private _playerUp: Tone.Player
@@ -16,6 +18,7 @@ export class Metronome {
     this._store = store
 
     this.setup()
+    this.registerStoreListeners()
   }
 
   setup() {
@@ -28,6 +31,17 @@ export class Metronome {
       }
     }, '4n')
     this._loop.start(0)
-    // this._loop.mute = true
+  }
+
+  registerStoreListeners() {
+    observeStore(
+      this._store,
+      selectMetronomeActive,
+      this.changeMetronomeState.bind(this)
+    )
+  }
+
+  changeMetronomeState(isActive: boolean) {
+    this._loop.mute = !isActive
   }
 }

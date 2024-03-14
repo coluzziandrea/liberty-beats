@@ -3,16 +3,16 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 const DEFAULT_BPM = 120
 export interface PlayerState {
   isPlaying: boolean
-  wasStopped: boolean | null
   bpm: number
   time: number
+  metronomeActive: boolean
 }
 
 const initialState: PlayerState = {
   isPlaying: false,
-  wasStopped: null,
   bpm: DEFAULT_BPM,
   time: 0,
+  metronomeActive: false,
 }
 
 export const playerBarSlice = createSlice({
@@ -21,11 +21,9 @@ export const playerBarSlice = createSlice({
   reducers: {
     togglePlay: (state) => {
       state.isPlaying = !state.isPlaying
-      state.wasStopped = null
     },
     stop: (state) => {
       state.isPlaying = false
-      state.wasStopped = true
     },
     setBpm: (state, action: PayloadAction<number>) => {
       state.bpm = action.payload
@@ -39,10 +37,20 @@ export const playerBarSlice = createSlice({
     setTime(state, action: PayloadAction<number>) {
       state.time = action.payload
     },
+    toggleMetronome: (state) => {
+      state.metronomeActive = !state.metronomeActive
+    },
   },
 })
 
-export const { togglePlay, setTime, stop, setBpm, increaseBpm, decreaseBpm } =
-  playerBarSlice.actions
+export const {
+  togglePlay,
+  setTime,
+  stop,
+  setBpm,
+  increaseBpm,
+  toggleMetronome,
+  decreaseBpm,
+} = playerBarSlice.actions
 
 export default playerBarSlice.reducer

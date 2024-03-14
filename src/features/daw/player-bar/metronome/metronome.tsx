@@ -1,17 +1,25 @@
 import { FaPlus, FaMinus } from 'react-icons/fa'
 import { PiMetronomeBold } from 'react-icons/pi'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectBpm } from '../store/selectors'
-import { decreaseBpm, increaseBpm } from '../store/playerBarSlice'
+import { selectBpm, selectMetronomeActive } from '../store/selectors'
+import {
+  decreaseBpm,
+  increaseBpm,
+  toggleMetronome,
+} from '../store/playerBarSlice'
 // import { MdKeyboardArrowDown } from 'react-icons/md'
 
 export const Metronome = () => {
   const bpm = useSelector(selectBpm)
+  const metronomeActive = useSelector(selectMetronomeActive)
   const dispatch = useDispatch()
 
   return (
     <div className="flex flex-row justify-center items-center gap-4">
-      <button>
+      <button
+        className={metronomeActive ? 'text-blue-300' : ''}
+        onClick={() => dispatch(toggleMetronome())}
+      >
         <PiMetronomeBold />
       </button>
 
