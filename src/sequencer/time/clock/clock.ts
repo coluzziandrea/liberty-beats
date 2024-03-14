@@ -8,12 +8,16 @@ import { selectRequestedNewTickPosition } from '../../../features/daw/playlist-h
 
 export class Clock {
   private _bpm: number
+  private _tick: number
+  private _time: number
 
   private _store: RootStore
 
   constructor(store: RootStore) {
     this._store = store
     this._bpm = store.getState().playerBar.bpm
+    this._time = 0
+    this._tick = 0
 
     Tone.Transport.bpm.value = this._bpm
 
@@ -21,25 +25,40 @@ export class Clock {
       this.handleTick()
     }, '16n')
 
-    observeStore(store, selectRequestedNewTickPosition, (newState) => {
-      if (newState !== null) {
-        this.handleRequestedNewTickPosition(newState)
-      }
-    })
+    this.registerStoreListeners()
+  }
+
+  private registerStoreListeners() {
+    observeStore(
+      this._store,
+      selectRequestedNewTickPosition,
+      this.handleRequestedNewTickPosition.bind(this)
+    )
   }
 
   private handleTick() {
-    this._bpm = TimeUtils.toneTimeToBeat(Tone.Transport.position)
-    this._store.dispatch(setTime(Tone.Transport.seconds))
-    this._store.dispatch(setCurrentTickFromSequencer(this._bpm))
+    this.getTickAndTimeFromToneTransport()
+    this.notifyStore()
   }
 
-  private handleRequestedNewTickPosition(newTick: number) {
+  private handleRequestedNewTickPosition(newTick: number | null) {
+    if (newTick === null) return
     Tone.Transport.position = TimeUtils.beatToToneTime(newTick)
+    this.getTickAndTimeFromToneTransport()
 
     if (Tone.Transport.state !== 'started') {
-      this._store.dispatch(setCurrentTickFromSequencer(newTick))
-      this._store.dispatch(setTime(Tone.Transport.seconds))
+      // will trigger store update ONLY if transport is not playing so to not collide with the handleTick method
+      this.notifyStore()
     }
+  }
+
+  private getTickAndTimeFromToneTransport() {
+    this._tick = TimeUtils.toneTimeToBeat(Tone.Transport.position)
+    this._time = Tone.Transport.seconds
+  }
+
+  private notifyStore() {
+    this._store.dispatch(setTime(this._time))
+    this._store.dispatch(setCurrentTickFromSequencer(this._tick))
   }
 }

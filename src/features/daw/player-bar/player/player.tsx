@@ -1,8 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { selectIsPlaying, selectTime } from '../store/selectors'
 import { togglePlay } from '../store/playerBarSlice'
-import { FaPlay, FaPause, FaBackward, FaCircle } from 'react-icons/fa'
-import { TfiLoop } from 'react-icons/tfi'
+import {
+  FaPlay,
+  FaPause,
+  FaBackward,
+  // , FaCircle
+} from 'react-icons/fa'
+// import { TfiLoop } from 'react-icons/tfi'
 
 export const Player = () => {
   const isPlaying = useSelector(selectIsPlaying)
@@ -23,12 +28,13 @@ export const Player = () => {
           <FaPlay />
         </button>
       )}
-      <button className="text-red-500">
+      {/* TODO - Record & Loop buttons */}
+      {/* <button className="text-red-500">
         <FaCircle />
-      </button>
-      <button>
+      </button> */}
+      {/* <button>
         <TfiLoop />
-      </button>
+      </button> */}
       <span>{time}</span>
     </div>
   )
