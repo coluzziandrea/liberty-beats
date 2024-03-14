@@ -11,20 +11,24 @@ import { Track } from '../model/track/track'
 import { Channel } from './channel/channel'
 import { Clock } from './time/clock/clock'
 import { Metronome } from './metronome/metronome'
+import { Volume } from './volume/volume'
 
 export default class Sequencer {
   private _store: RootStore
   private _channelsByTrackID: Map<string, Channel> = new Map()
-  private _clock: Clock
-  private _metronome: Metronome
 
   constructor(store: RootStore) {
     this._store = store
 
-    this._clock = new Clock(this._store)
-    this._metronome = new Metronome(this._store)
+    new Clock(this._store)
+    new Metronome(this._store)
+    new Volume(this._store)
 
-    observeStore(store, selectIsPlaying, async (newState) => {
+    this.registerStoreListeners()
+  }
+
+  registerStoreListeners() {
+    observeStore(this._store, selectIsPlaying, async (newState) => {
       if (newState) {
         await this.startTracks()
       } else {
@@ -32,13 +36,13 @@ export default class Sequencer {
       }
     })
 
-    observeStore(store, selectPlayingKeys, (newState) => {
+    observeStore(this._store, selectPlayingKeys, (newState) => {
       newState.forEach((key: Key) => {
         this.playKey(key)
       })
     })
 
-    observeStore(store, selectTracks, (newState, oldState) => {
+    observeStore(this._store, selectTracks, (newState, oldState) => {
       if (oldState === newState) return
       this.generateTracks(newState)
     })
@@ -66,24 +70,6 @@ export default class Sequencer {
   playKey(key: Key) {
     const synthA = new Tone.FMSynth().toDestination()
     synthA.triggerAttackRelease(key, '8n')
-  }
-
-  play() {
-    // create two monophonic synths
-    const synthA = new Tone.FMSynth().toDestination()
-    const synthB = new Tone.AMSynth().toDestination()
-    //play a note every quarter-note
-    new Tone.Loop((time) => {
-      synthA.triggerAttackRelease('C2', '8n', time)
-    }, '4n').start(0)
-    //play another note every off quarter-note, by starting it "8n"
-    new Tone.Loop((time) => {
-      synthB.triggerAttackRelease('C4', '8n', time)
-    }, '4n').start('8n')
-    // the loops start when the Transport is started
-    Tone.Transport.start()
-    // ramp up to 800 bpm over 10 seconds
-    Tone.Transport.bpm.rampTo(800, 10)
   }
 
   stop() {

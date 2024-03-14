@@ -15,7 +15,7 @@ export const Metronome = () => {
   const dispatch = useDispatch()
 
   return (
-    <div className="flex flex-row justify-center items-center gap-4">
+    <div className="flex flex-row justify-start items-center gap-4">
       <button
         className={metronomeActive ? 'text-blue-300' : ''}
         onClick={() => dispatch(toggleMetronome())}

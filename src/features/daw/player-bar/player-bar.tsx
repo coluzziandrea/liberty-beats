@@ -10,13 +10,13 @@ export const PlayerBar = () => {
       {/* <div>
         <UndoRedo />
       </div> */}
-      <div>
+      <div className="flex-1">
         <Metronome />
       </div>
-      <div>
+      <div className="flex-3 flex-grow">
         <Player />
       </div>
-      <div>
+      <div className="flex-1">
         <MasterVolume />
       </div>
     </div>

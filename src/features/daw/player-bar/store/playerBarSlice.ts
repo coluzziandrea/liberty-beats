@@ -1,11 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { DEFAULT_BPM, DEFAULT_VOLUME } from '../constants/player-bar-constants'
 
-const DEFAULT_BPM = 120
 export interface PlayerState {
   isPlaying: boolean
   bpm: number
   time: number
   metronomeActive: boolean
+  volume: number
 }
 
 const initialState: PlayerState = {
@@ -13,6 +14,7 @@ const initialState: PlayerState = {
   bpm: DEFAULT_BPM,
   time: 0,
   metronomeActive: false,
+  volume: DEFAULT_VOLUME,
 }
 
 export const playerBarSlice = createSlice({
@@ -40,6 +42,9 @@ export const playerBarSlice = createSlice({
     toggleMetronome: (state) => {
       state.metronomeActive = !state.metronomeActive
     },
+    setVolume: (state, action: PayloadAction<number>) => {
+      state.volume = action.payload
+    },
   },
 })
 
@@ -51,6 +56,7 @@ export const {
   increaseBpm,
   toggleMetronome,
   decreaseBpm,
+  setVolume,
 } = playerBarSlice.actions
 
 export default playerBarSlice.reducer
