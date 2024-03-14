@@ -3,7 +3,7 @@ import { selectMaxBars } from '../../../playlist-header/store/selectors'
 import { Track } from '../../../../../model/track/track'
 import { Bar } from '../../../../../model/bar/bar'
 import { TrackBar } from './track-bar/track-bar'
-import { setCurrentTick } from '../../../playlist-header/store/playlist-header-slice'
+import { requestNewTickPosition } from '../../../playlist-header/store/playlist-header-slice'
 import { addTrackBar, selectTrack } from '../../store/playlist-slice'
 import { MixGrid } from '../../../common/components/mix-grid/mix-grid'
 
@@ -21,12 +21,12 @@ export const TrackBoard = ({
   const dispatch = useDispatch()
 
   const handleSelectTick = (tick: number) => {
-    dispatch(setCurrentTick(tick))
+    dispatch(requestNewTickPosition(tick))
     dispatch(selectTrack(track))
   }
 
   const handleCreateBar = (actualTick: number) => {
-    dispatch(setCurrentTick(actualTick))
+    dispatch(requestNewTickPosition(actualTick))
     dispatch(selectTrack(track))
 
     const newBar: Bar = {
@@ -52,7 +52,7 @@ export const TrackBoard = ({
   const handleBarDetails = (bar: Bar) => {
     dispatch(selectTrack(track))
 
-    dispatch(setCurrentTick(bar.startAtTick))
+    dispatch(requestNewTickPosition(bar.startAtTick))
   }
 
   const getEvenColumnsColor = () => {

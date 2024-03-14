@@ -1,34 +1,45 @@
 import * as Tone from 'tone'
 import { RootStore } from '../../../store'
 import { TimeUtils } from '../utils/time-utils'
-import { setCurrentTick } from '../../../features/daw/playlist-header/store/playlist-header-slice'
+import { setCurrentTickFromSequencer } from '../../../features/daw/playlist-header/store/playlist-header-slice'
 import { setTime } from '../../../features/daw/player-bar/store/playerBarSlice'
+import { observeStore } from '../../../store/observers'
+import { selectRequestedNewTickPosition } from '../../../features/daw/playlist-header/store/selectors'
 
 export class Clock {
   private _bpm: number
-  private _time: number
 
   private _store: RootStore
 
   constructor(store: RootStore) {
     this._store = store
     this._bpm = store.getState().playerBar.bpm
-    this._time = 0
 
     Tone.Transport.bpm.value = this._bpm
 
-    Tone.Transport.scheduleRepeat((time) => {
-      this.handleTick(time)
+    Tone.Transport.scheduleRepeat(() => {
+      this.handleTick()
     }, '16n')
 
-    // TODO set Tone transport position when user clicks on the timeline
-    // Tone.Transport.position = '0:0:0'
+    observeStore(store, selectRequestedNewTickPosition, (newState) => {
+      if (newState !== null) {
+        this.handleRequestedNewTickPosition(newState)
+      }
+    })
   }
 
-  private handleTick(time: number) {
-    this._time = time
+  private handleTick() {
     this._bpm = TimeUtils.toneTimeToBeat(Tone.Transport.position)
-    this._store.dispatch(setTime(this._time))
-    this._store.dispatch(setCurrentTick(this._bpm))
+    this._store.dispatch(setTime(Tone.Transport.seconds))
+    this._store.dispatch(setCurrentTickFromSequencer(this._bpm))
+  }
+
+  private handleRequestedNewTickPosition(newTick: number) {
+    Tone.Transport.position = TimeUtils.beatToToneTime(newTick)
+
+    if (Tone.Transport.state !== 'started') {
+      this._store.dispatch(setCurrentTickFromSequencer(newTick))
+      this._store.dispatch(setTime(Tone.Transport.seconds))
+    }
   }
 }

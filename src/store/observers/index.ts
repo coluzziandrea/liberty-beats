@@ -1,27 +1,28 @@
-import { RootState, RootStore } from "..";
+import { RootState, RootStore } from '..'
 
 export function observeStore<T>(
   store: RootStore,
   selectFn: (rootState: RootState) => T,
-  onChange: (newState: T, oldState: T) => void,
+  onChange: (newState: T, oldState: T) => void
 ) {
-  let currentState: T;
+  let currentState: T
 
   const handleChange = () => {
-    let newState;
+    let newState
     try {
-      newState = selectFn(store.getState());
+      newState = selectFn(store.getState())
     } catch (e) {
       // when listeners unsubscribe, handleChange will still run one more time, which will
       // sometimes throw an error, which we can ignore
-      return;
+      return
     }
     if (newState !== currentState) {
-      onChange(newState, currentState);
-      currentState = newState;
+      const oldState = currentState
+      currentState = newState
+      onChange(currentState, oldState)
     }
-  };
+  }
 
-  handleChange();
-  return store.subscribe(handleChange);
+  handleChange()
+  return store.subscribe(handleChange)
 }

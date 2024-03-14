@@ -4,7 +4,7 @@ import {
   selectCurrentTick,
   selectMaxBars,
 } from '../../../playlist-header/store/selectors'
-import { setCurrentTick } from '../../../playlist-header/store/playlist-header-slice'
+import { requestNewTickPosition } from '../../../playlist-header/store/playlist-header-slice'
 import { TICK_WIDTH_PIXEL } from '../../../playlist/constants'
 
 type RulerBarProps = {
@@ -84,7 +84,7 @@ export const Ruler = () => {
   const dispatch = useDispatch()
 
   const handleSelectTick = (tick: number) => {
-    dispatch(setCurrentTick(tick))
+    dispatch(requestNewTickPosition(tick))
   }
 
   return (
