@@ -5,6 +5,7 @@ import { setCurrentTickFromSequencer } from '../../../features/daw/playlist-head
 import { setTime } from '../../../features/daw/player-bar/store/playerBarSlice'
 import { observeStore } from '../../../store/observers'
 import { selectRequestedNewTickPosition } from '../../../features/daw/playlist-header/store/selectors'
+import { selectBpm } from '../../../features/daw/player-bar/store/selectors'
 
 export class Clock {
   private _bpm: number
@@ -34,6 +35,13 @@ export class Clock {
       selectRequestedNewTickPosition,
       this.handleRequestedNewTickPosition.bind(this)
     )
+
+    observeStore(this._store, selectBpm, this.handleRequestedNewBpm.bind(this))
+  }
+
+  private handleRequestedNewBpm(newBpm: number) {
+    this._bpm = newBpm
+    Tone.Transport.bpm.value = this._bpm
   }
 
   private handleTick() {
@@ -54,7 +62,8 @@ export class Clock {
 
   private getTickAndTimeFromToneTransport() {
     this._tick = TimeUtils.toneTimeToBeat(Tone.Transport.position)
-    this._time = Tone.Transport.seconds
+    // sometimes the transport position is negative, so we need to clamp it to 0
+    this._time = Math.max(Tone.Transport.seconds, 0)
   }
 
   private notifyStore() {

@@ -7,8 +7,11 @@ export interface PlaylistHeaderSlice {
   requestedNewTickPosition: number | null
 }
 
+const DEFAULT_MAX_BARS = 40
+const TICKS_PER_BAR = 4
+
 const initialState: PlaylistHeaderSlice = {
-  maxBars: 40,
+  maxBars: DEFAULT_MAX_BARS,
   rulerScrollPosition: 0,
   currentTick: 0,
   requestedNewTickPosition: null,
@@ -28,6 +31,17 @@ export const playlistHeaderSlice = createSlice({
     requestNewTickPosition: (state, action: PayloadAction<number>) => {
       state.requestedNewTickPosition = action.payload
     },
+    requestForwardTickPosition: (state) => {
+      const newTick = Math.min(
+        state.currentTick + 1,
+        state.maxBars * TICKS_PER_BAR
+      )
+      state.requestedNewTickPosition = newTick
+    },
+    requestBackwardTickPosition: (state) => {
+      const newTick = Math.max(state.currentTick - 1, 0)
+      state.requestedNewTickPosition = newTick
+    },
   },
 })
 
@@ -35,6 +49,8 @@ export const {
   setRulerScrollPosition,
   setCurrentTickFromSequencer,
   requestNewTickPosition,
+  requestForwardTickPosition,
+  requestBackwardTickPosition,
 } = playlistHeaderSlice.actions
 
 export default playlistHeaderSlice.reducer
