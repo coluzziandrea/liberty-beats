@@ -10,16 +10,19 @@ import { selectIsPlaying } from '../features/daw/player-bar/store/selectors'
 import { Track } from '../model/track/track'
 import { Channel } from './channel/channel'
 import { Clock } from './time/clock/clock'
+import { Metronome } from './metronome/metronome'
 
 export default class Sequencer {
   private _store: RootStore
   private _channelsByTrackID: Map<string, Channel> = new Map()
   private _clock: Clock
+  private _metronome: Metronome
 
   constructor(store: RootStore) {
     this._store = store
 
     this._clock = new Clock(this._store)
+    this._metronome = new Metronome(this._store)
 
     observeStore(store, selectIsPlaying, async (newState) => {
       if (newState) {
