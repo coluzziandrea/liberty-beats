@@ -39,11 +39,31 @@ export const playlistSlice = createSlice({
     setFlatboardScroll: (state, action: PayloadAction<number>) => {
       state.flatboardScroll = action.payload
     },
+    toggleTrackMute: (state, action: PayloadAction<string>) => {
+      const track = state.tracks.find((t) => t.id === action.payload)
+      if (!track) return
+      track.muted = !track.muted
+    },
+    toggleTrackSolo: (state, action: PayloadAction<string>) => {
+      const track = state.tracks.find((t) => t.id === action.payload)
+      if (!track) return
+      track.soloed = !track.soloed
+
+      if (track.soloed) {
+        state.tracks.forEach((t) => {
+          if (t.id !== track.id) t.areThereAnyOtherTrackSoloed = true
+        })
+      } else {
+        const areThereAnyOtherTrackSoloed = state.tracks.some((t) => t.soloed)
+        state.tracks.forEach((t) => {
+          t.areThereAnyOtherTrackSoloed = areThereAnyOtherTrackSoloed
+        })
+      }
+    },
     addNoteToCurrentTrack: (
       state,
       action: PayloadAction<AddKeyToCurrentTrackPayload>
     ) => {
-      // TODO - refactor this into an epic https://redux-toolkit.js.org/usage/migrating-to-modern-redux#reactive-logic-with-createlistenermiddleware
       const track = state.tracks.find((t) => t.id === state.selectedTrackId)
       if (!track) return
 
@@ -106,6 +126,8 @@ export const {
   selectTrack,
   selectBar,
   addTrackBar,
+  toggleTrackMute,
+  toggleTrackSolo,
   setFlatboardScroll,
   addNoteToCurrentTrack,
   addNoteToCurrentBar,

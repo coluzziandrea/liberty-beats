@@ -37,7 +37,6 @@ export class Channel {
       console.log('sequencerNotes', sequencerNotes)
       const part = new Tone.Part(
         (time, value: ReturnType<typeof this.noteToTone>) => {
-          console.log(time)
           this.synth.triggerAttackRelease(
             value.note,
             value.duration,

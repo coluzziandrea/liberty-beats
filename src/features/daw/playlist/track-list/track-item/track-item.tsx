@@ -6,16 +6,25 @@ export type TrackItemProps = {
   track: Track
   selectedTrack?: Track | null
   onSelectTrack: (track: Track) => void
+  onToggleMute: () => void
+  onToggleSolo: () => void
 }
 
 export const TrackItem = ({
   track,
   selectedTrack,
   onSelectTrack,
+  onToggleMute,
+  onToggleSolo,
 }: TrackItemProps) => {
   const isSelected = selectedTrack?.id === track.id
 
-  const trackColorClass = `bg-${track.color}-500`
+  const effectivelyMuted =
+    track.muted || (track.areThereAnyOtherTrackSoloed && !track.soloed)
+
+  const selectedHighlightColor = effectivelyMuted
+    ? 'bg-gray-500'
+    : `bg-${track.color}-500`
 
   return (
     <div
@@ -25,16 +34,26 @@ export const TrackItem = ({
       onClick={() => onSelectTrack(track)}
     >
       <div className="flex flex-col divide-y border-r border-slate-600 divide-slate-600 w-8 cursor-pointer">
-        <div className="flex flex-1 w-full justify-center items-center">
+        <div
+          className={`flex flex-1 w-full justify-center items-center ${
+            track.soloed ? 'bg-orange-400' : ''
+          }`}
+          onClick={onToggleSolo}
+        >
           <FaHeadphones />
         </div>
-        <div className="flex flex-1 w-full justify-center items-center">
+        <div
+          className={`flex flex-1 w-full justify-center items-center ${
+            track.muted && 'bg-gray-500'
+          }`}
+          onClick={onToggleMute}
+        >
           <FaVolumeMute />
         </div>
       </div>
 
       <div className="flex flex-col p-2 py-2">
-        <div>{track.title}</div>
+        <span className="select-none">{track.title}</span>
 
         <div>
           <input
@@ -53,7 +72,7 @@ export const TrackItem = ({
         <button>{'...'}</button>
       </div>
 
-      <div className={`h-full w-1 ${isSelected && trackColorClass}`} />
+      <div className={`h-full w-1 ${isSelected && selectedHighlightColor}`} />
     </div>
   )
 }

@@ -2,7 +2,11 @@ import { TrackItem } from './track-item/track-item'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectSelectedTrack, selectTracks } from '../store/selectors'
 import { Track } from '../../../../model/track/track'
-import { selectTrack } from '../store/playlist-slice'
+import {
+  selectTrack,
+  toggleTrackMute,
+  toggleTrackSolo,
+} from '../store/playlist-slice'
 
 export const TrackList = () => {
   const tracks = useSelector(selectTracks)
@@ -20,6 +24,8 @@ export const TrackList = () => {
           track={track}
           selectedTrack={selectedTrack}
           onSelectTrack={handleSelectTrack}
+          onToggleMute={() => dipatch(toggleTrackMute(track.id))}
+          onToggleSolo={() => dipatch(toggleTrackSolo(track.id))}
         />
       ))}
     </div>

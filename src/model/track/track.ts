@@ -13,4 +13,8 @@ export interface Track {
   color: TrackColor
   instrumentPreset: InstrumentPreset
   bars: Bar[]
+
+  muted: boolean
+  soloed: boolean
+  areThereAnyOtherTrackSoloed: boolean
 }

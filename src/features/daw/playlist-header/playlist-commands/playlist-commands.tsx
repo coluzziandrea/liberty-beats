@@ -15,6 +15,9 @@ export const PlaylistCommands = () => {
       color: TRACK_COLORS[Math.floor(Math.random() * TRACK_COLORS.length)],
       instrumentPreset: INSTRUMENT_PRESETS[0],
       bars: [],
+      muted: false,
+      soloed: false,
+      areThereAnyOtherTrackSoloed: false,
     }
     dispatch(addTrack(newTrack))
     dispatch(selectTrack(newTrack))
