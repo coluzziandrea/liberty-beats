@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react'
 import { Bar } from '../../../../../../model/bar/bar'
-import { Track } from '../../../../../../model/track/track'
+import { Track, TrackUtils } from '../../../../../../model/track/track'
 import { TICK_WIDTH_PIXEL } from '../../../../playlist/constants'
 import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../../constants'
 import { PianoRollNote } from './piano-roll-key/piano-roll-key'
@@ -27,6 +27,14 @@ export const PianoRollBar = ({
 
   const barOffsetPixel = bar.startAtTick * TICK_WIDTH_PIXEL
   const barOffsetStyle = `${barOffsetPixel}px`
+
+  const barHeaderColor = TrackUtils.isTrackEffectivelyMuted(track)
+    ? 'bg-gray-600'
+    : `bg-${track.color}-700`
+
+  const barColor = TrackUtils.isTrackEffectivelyMuted(track)
+    ? 'bg-gray-200'
+    : `bg-${track.color}-200`
 
   const onBarEmptyDoubleClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
@@ -62,7 +70,7 @@ export const PianoRollBar = ({
         style={{ width: barLengthPixel, height: '100%' }}
       >
         <div
-          className={`sticky z-30 bg-${track.color}-700 rounded-t-md cursor-grab z-20 pl-2`}
+          className={`sticky z-30 ${barHeaderColor} rounded-t-md cursor-grab z-20 pl-2`}
           style={{
             top: 0,
             height: PIANO_ROLL_BAR_HEADER_HEIGHT,
@@ -75,7 +83,7 @@ export const PianoRollBar = ({
 
         <div className="flex-grow relative">
           <div
-            className={`absolute left-0 top-0 h-full w-full opacity-30 bg-${track.color}-200`}
+            className={`absolute left-0 top-0 h-full w-full opacity-30 ${barColor}`}
             onDoubleClick={onBarEmptyDoubleClick}
           />
           {bar.notes.map((note) => (

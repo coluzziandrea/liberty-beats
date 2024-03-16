@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { selectMaxBars } from '../../../playlist-header/store/selectors'
-import { Track } from '../../../../../model/track/track'
+import { Track, TrackUtils } from '../../../../../model/track/track'
 import { Bar } from '../../../../../model/bar/bar'
 import { TrackBar } from './track-bar/track-bar'
 import { requestNewTickPosition } from '../../../playlist-header/store/playlist-header-slice'
@@ -16,7 +16,8 @@ export const TrackBoard = ({
 }) => {
   const maxBars = useSelector(selectMaxBars)
 
-  const isSelected = selectedTrack?.id === track.id
+  const isSelected =
+    selectedTrack?.id === track.id && !TrackUtils.isTrackEffectivelyMuted(track)
 
   const dispatch = useDispatch()
 

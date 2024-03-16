@@ -23,7 +23,10 @@ export const playlistSlice = createSlice({
   initialState,
   reducers: {
     addTrack: (state, action: PayloadAction<Track>) => {
-      state.tracks.push(action.payload)
+      const areThereAnyOtherTrackSoloed = state.tracks.some((t) => t.soloed)
+      const newTrack = action.payload
+      newTrack.areThereAnyOtherTrackSoloed = areThereAnyOtherTrackSoloed
+      state.tracks.push(newTrack)
     },
     addTrackBar: (state, action: PayloadAction<{ track: Track; bar: Bar }>) => {
       state.tracks

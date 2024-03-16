@@ -18,3 +18,9 @@ export interface Track {
   soloed: boolean
   areThereAnyOtherTrackSoloed: boolean
 }
+
+export class TrackUtils {
+  static isTrackEffectivelyMuted(track: Track) {
+    return track.muted || (track.areThereAnyOtherTrackSoloed && !track.soloed)
+  }
+}

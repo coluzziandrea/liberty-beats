@@ -8,8 +8,10 @@ import { TimeUtils } from '../time/utils/time-utils'
 export class Channel {
   synth: Tone.PolySynth = new Tone.PolySynth(Tone.FMSynth)
   parts: Tone.Part[] = []
+  _muted: boolean
 
   constructor(track: Track) {
+    this._muted = false
     this.updateFromTrack(track)
   }
 
@@ -19,6 +21,8 @@ export class Channel {
       return
     }
     this.clear()
+    this._muted =
+      track.muted || (track.areThereAnyOtherTrackSoloed && !track.soloed)
     this.setInstrument(track.instrumentPreset)
     this.generatePartsFromBars(track.bars)
     this.connect()
@@ -37,6 +41,7 @@ export class Channel {
       console.log('sequencerNotes', sequencerNotes)
       const part = new Tone.Part(
         (time, value: ReturnType<typeof this.noteToTone>) => {
+          if (this._muted) return
           this.synth.triggerAttackRelease(
             value.note,
             value.duration,

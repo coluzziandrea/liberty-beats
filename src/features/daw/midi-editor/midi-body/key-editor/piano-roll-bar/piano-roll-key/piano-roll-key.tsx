@@ -1,5 +1,5 @@
 import { Key, Note } from '../../../../../../../model/note/note'
-import { Track } from '../../../../../../../model/track/track'
+import { Track, TrackUtils } from '../../../../../../../model/track/track'
 import { useMidiEditorDimensions } from '../../hooks/useMidiEditorDimensions'
 
 export type PianoRollNoteProps = {
@@ -20,9 +20,13 @@ export const PianoRollNote = (props: PianoRollNoteProps) => {
     props.showedKeys.indexOf(props.note.key) *
     props.midiEditorDimensions.keyHeight
 
+  const noteColor = TrackUtils.isTrackEffectivelyMuted(props.track)
+    ? 'bg-gray-400'
+    : `bg-${props.track.color}-500`
+
   return (
     <div
-      className={`absolute bg-${props.track.color}-500 z-20`}
+      className={`absolute ${noteColor} z-20`}
       style={{
         height: `${props.midiEditorDimensions.keyHeight}px`,
         width: `${noteLengthPixel}px`,
