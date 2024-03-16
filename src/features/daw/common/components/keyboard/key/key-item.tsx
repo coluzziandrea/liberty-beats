@@ -27,14 +27,25 @@ export const KeyItem = (props: KeyItemProps) => {
         props.isSelected ? `bg-${props.selectedTrack.color}-400` : 'bg-white'
       }`
 
+  const verticalStyle = {
+    bottom: `${itemData.bottomOffset}px`,
+  }
+
+  const horizontalStyle = {
+    left: `${itemData.leftOffset}px`,
+  }
+
   return (
     <div
-      className={`${tailwindClasses} select-none absolute flex items-center justify-end  gap-1 cursor-pointer ${
+      className={`h-full ${tailwindClasses} select-none absolute flex items-center justify-end gap-1 cursor-pointer ${
         itemData.isHorizontal ? 'flex-col rounded-b-md' : 'flex-row'
       }`}
       style={{
-        top: `${itemData.topOffset}px`,
-        left: `${itemData.leftOffset}px`,
+        ...{
+          ...(props.orientation === 'horizontal'
+            ? horizontalStyle
+            : verticalStyle),
+        },
         width: itemData.width,
         height: itemData.height,
       }}

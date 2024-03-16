@@ -66,9 +66,9 @@ export const Keyboard = (props: KeyboardProps) => {
 
   return (
     <div
-      className="relative h-full w-full"
+      className="relative w-full"
       ref={keyboardRef}
-      style={{ marginTop: props.paddingTop }}
+      style={{ paddingTop: props.paddingTop }}
       onMouseDown={() => setIsMouseDown(true)}
       onMouseUp={() => setIsMouseDown(false)}
     >

@@ -53,7 +53,7 @@ export const useKeyItemData = (props: KeyItemProps) => {
   const keyInvertedSize = isBlackKey ? '60%' : '100%'
 
   const leftOffset = props.orientation === 'horizontal' ? relativeOffset : 0
-  const topOffset = props.orientation === 'vertical' ? relativeOffset : 0
+  const bottomOffset = props.orientation === 'vertical' ? relativeOffset : 0
   const width =
     props.orientation === 'horizontal' ? `${keySize}px` : keyInvertedSize
   const height =
@@ -65,7 +65,7 @@ export const useKeyItemData = (props: KeyItemProps) => {
   return {
     isBlackKey,
     leftOffset,
-    topOffset,
+    bottomOffset,
     width,
     height,
     shadowWidth,

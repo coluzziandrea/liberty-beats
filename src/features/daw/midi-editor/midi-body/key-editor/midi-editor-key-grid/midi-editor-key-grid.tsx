@@ -76,6 +76,7 @@ export const MidiEditorKeyGrid = ({
         gridDoubleClickY / midiEditorDimensions.keyHeight
       )
       const bar = Math.floor(gridDoubleClickX / midiEditorDimensions.beatWidth)
+      console.log(showedKeys[keyIndex])
       onKeyDoubleClick(showedKeys[keyIndex], bar)
     }
 

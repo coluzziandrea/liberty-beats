@@ -50,7 +50,7 @@ export const PianoRollBar = ({
     const relativeBeat = Math.floor(
       barDoubleClickX / midiEditorDimensions.beatWidth
     )
-
+    console.log(showedKeys[keyIndex])
     onAddKey(bar, showedKeys[keyIndex], relativeBeat)
   }
 

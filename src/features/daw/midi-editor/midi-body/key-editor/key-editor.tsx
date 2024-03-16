@@ -37,6 +37,8 @@ export const KeyEditor = () => {
 
   if (!selectedTrack) return null
 
+  const showedKeys = KEYS.slice().reverse()
+
   const handleAddKeyFromBar = (
     bar: Bar,
     key: Key,
@@ -67,11 +69,12 @@ export const KeyEditor = () => {
       <div
         ref={keyboardRef}
         onScroll={handleMidiVerticalScroll}
-        className="min-w-20 w-20 max-w-20 overflow-auto no-scrollbar"
+        className="h-full min-w-20 w-20 max-w-20 overflow-auto no-scrollbar"
+        style={{ paddingTop: PIANO_ROLL_BAR_HEADER_HEIGHT }}
       >
         <Keyboard
           selectedTrack={selectedTrack}
-          showedKeys={KEYS}
+          showedKeys={showedKeys}
           paddingTop={PIANO_ROLL_BAR_HEADER_HEIGHT}
           playingKeys={playingKeys}
           whiteKeySize={midiEditorDimensions.whiteKeySize}
@@ -90,7 +93,7 @@ export const KeyEditor = () => {
         <div className="relative h-max min-h-full">
           <div className="flex flex-col">
             <MidiEditorKeyGrid
-              showedKeys={KEYS}
+              showedKeys={showedKeys}
               onKeyDoubleClick={handleAddKeyFromGrid}
             />
 
@@ -98,7 +101,7 @@ export const KeyEditor = () => {
               <PianoRollBar
                 key={bar.id}
                 track={selectedTrack}
-                showedKeys={KEYS}
+                showedKeys={showedKeys}
                 bar={bar}
                 onAddKey={handleAddKeyFromBar}
               />
