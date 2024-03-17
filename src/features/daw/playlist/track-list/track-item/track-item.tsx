@@ -109,7 +109,7 @@ export const TrackItem = ({
               setLocalTrackVolume(e.target.valueAsNumber)
               setVolumeTooltipVisible(true)
             }}
-            className={`w-full h-1 cursor-ew-resize ${sliderColor}`}
+            className={`w-full h-1 bg-gray-700 appearance-none cursor-ew-resize ${sliderColor}`}
           ></input>
         </div>
       </div>
