@@ -1,4 +1,4 @@
-import { Key } from '../../../../../../model/note/note'
+import { Key } from '../../../../../../model/note/key/key'
 import { Track } from '../../../../../../model/track/track'
 import { useKeyItemData } from './use-key-item-data'
 

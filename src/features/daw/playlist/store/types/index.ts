@@ -1,4 +1,4 @@
-import { Key } from '../../../../../model/note/note'
+import { Key } from '../../../../../model/note/key/key'
 
 export type AddKeyToCurrentTrackPayload = {
   key: Key

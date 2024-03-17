@@ -1,13 +1,13 @@
 import { useDispatch } from 'react-redux'
 import { Track } from '../../../../model/track/track'
 import { closeAllBottomUpPanels } from '../../bottom-bar/store/bottom-bar-slice'
-import { OCTAVES, Octave } from '../../../../model/note/note'
 import {
   selectNextOctave,
   selectPreviousOctave,
 } from '../store/instrument-slice'
 import { FaPlus, FaMinus } from 'react-icons/fa'
 import { IoClose } from 'react-icons/io5'
+import { OCTAVES, Octave } from '../../../../model/note/key/octave/octave'
 
 export type InstrumentHeaderProps = {
   selectedTrack: Track

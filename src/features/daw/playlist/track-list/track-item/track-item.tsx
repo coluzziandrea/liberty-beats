@@ -1,6 +1,7 @@
 import { Track } from '../../../../../model/track/track'
 import { FaHeadphones } from 'react-icons/fa6'
 import { FaVolumeMute } from 'react-icons/fa'
+import { TRACK_HEIGHT } from '../../constants'
 
 export type TrackItemProps = {
   track: Track
@@ -28,9 +29,10 @@ export const TrackItem = ({
 
   return (
     <div
-      className={`flex flex-row justify-between w-full h-20 min-h-20 max-h-20 ${
+      className={`flex flex-row justify-between w-full ${
         isSelected ? 'bg-zinc-800' : 'bg-zinc-900'
       }`}
+      style={{ height: `${TRACK_HEIGHT}px` }}
       onClick={() => onSelectTrack(track)}
     >
       <div className="flex flex-col divide-y border-r border-slate-600 divide-slate-600 w-8 cursor-pointer">

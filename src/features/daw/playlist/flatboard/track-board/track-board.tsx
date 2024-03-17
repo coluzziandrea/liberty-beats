@@ -7,6 +7,7 @@ import { requestNewTickPosition } from '../../../playlist-header/store/playlist-
 import { addTrackBar, selectTrack } from '../../store/playlist-slice'
 import { MixGrid } from '../../../common/components/mix-grid/mix-grid'
 import { selectBottomUpPanel } from '../../../bottom-bar/store/bottom-bar-slice'
+import { TRACK_HEIGHT } from '../../constants'
 
 export const TrackBoard = ({
   track,
@@ -68,7 +69,7 @@ export const TrackBoard = ({
 
   return (
     <div className="relative">
-      <div className="flex flex-row h-20 min-h-20 max-h-20">
+      <div className="flex flex-row" style={{ height: `${TRACK_HEIGHT}px` }}>
         <MixGrid
           maxBars={maxBars}
           onSelectTick={handleSelectTick}

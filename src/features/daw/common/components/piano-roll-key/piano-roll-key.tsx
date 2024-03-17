@@ -1,34 +1,41 @@
-import { Key, Note } from '../../../../../model/note/note'
+import { Key } from '../../../../../model/note/key/key'
+import { Note } from '../../../../../model/note/note'
 import { Track, TrackUtils } from '../../../../../model/track/track'
-import { useMidiEditorDimensions } from '../../../midi-editor/midi-body/key-editor/hooks/useMidiEditorDimensions'
 
 export type PianoRollKeyProps = {
   note: Note
   track: Track
   showedKeys: Readonly<Key[]>
-  midiEditorDimensions: ReturnType<typeof useMidiEditorDimensions>
+  beatWidth: number
+  keyHeight: number
+  nonMutedColorTailwindClass?: string
 }
 
-export const PianoRollKey = (props: PianoRollKeyProps) => {
-  const noteLengthPixel =
-    props.note.durationTicks * props.midiEditorDimensions.beatWidth
+export const PianoRollKey = ({
+  note,
+  track,
+  showedKeys,
+  beatWidth,
+  keyHeight,
+  nonMutedColorTailwindClass,
+}: PianoRollKeyProps) => {
+  const noteLengthPixel = note.durationTicks * beatWidth
 
-  const noteLeftOffsetPixel =
-    props.note.startsAtRelativeTick * props.midiEditorDimensions.beatWidth
+  const noteLeftOffsetPixel = note.startsAtRelativeTick * beatWidth
 
-  const noteTopOffsetPixel =
-    props.showedKeys.indexOf(props.note.key) *
-    props.midiEditorDimensions.keyHeight
+  const noteTopOffsetPixel = showedKeys.indexOf(note.key) * keyHeight
 
-  const noteColor = TrackUtils.isTrackEffectivelyMuted(props.track)
+  const noteColor = TrackUtils.isTrackEffectivelyMuted(track)
     ? 'bg-gray-400'
-    : `bg-${props.track.color}-500`
+    : nonMutedColorTailwindClass
+    ? nonMutedColorTailwindClass
+    : `bg-${track.color}-500`
 
   return (
     <div
       className={`absolute ${noteColor} z-20`}
       style={{
-        height: `${props.midiEditorDimensions.keyHeight}px`,
+        height: `${keyHeight}px`,
         width: `${noteLengthPixel}px`,
         left: `${noteLeftOffsetPixel}px`,
         top: `${noteTopOffsetPixel}px`,

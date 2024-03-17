@@ -3,9 +3,9 @@ import { Bar } from '../../../../../../model/bar/bar'
 import { Track, TrackUtils } from '../../../../../../model/track/track'
 import { TICK_WIDTH_PIXEL } from '../../../../playlist/constants'
 import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../../constants'
-import { Key } from '../../../../../../model/note/note'
 import { useMidiEditorDimensions } from '../hooks/useMidiEditorDimensions'
 import { PianoRollKey } from '../../../../common/components/piano-roll-key/piano-roll-key'
+import { Key } from '../../../../../../model/note/key/key'
 
 export type PianoRollBarProps = {
   track: Track
@@ -92,7 +92,8 @@ export const PianoRollBar = ({
               track={track}
               note={note}
               showedKeys={showedKeys}
-              midiEditorDimensions={midiEditorDimensions}
+              beatWidth={midiEditorDimensions.beatWidth}
+              keyHeight={midiEditorDimensions.keyHeight}
             />
           ))}
         </div>

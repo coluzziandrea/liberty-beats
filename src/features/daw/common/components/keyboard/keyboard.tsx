@@ -1,4 +1,3 @@
-import { Key } from '../../../../../model/note/note'
 import { Track } from '../../../../../model/track/track'
 import React, { useRef } from 'react'
 import { useDispatch } from 'react-redux'
@@ -7,6 +6,7 @@ import {
   removePlayingKey,
 } from '../../../instrument/store/instrument-slice'
 import { KeyItem } from './key/key-item'
+import { Key } from '../../../../../model/note/key/key'
 
 export type KeyboardProps = {
   selectedTrack: Track

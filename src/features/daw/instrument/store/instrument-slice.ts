@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { Key, OCTAVES, Octave } from '../../../../model/note/note'
+import { Key } from '../../../../model/note/key/key'
+import { OCTAVES, Octave } from '../../../../model/note/key/octave/octave'
 
 export interface InstrumentSlice {
   playingKeys: Key[]

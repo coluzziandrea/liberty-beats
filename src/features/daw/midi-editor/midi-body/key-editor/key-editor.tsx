@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Keyboard } from '../../../common/components/keyboard/keyboard'
 import { selectSelectedTrack } from '../../../playlist/store/selectors'
-import { KEYS, Key } from '../../../../../model/note/note'
 import { MidiEditorKeyGrid } from './midi-editor-key-grid/midi-editor-key-grid'
 import { TickPlaceholder } from '../../../common/components/tick-placeholder/tick-placeholder'
 import { selectPlayingKeys } from '../../../instrument/store/selectors'
@@ -17,6 +16,7 @@ import { Bar } from '../../../../../model/bar/bar'
 import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../constants'
 import { PianoRollBar } from './piano-roll-bar/piano-roll-bar'
 import { useMidiEditorDimensions } from './hooks/useMidiEditorDimensions'
+import { KEYS, Key } from '../../../../../model/note/key/key'
 
 export const KeyEditor = () => {
   const dispatch = useDispatch()

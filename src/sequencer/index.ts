@@ -4,7 +4,6 @@ import { observeStore } from '../store/observers'
 
 import * as Tone from 'tone'
 import { selectPlayingKeys } from '../features/daw/instrument/store/selectors'
-import { Key } from '../model/note/note'
 import { selectTracks } from '../features/daw/playlist/store/selectors'
 import { selectIsPlaying } from '../features/daw/player-bar/store/selectors'
 import { Track } from '../model/track/track'
@@ -12,6 +11,7 @@ import { Channel } from './channel/channel'
 import { Clock } from './time/clock/clock'
 import { Metronome } from './metronome/metronome'
 import { Volume } from './volume/volume'
+import { Key } from '../model/note/key/key'
 
 export default class Sequencer {
   private _store: RootStore

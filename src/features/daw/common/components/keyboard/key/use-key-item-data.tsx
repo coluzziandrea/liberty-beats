@@ -1,4 +1,4 @@
-import { Key } from '../../../../../../model/note/note'
+import { Key } from '../../../../../../model/note/key/key'
 import { KeyItemProps } from './key-item'
 
 export const useKeyItemData = (props: KeyItemProps) => {

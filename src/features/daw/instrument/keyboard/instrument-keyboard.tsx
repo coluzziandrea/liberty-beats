@@ -1,9 +1,10 @@
 import { useSelector } from 'react-redux'
-import { KEYS, Octave } from '../../../../model/note/note'
 import { Track } from '../../../../model/track/track'
 import { Keyboard } from '../../common/components/keyboard/keyboard'
 import React from 'react'
 import { selectPlayingKeys } from '../store/selectors'
+import { Octave } from '../../../../model/note/key/octave/octave'
+import { KEYS } from '../../../../model/note/key/key'
 
 export type InstrumentKeyboardProps = {
   selectedTrack: Track

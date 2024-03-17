@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { Key, isKeyBlack } from '../../../../../../model/note/note'
 import { useMidiEditorDimensions } from '../hooks/useMidiEditorDimensions'
+import { Key, KeyUtils } from '../../../../../../model/note/key/key'
 
 export type MidiEditorKeyGridProps = {
   showedKeys: Readonly<Key[]>
@@ -62,7 +62,9 @@ export const MidiEditorKeyGrid = ({
     showedKeys.forEach((key, i) => {
       drawKeyRectangle(
         midiEditorDimensions.keyHeight * i,
-        isKeyBlack(key) ? blackKeyRectangleColor : whiteKeyRectangleColor
+        KeyUtils.isKeyBlack(key)
+          ? blackKeyRectangleColor
+          : whiteKeyRectangleColor
       )
     })
 

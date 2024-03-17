@@ -1,6 +1,14 @@
 import { Bar } from '../../../../../../model/bar/bar'
+import { KEYS, KeyUtils } from '../../../../../../model/note/key/key'
+import { NoteUtils } from '../../../../../../model/note/note'
 import { Track, TrackUtils } from '../../../../../../model/track/track'
-import { TICK_WIDTH_PIXEL } from '../../../constants'
+import { PianoRollKey } from '../../../../common/components/piano-roll-key/piano-roll-key'
+import {
+  FLATBOARD_BAR_HEADER_HEIGHT,
+  MIN_FLATBOARD_KEY_HEIGHT,
+  TICK_WIDTH_PIXEL,
+  TRACK_HEIGHT,
+} from '../../../constants'
 
 export const TrackBar = ({
   track,
@@ -27,22 +35,51 @@ export const TrackBar = ({
     ? 'bg-gray-500'
     : `bg-${track.color}-500`
 
+  const showedKeys = NoteUtils.getSmallerKeySetContainingNotes(
+    bar.notes,
+    2
+  ).reverse()
+
+  const keyHeight = Math.min(
+    (TRACK_HEIGHT - FLATBOARD_BAR_HEADER_HEIGHT) / showedKeys.length,
+    MIN_FLATBOARD_KEY_HEIGHT
+  )
+
   return (
     <div
       key={bar.id}
-      className={`left-[${bar.startAtTick * TICK_WIDTH_PIXEL}px] absolute z-10`}
+      className="absolute z-10"
       style={{ width: barWidthStyle, left: barOffsetStyle }}
     >
       <div
-        className={`flex flex-col h-20 min-h-20 max-h-20 ${barColor} opacity-80 rounded-md cursor-grab`}
-        style={{ width: barLengthPixel }}
+        className={`flex flex-col ${barColor} opacity-80 rounded-md cursor-grab`}
+        style={{ width: barLengthPixel, height: `${TRACK_HEIGHT}px` }}
         onClick={() => onSelectBar(bar)}
         onDoubleClick={() => onBarDetails(bar)}
       >
         <div
           className={`flex flex-row ${headerColor} pl-2 rounded-t-md text-white text-sm font-bold select-none`}
+          style={{
+            height: `${FLATBOARD_BAR_HEADER_HEIGHT}px`,
+            minHeight: `${FLATBOARD_BAR_HEADER_HEIGHT}px`,
+            maxHeight: `${FLATBOARD_BAR_HEADER_HEIGHT}px`,
+          }}
         >
           {bar.title}
+        </div>
+
+        <div className="flex-grow w-full h-full relative">
+          {bar.notes.map((note) => (
+            <PianoRollKey
+              key={note.id}
+              track={track}
+              note={note}
+              showedKeys={showedKeys}
+              beatWidth={TICK_WIDTH_PIXEL}
+              keyHeight={keyHeight}
+              nonMutedColorTailwindClass="bg-white"
+            />
+          ))}
         </div>
       </div>
     </div>
