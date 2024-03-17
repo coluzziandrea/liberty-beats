@@ -1,15 +1,15 @@
-import { Key, Note } from '../../../../../../../model/note/note'
-import { Track, TrackUtils } from '../../../../../../../model/track/track'
-import { useMidiEditorDimensions } from '../../hooks/useMidiEditorDimensions'
+import { Key, Note } from '../../../../../model/note/note'
+import { Track, TrackUtils } from '../../../../../model/track/track'
+import { useMidiEditorDimensions } from '../../../midi-editor/midi-body/key-editor/hooks/useMidiEditorDimensions'
 
-export type PianoRollNoteProps = {
+export type PianoRollKeyProps = {
   note: Note
   track: Track
   showedKeys: Readonly<Key[]>
   midiEditorDimensions: ReturnType<typeof useMidiEditorDimensions>
 }
 
-export const PianoRollNote = (props: PianoRollNoteProps) => {
+export const PianoRollKey = (props: PianoRollKeyProps) => {
   const noteLengthPixel =
     props.note.durationTicks * props.midiEditorDimensions.beatWidth
 

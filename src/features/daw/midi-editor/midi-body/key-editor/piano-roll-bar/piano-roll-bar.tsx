@@ -3,9 +3,9 @@ import { Bar } from '../../../../../../model/bar/bar'
 import { Track, TrackUtils } from '../../../../../../model/track/track'
 import { TICK_WIDTH_PIXEL } from '../../../../playlist/constants'
 import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../../constants'
-import { PianoRollNote } from './piano-roll-key/piano-roll-key'
 import { Key } from '../../../../../../model/note/note'
 import { useMidiEditorDimensions } from '../hooks/useMidiEditorDimensions'
+import { PianoRollKey } from '../../../../common/components/piano-roll-key/piano-roll-key'
 
 export type PianoRollBarProps = {
   track: Track
@@ -87,7 +87,7 @@ export const PianoRollBar = ({
             onDoubleClick={onBarEmptyDoubleClick}
           />
           {bar.notes.map((note) => (
-            <PianoRollNote
+            <PianoRollKey
               key={note.id}
               track={track}
               note={note}
