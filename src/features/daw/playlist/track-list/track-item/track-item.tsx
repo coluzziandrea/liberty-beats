@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { setTrackVolume } from '../../store/playlist-slice'
 import { useEffect, useState } from 'react'
 import { useDebounce } from '../../../common/hooks/useDebounce'
+import { Volume } from '../../../../../sequencer/volume/volume'
 
 export type TrackItemProps = {
   track: Track
@@ -30,6 +31,8 @@ export const TrackItem = ({
   const [localTrackVolume, setLocalTrackVolume] = useState(track.volume)
   const debouncedVolume = useDebounce(localTrackVolume, 500)
 
+  const [volumeTooltipVisible, setVolumeTooltipVisible] = useState(false)
+
   // Update the track volume when the debounced volume changes, but apply some debounce
   useEffect(() => {
     dispatch(
@@ -38,6 +41,7 @@ export const TrackItem = ({
         volume: localTrackVolume,
       })
     )
+    setVolumeTooltipVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedVolume, dispatch, track.id])
 
@@ -51,6 +55,9 @@ export const TrackItem = ({
   const sliderColor = effectivelyMuted
     ? 'accent-gray-500'
     : `accent-${track.color}-600`
+
+  const volumeInDb =
+    Volume.transformVolumeToToneVolume(localTrackVolume).toFixed(1)
 
   return (
     <div
@@ -82,7 +89,16 @@ export const TrackItem = ({
       <div className="flex flex-col p-2 py-2">
         <span className="select-none">{track.title}</span>
 
-        <div>
+        <div className="relative">
+          <div
+            id="tooltip-top"
+            role="tooltip"
+            className="tooltip absolute -top-8 left-4 z-10 bg-zinc-600 font-medium shadow-sm text-white py-1 px-3  rounded-lg"
+            style={{ visibility: volumeTooltipVisible ? 'visible' : 'hidden' }}
+          >
+            <span className="font-bold">{volumeInDb}</span>{' '}
+            <span className="text-sm font-light">db</span>
+          </div>
           <input
             id="track-vol-range"
             type="range"
@@ -91,6 +107,7 @@ export const TrackItem = ({
             value={localTrackVolume}
             onChange={(e) => {
               setLocalTrackVolume(e.target.valueAsNumber)
+              setVolumeTooltipVisible(true)
             }}
             className={`w-full h-1 cursor-ew-resize ${sliderColor}`}
           ></input>
