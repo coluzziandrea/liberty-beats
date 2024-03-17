@@ -5,7 +5,7 @@ import { LeftMenuTranspose } from './left-menu-transpose/left-menu-transpose'
 
 export const LeftMenu = () => {
   return (
-    <div className="flex flex-col w-full p-2 gap-4">
+    <div className="flex flex-col w-full p-2 gap-4 select-none">
       <LeftMenuHeader />
 
       <LeftMenuNotes />

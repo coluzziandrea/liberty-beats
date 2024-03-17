@@ -17,7 +17,7 @@ export const MidiHeader = ({ selectedTrack }: MidiHeaderProps) => {
   const handleRulerScroll = useMidiEditorHorizontalScroll(rulerRef)
 
   return (
-    <div className="flex h-full w-full flex-row justify-between divide-x divide-slate-600">
+    <div className="flex h-full w-full flex-row justify-between divide-x divide-slate-600 select-none">
       <div className="flex flex-row h-full justify-between divide-x divide-slate-600 max-w-72 min-w-72">
         <div
           className="flex flex-grow cursor-pointer items-center justify-center"

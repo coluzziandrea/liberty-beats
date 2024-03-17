@@ -6,6 +6,7 @@ import { TrackBar } from './track-bar/track-bar'
 import { requestNewTickPosition } from '../../../playlist-header/store/playlist-header-slice'
 import { addTrackBar, selectTrack } from '../../store/playlist-slice'
 import { MixGrid } from '../../../common/components/mix-grid/mix-grid'
+import { selectBottomUpPanel } from '../../../bottom-bar/store/bottom-bar-slice'
 
 export const TrackBoard = ({
   track,
@@ -54,6 +55,7 @@ export const TrackBoard = ({
     dispatch(selectTrack(track))
 
     dispatch(requestNewTickPosition(bar.startAtTick))
+    dispatch(selectBottomUpPanel('midiEditor'))
   }
 
   const getEvenColumnsColor = () => {
