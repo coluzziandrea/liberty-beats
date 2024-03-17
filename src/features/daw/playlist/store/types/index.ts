@@ -12,3 +12,8 @@ export type AddKeyToCurrentBarPayload = {
   startAtRelativeTick: number
   duration: number
 }
+
+export type SetTrackVolumePayload = {
+  trackId: string
+  volume: number
+}

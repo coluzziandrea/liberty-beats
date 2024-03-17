@@ -1,7 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { Track } from '../../../../model/track/track'
 import { Bar } from '../../../../model/bar/bar'
-import { AddKeyToCurrentBarPayload, AddKeyToCurrentTrackPayload } from './types'
+import {
+  AddKeyToCurrentBarPayload,
+  AddKeyToCurrentTrackPayload,
+  SetTrackVolumePayload,
+} from './types'
 import { v4 as uuidv4 } from 'uuid'
 
 export interface PlaylistSlice {
@@ -46,6 +50,11 @@ export const playlistSlice = createSlice({
       const track = state.tracks.find((t) => t.id === action.payload)
       if (!track) return
       track.muted = !track.muted
+    },
+    setTrackVolume: (state, action: PayloadAction<SetTrackVolumePayload>) => {
+      const track = state.tracks.find((t) => t.id === action.payload.trackId)
+      if (!track) return
+      track.volume = action.payload.volume
     },
     toggleTrackSolo: (state, action: PayloadAction<string>) => {
       const track = state.tracks.find((t) => t.id === action.payload)
@@ -129,6 +138,7 @@ export const {
   selectTrack,
   selectBar,
   addTrackBar,
+  setTrackVolume,
   toggleTrackMute,
   toggleTrackSolo,
   setFlatboardScroll,

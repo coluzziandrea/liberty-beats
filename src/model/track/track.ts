@@ -14,6 +14,8 @@ export interface Track {
   instrumentPreset: InstrumentPreset
   bars: Bar[]
 
+  volume: number
+
   muted: boolean
   soloed: boolean
   areThereAnyOtherTrackSoloed: boolean

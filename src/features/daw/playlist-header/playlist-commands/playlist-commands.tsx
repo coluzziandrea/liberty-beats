@@ -18,6 +18,7 @@ export const PlaylistCommands = () => {
       muted: false,
       soloed: false,
       areThereAnyOtherTrackSoloed: false,
+      volume: 100,
     }
     dispatch(addTrack(newTrack))
     dispatch(selectTrack(newTrack))

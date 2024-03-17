@@ -4,6 +4,7 @@ import { Note } from '../../model/note/note'
 import { Track } from '../../model/track/track'
 import * as Tone from 'tone'
 import { TimeUtils } from '../time/utils/time-utils'
+import { Volume } from '../volume/volume'
 
 export class Channel {
   synth: Tone.PolySynth = new Tone.PolySynth(Tone.FMSynth)
@@ -25,7 +26,12 @@ export class Channel {
       track.muted || (track.areThereAnyOtherTrackSoloed && !track.soloed)
     this.setInstrument(track.instrumentPreset)
     this.generatePartsFromBars(track.bars)
+    this.setVolume(track.volume)
     this.connect()
+  }
+
+  setVolume(volume: number) {
+    this.synth.volume.value = Volume.transformVolumeToToneVolume(volume)
   }
 
   clear() {

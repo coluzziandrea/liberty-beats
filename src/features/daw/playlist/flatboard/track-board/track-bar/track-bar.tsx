@@ -1,5 +1,4 @@
 import { Bar } from '../../../../../../model/bar/bar'
-import { KEYS, KeyUtils } from '../../../../../../model/note/key/key'
 import { NoteUtils } from '../../../../../../model/note/note'
 import { Track, TrackUtils } from '../../../../../../model/track/track'
 import { PianoRollKey } from '../../../../common/components/piano-roll-key/piano-roll-key'

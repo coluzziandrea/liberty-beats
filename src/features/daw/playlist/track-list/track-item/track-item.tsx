@@ -2,6 +2,11 @@ import { Track } from '../../../../../model/track/track'
 import { FaHeadphones } from 'react-icons/fa6'
 import { FaVolumeMute } from 'react-icons/fa'
 import { TRACK_HEIGHT } from '../../constants'
+import { MAX_VOLUME } from '../../../player-bar/constants/player-bar-constants'
+import { useDispatch } from 'react-redux'
+import { setTrackVolume } from '../../store/playlist-slice'
+import { useEffect, useState } from 'react'
+import { useDebounce } from '../../../common/hooks/useDebounce'
 
 export type TrackItemProps = {
   track: Track
@@ -20,12 +25,32 @@ export const TrackItem = ({
 }: TrackItemProps) => {
   const isSelected = selectedTrack?.id === track.id
 
+  const dispatch = useDispatch()
+
+  const [localTrackVolume, setLocalTrackVolume] = useState(track.volume)
+  const debouncedVolume = useDebounce(localTrackVolume, 500)
+
+  // Update the track volume when the debounced volume changes, but apply some debounce
+  useEffect(() => {
+    dispatch(
+      setTrackVolume({
+        trackId: track.id,
+        volume: localTrackVolume,
+      })
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedVolume, dispatch, track.id])
+
   const effectivelyMuted =
     track.muted || (track.areThereAnyOtherTrackSoloed && !track.soloed)
 
   const selectedHighlightColor = effectivelyMuted
     ? 'bg-gray-500'
     : `bg-${track.color}-500`
+
+  const sliderColor = effectivelyMuted
+    ? 'accent-gray-500'
+    : `accent-${track.color}-600`
 
   return (
     <div
@@ -59,13 +84,15 @@ export const TrackItem = ({
 
         <div>
           <input
-            id="minmax-range"
+            id="track-vol-range"
             type="range"
             min="0"
-            max="10"
-            value="5"
-            onChange={() => {}}
-            className="h-2 w-full cursor-ew-resize appearance-none rounded-lg bg-gray-200 dark:bg-gray-700"
+            max={MAX_VOLUME}
+            value={localTrackVolume}
+            onChange={(e) => {
+              setLocalTrackVolume(e.target.valueAsNumber)
+            }}
+            className={`w-full h-1 cursor-ew-resize ${sliderColor}`}
           ></input>
         </div>
       </div>
