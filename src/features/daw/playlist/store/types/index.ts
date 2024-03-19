@@ -17,3 +17,10 @@ export type SetTrackVolumePayload = {
   trackId: string
   volume: number
 }
+
+export type MoveBarPayload = {
+  fromTrackId: string
+  toTrackId: string
+  barId: string
+  newStartAtTick: number
+}

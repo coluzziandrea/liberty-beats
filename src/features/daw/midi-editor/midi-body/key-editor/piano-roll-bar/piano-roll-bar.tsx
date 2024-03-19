@@ -22,7 +22,7 @@ export const PianoRollBar = ({
 }: PianoRollBarProps) => {
   const midiEditorDimensions = useMidiEditorDimensions()
 
-  const barLengthPixel = (bar.endAtTick - bar.startAtTick) * TICK_WIDTH_PIXEL
+  const barLengthPixel = bar.durationTicks * TICK_WIDTH_PIXEL
   const barWidthStyle = `${barLengthPixel}px`
 
   const barOffsetPixel = bar.startAtTick * TICK_WIDTH_PIXEL

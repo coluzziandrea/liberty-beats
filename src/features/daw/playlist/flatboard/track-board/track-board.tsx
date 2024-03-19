@@ -4,10 +4,10 @@ import { Track, TrackUtils } from '../../../../../model/track/track'
 import { Bar } from '../../../../../model/bar/bar'
 import { TrackBar } from './track-bar/track-bar'
 import { requestNewTickPosition } from '../../../playlist-header/store/playlist-header-slice'
-import { addTrackBar, selectTrack } from '../../store/playlist-slice'
+import { addTrackBar, selectTrack, moveBar } from '../../store/playlist-slice'
 import { MixGrid } from '../../../common/components/mix-grid/mix-grid'
 import { selectBottomUpPanel } from '../../../bottom-bar/store/bottom-bar-slice'
-import { TRACK_HEIGHT } from '../../constants'
+import { TICK_WIDTH_PIXEL, TRACK_HEIGHT } from '../../constants'
 
 export const TrackBoard = ({
   track,
@@ -36,7 +36,7 @@ export const TrackBoard = ({
       id: Date.now().toString(),
       title: track.title + ' ' + (track.bars.length + 1),
       startAtTick: actualTick,
-      endAtTick: actualTick + 8,
+      durationTicks: 8,
       notes: [],
     }
 
@@ -67,8 +67,37 @@ export const TrackBoard = ({
     return isSelected ? `bg-${track.color}-900` : 'bg-zinc-900'
   }
 
+  const handleOnDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    const barId = e.dataTransfer.getData('dragging_bar/bar_id')
+    console.log(barId)
+    const fromTrackId = e.dataTransfer.getData('dragging_bar/track_id')
+    console.log(fromTrackId)
+    const startDraggingTick = e.dataTransfer.getData(
+      'dragging_bar/relative_tick'
+    )
+
+    const mouseXPositionWithinTrack =
+      e.clientX - e.currentTarget.getBoundingClientRect().left
+    const mouseSelectedTick = Math.floor(
+      mouseXPositionWithinTrack / TICK_WIDTH_PIXEL
+    )
+    // the new startAtTick will be the tick selected by mouse taking into consideration the relative tick where the bar was grabbed
+    const newStartAtTick = Math.max(
+      mouseSelectedTick - parseInt(startDraggingTick),
+      0
+    )
+
+    dispatch(
+      moveBar({ barId, fromTrackId, toTrackId: track.id, newStartAtTick })
+    )
+  }
+
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={handleOnDrop}
+    >
       <div className="flex flex-row" style={{ height: `${TRACK_HEIGHT}px` }}>
         <MixGrid
           maxBars={maxBars}

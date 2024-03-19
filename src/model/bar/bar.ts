@@ -4,6 +4,6 @@ export interface Bar {
   id: string
   title: string
   startAtTick: number
-  endAtTick: number
+  durationTicks: number
   notes: Note[]
 }

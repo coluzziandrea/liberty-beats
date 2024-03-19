@@ -4,6 +4,7 @@ import { Bar } from '../../../../model/bar/bar'
 import {
   AddKeyToCurrentBarPayload,
   AddKeyToCurrentTrackPayload,
+  MoveBarPayload,
   SetTrackVolumePayload,
 } from './types'
 import { v4 as uuidv4 } from 'uuid'
@@ -82,7 +83,7 @@ export const playlistSlice = createSlice({
       let bar = track.bars.find(
         (bar) =>
           bar.startAtTick <= action.payload.startAtTick &&
-          bar.endAtTick >= action.payload.startAtTick
+          bar.startAtTick + bar.durationTicks >= action.payload.startAtTick
       )
       if (!bar) {
         const newBarId = uuidv4()
@@ -90,7 +91,7 @@ export const playlistSlice = createSlice({
           id: newBarId,
           title: track.title + ' ' + (track.bars.length + 1),
           startAtTick: action.payload.startAtTick,
-          endAtTick: action.payload.startAtTick + action.payload.duration + 20,
+          durationTicks: action.payload.duration + 20,
           notes: [],
         }
         track.bars.push(bar)
@@ -130,6 +131,27 @@ export const playlistSlice = createSlice({
         key: action.payload.key,
       })
     },
+    moveBar: (state, action: PayloadAction<MoveBarPayload>) => {
+      const fromTrack = state.tracks.find(
+        (t) => t.id === action.payload.fromTrackId
+      )
+      const toTrack = state.tracks.find(
+        (t) => t.id === action.payload.toTrackId
+      )
+      if (!fromTrack || !toTrack) return
+      if (!action.payload.barId) return
+
+      const bar = fromTrack.bars.find((b) => b.id === action.payload.barId)
+
+      if (!bar) return
+
+      fromTrack.bars = fromTrack.bars.filter(
+        (b) => b.id !== action.payload.barId
+      )
+
+      bar.startAtTick = action.payload.newStartAtTick
+      toTrack.bars.push(bar)
+    },
   },
 })
 
@@ -138,6 +160,7 @@ export const {
   selectTrack,
   selectBar,
   addTrackBar,
+  moveBar,
   setTrackVolume,
   toggleTrackMute,
   toggleTrackSolo,

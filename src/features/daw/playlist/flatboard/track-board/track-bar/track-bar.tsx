@@ -20,7 +20,7 @@ export const TrackBar = ({
   onSelectBar: (bar: Bar) => void
   onBarDetails: (bar: Bar) => void
 }) => {
-  const barLengthPixel = (bar.endAtTick - bar.startAtTick) * TICK_WIDTH_PIXEL
+  const barLengthPixel = bar.durationTicks * TICK_WIDTH_PIXEL
   const barWidthStyle = `${barLengthPixel}px`
 
   const barOffsetPixel = bar.startAtTick * TICK_WIDTH_PIXEL
@@ -47,11 +47,28 @@ export const TrackBar = ({
   return (
     <div
       key={bar.id}
-      className="absolute z-10"
+      className="absolute z-10 cursor-grab"
       style={{ width: barWidthStyle, left: barOffsetStyle }}
+      draggable
+      onDragStart={(e) => {
+        const xPositionWithinElement =
+          e.clientX - e.currentTarget.getBoundingClientRect().left
+        const relativeTick = Math.floor(
+          xPositionWithinElement / TICK_WIDTH_PIXEL
+        )
+
+        e.dataTransfer.effectAllowed = 'move'
+        // these will be used to identify the bar when dropping over the piano roll
+        e.dataTransfer.setData('dragging_bar/bar_id', bar.id)
+        e.dataTransfer.setData('dragging_bar/track_id', track.id)
+        e.dataTransfer.setData(
+          'dragging_bar/relative_tick',
+          relativeTick.toString()
+        )
+      }}
     >
       <div
-        className={`flex flex-col ${barColor} opacity-80 rounded-md cursor-grab`}
+        className={`flex flex-col ${barColor} opacity-80 rounded-md`}
         style={{ width: barLengthPixel, height: `${TRACK_HEIGHT}px` }}
         onClick={() => onSelectBar(bar)}
         onDoubleClick={() => onBarDetails(bar)}
