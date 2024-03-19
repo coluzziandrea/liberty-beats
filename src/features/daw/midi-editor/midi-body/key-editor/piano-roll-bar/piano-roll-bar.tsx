@@ -70,7 +70,7 @@ export const PianoRollBar = ({
         style={{ width: barLengthPixel, height: '100%' }}
       >
         <div
-          className={`sticky z-30 ${barHeaderColor} rounded-t-md cursor-grab z-20 pl-2`}
+          className={`sticky z-30 ${barHeaderColor} rounded-t-md z-20 pl-2`}
           style={{
             top: 0,
             height: PIANO_ROLL_BAR_HEADER_HEIGHT,
