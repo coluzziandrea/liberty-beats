@@ -24,3 +24,8 @@ export type MoveBarPayload = {
   barId: string
   newStartAtTick: number
 }
+export type ResizeBarPayload = {
+  trackId: string
+  barId: string
+  newDurationTicks: number
+}

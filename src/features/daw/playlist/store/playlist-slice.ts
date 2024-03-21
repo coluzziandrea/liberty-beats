@@ -5,6 +5,7 @@ import {
   AddKeyToCurrentBarPayload,
   AddKeyToCurrentTrackPayload,
   MoveBarPayload,
+  ResizeBarPayload,
   SetTrackVolumePayload,
 } from './types'
 import { v4 as uuidv4 } from 'uuid'
@@ -152,6 +153,17 @@ export const playlistSlice = createSlice({
       bar.startAtTick = action.payload.newStartAtTick
       toTrack.bars.push(bar)
     },
+    resizeBar: (state, action: PayloadAction<ResizeBarPayload>) => {
+      const track = state.tracks.find((t) => t.id === action.payload.trackId)
+      if (!track) return
+      if (!action.payload.barId) return
+
+      const bar = track.bars.find((b) => b.id === action.payload.barId)
+
+      if (!bar) return
+
+      bar.durationTicks = action.payload.newDurationTicks
+    },
   },
 })
 
@@ -161,6 +173,7 @@ export const {
   selectBar,
   addTrackBar,
   moveBar,
+  resizeBar,
   setTrackVolume,
   toggleTrackMute,
   toggleTrackSolo,
