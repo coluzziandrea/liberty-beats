@@ -9,6 +9,7 @@ export interface Note {
   startsAtRelativeTick: number
 
   durationTicks: number
+  velocity: number
   key: Key
 }
 

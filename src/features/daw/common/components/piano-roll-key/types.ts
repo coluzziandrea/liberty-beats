@@ -11,5 +11,8 @@ export type PianoRollKeyProps = {
   beatWidth: number
   keyHeight: number
   editable?: boolean
+  selected?: boolean
   nonMutedColorTailwindClass?: string
+
+  onNoteSelect?: () => void
 }

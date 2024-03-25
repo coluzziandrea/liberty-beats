@@ -7,6 +7,8 @@ export interface MidiEditorSlice {
   whiteKeySize: number
 
   lastKeyDuration: number
+
+  selectedNoteId: string | null
 }
 
 const initialState: MidiEditorSlice = {
@@ -15,6 +17,7 @@ const initialState: MidiEditorSlice = {
   verticalScroll: 0,
   lastKeyDuration: 2,
   whiteKeySize: 20,
+  selectedNoteId: null,
 }
 
 export const midiEditorSlice = createSlice({
@@ -36,6 +39,9 @@ export const midiEditorSlice = createSlice({
     setLastKeyDuration: (state, action: PayloadAction<number>) => {
       state.lastKeyDuration = action.payload
     },
+    selectNote: (state, action: PayloadAction<string | null>) => {
+      state.selectedNoteId = action.payload
+    },
   },
 })
 
@@ -45,6 +51,7 @@ export const {
   setMidiEditorHorizontalScroll,
   setMidiEditorVerticalScroll,
   setLastKeyDuration,
+  selectNote,
 } = midiEditorSlice.actions
 
 export default midiEditorSlice.reducer

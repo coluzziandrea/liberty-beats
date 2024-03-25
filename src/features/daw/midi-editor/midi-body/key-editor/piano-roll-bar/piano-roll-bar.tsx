@@ -7,8 +7,10 @@ import { PianoRollKey } from '../../../../common/components/piano-roll-key/piano
 import { Key } from '../../../../../../model/note/key/key'
 import { PianoRollBarHeader } from './header/piano-roll-bar-header'
 import { useDragAndDrop } from '../../../../common/hooks/useDragAndDrop'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { moveNote } from '../../../../playlist/store/playlist-slice'
+import { selectNote } from '../../../store/midi-editor-slice'
+import { selectSelectedNoteId } from '../../../store/selectors'
 
 export type PianoRollBarProps = {
   track: Track
@@ -24,6 +26,8 @@ export const PianoRollBar = ({
   onAddKey,
 }: PianoRollBarProps) => {
   const midiEditorDimensions = useMidiEditorDimensions()
+
+  const selectedNoteId = useSelector(selectSelectedNoteId)
 
   const barLengthPixel = bar.durationTicks * TICK_WIDTH_PIXEL
   const barWidthStyle = `${barLengthPixel}px`
@@ -52,6 +56,7 @@ export const PianoRollBar = ({
       barDoubleClickX / midiEditorDimensions.beatWidth
     )
     onAddKey(bar, showedKeys[keyIndex], relativeBeat)
+    dispatch(selectNote(null))
   }
 
   const { handleOnDrop } = useDragAndDrop({
@@ -92,6 +97,9 @@ export const PianoRollBar = ({
           <div
             className={`absolute left-0 top-0 h-full w-full opacity-30 ${barColor}`}
             onDoubleClick={onBarEmptyDoubleClick}
+            onClick={() => {
+              dispatch(selectNote(null))
+            }}
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleOnDrop}
           />
@@ -105,6 +113,10 @@ export const PianoRollBar = ({
               beatWidth={midiEditorDimensions.beatWidth}
               keyHeight={midiEditorDimensions.keyHeight}
               editable
+              selected={selectedNoteId === note.id}
+              onNoteSelect={() => {
+                dispatch(selectNote(note.id))
+              }}
             />
           ))}
         </div>

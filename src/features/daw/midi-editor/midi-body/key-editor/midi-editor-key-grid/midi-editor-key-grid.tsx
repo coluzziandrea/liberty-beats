@@ -9,11 +9,13 @@ import { moveNote } from '../../../../playlist/store/playlist-slice'
 export type MidiEditorKeyGridProps = {
   showedKeys: Readonly<Key[]>
 
-  onKeyDoubleClick: (key: Key, beat: number) => void
+  onKeyClick?: (key: Key, beat: number) => void
+  onKeyDoubleClick?: (key: Key, beat: number) => void
 }
 
 export const MidiEditorKeyGrid = ({
   showedKeys,
+  onKeyClick,
   onKeyDoubleClick,
 }: MidiEditorKeyGridProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -90,26 +92,39 @@ export const MidiEditorKeyGrid = ({
       )
     })
 
-    const onDoubleClick = (e: MouseEvent) => {
+    const getKeyFromClick = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect()
-      const gridDoubleClickX = e.clientX - rect.left
-      const gridDoubleClickY =
+      const gridClickY =
         e.clientY - rect.top - midiEditorDimensions.barHeaderHeight
 
-      const keyIndex = Math.floor(
-        gridDoubleClickY / midiEditorDimensions.keyHeight
-      )
-      const bar = Math.floor(gridDoubleClickX / midiEditorDimensions.beatWidth)
-      onKeyDoubleClick(showedKeys[keyIndex], bar)
+      const keyIndex = Math.floor(gridClickY / midiEditorDimensions.keyHeight)
+      return showedKeys[keyIndex]
+    }
+
+    const getTickFromClick = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect()
+      const gridClickX = e.clientX - rect.left
+      return Math.floor(gridClickX / midiEditorDimensions.beatWidth)
+    }
+
+    const onDoubleClick = (e: MouseEvent) => {
+      onKeyDoubleClick &&
+        onKeyDoubleClick(getKeyFromClick(e), getTickFromClick(e))
+    }
+
+    const onClick = (e: MouseEvent) => {
+      onKeyClick && onKeyClick(getKeyFromClick(e), getTickFromClick(e))
     }
 
     canvas.addEventListener('dblclick', onDoubleClick)
+    canvas.addEventListener('click', onClick)
 
     drawRulerGridLines(midiEditorDimensions.beatWidth, subBarBorderColor)
     drawRulerGridLines(midiEditorDimensions.barWidth, parentBarBorderColor)
 
     return () => {
       canvas.removeEventListener('dblclick', onDoubleClick)
+      canvas.removeEventListener('click', onClick)
     }
   }, [
     canvasWidth,
@@ -117,6 +132,7 @@ export const MidiEditorKeyGrid = ({
     canvasHeight,
     onKeyDoubleClick,
     midiEditorDimensions,
+    onKeyClick,
   ])
 
   return (

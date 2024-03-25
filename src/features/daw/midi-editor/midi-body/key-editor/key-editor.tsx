@@ -17,6 +17,7 @@ import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../constants'
 import { PianoRollBar } from './piano-roll-bar/piano-roll-bar'
 import { useMidiEditorDimensions } from './hooks/useMidiEditorDimensions'
 import { KEYS, Key } from '../../../../../model/note/key/key'
+import { selectNote } from '../../store/midi-editor-slice'
 
 export const KeyEditor = () => {
   const dispatch = useDispatch()
@@ -94,6 +95,9 @@ export const KeyEditor = () => {
           <div className="flex flex-col">
             <MidiEditorKeyGrid
               showedKeys={showedKeys}
+              onKeyClick={() => {
+                dispatch(selectNote(null))
+              }}
               onKeyDoubleClick={handleAddKeyFromGrid}
             />
 

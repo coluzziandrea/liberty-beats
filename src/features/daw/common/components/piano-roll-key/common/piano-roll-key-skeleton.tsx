@@ -19,7 +19,9 @@ export const PianoRollKeySkeleton = ({
     : `bg-${props.track.color}-500`
   return (
     <div
-      className={`absolute ${noteColor} z-20 w-fit`}
+      className={`absolute ${noteColor} z-20 w-fit ${
+        props.selected && 'border-[1px] border-white'
+      }`}
       style={{
         height: `${props.keyHeight}px`,
         left: `${noteLeftOffsetPixel}px`,

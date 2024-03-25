@@ -8,3 +8,6 @@ export const selectLastKeyDuration = (state: RootState) =>
 
 export const selectWhiteKeySize = (state: RootState) =>
   state.midiEditor.whiteKeySize
+
+export const selectSelectedNoteId = (state: RootState) =>
+  state.midiEditor.selectedNoteId

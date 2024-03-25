@@ -17,14 +17,12 @@ import { v4 as uuidv4 } from 'uuid'
 export interface PlaylistSlice {
   tracks: Track[]
   selectedTrackId: string | null
-  selectedBarId: string | null
   flatboardScroll: number
 }
 
 const initialState: PlaylistSlice = {
   tracks: [],
   selectedTrackId: null,
-  selectedBarId: null,
   flatboardScroll: 0,
 }
 
@@ -45,9 +43,6 @@ export const playlistSlice = createSlice({
     },
     selectTrack: (state, action: PayloadAction<Track>) => {
       state.selectedTrackId = action.payload.id
-    },
-    selectBar: (state, action: PayloadAction<Bar>) => {
-      state.selectedBarId = action.payload.id
     },
     setFlatboardScroll: (state, action: PayloadAction<number>) => {
       state.flatboardScroll = action.payload
@@ -162,6 +157,7 @@ export const playlistSlice = createSlice({
         startsAtRelativeTick: action.payload.startAtTick - bar.startAtTick,
         durationTicks: action.payload.duration,
         key: action.payload.key,
+        velocity: 100,
       })
     },
     addNoteToCurrentBar: (
@@ -184,6 +180,7 @@ export const playlistSlice = createSlice({
         startsAtRelativeTick: action.payload.startAtRelativeTick,
         durationTicks: action.payload.duration,
         key: action.payload.key,
+        velocity: 100,
       })
     },
     moveBar: (state, action: PayloadAction<MoveBarPayload>) => {
@@ -229,6 +226,23 @@ export const playlistSlice = createSlice({
       if (!note) return
 
       note.durationTicks = action.payload.newDurationTicks
+    },
+    setCurrentTrackNoteVelocity: (
+      state,
+      action: PayloadAction<{ noteId: string; velocity: number }>
+    ) => {
+      const track = state.tracks.find((t) => t.id === state.selectedTrackId)
+      if (!track) return
+
+      const bar = track.bars.find((b) =>
+        b.notes.find((n) => n.id === action.payload.noteId)
+      )
+      if (!bar) return
+
+      const note = bar.notes.find((note) => note.id === action.payload.noteId)
+      if (!note) return
+
+      note.velocity = action.payload.velocity
     },
     moveNote: (state, action: PayloadAction<MoveNotePayload>) => {
       const track = state.tracks.find((t) => t.id === action.payload.trackId)
@@ -277,11 +291,11 @@ export const playlistSlice = createSlice({
 export const {
   addTrack,
   selectTrack,
-  selectBar,
   addTrackBar,
   setTrackColor,
   renameTrack,
   deleteTrack,
+  setCurrentTrackNoteVelocity,
   duplicateTrack,
   moveTrackUp,
   moveTrackDown,

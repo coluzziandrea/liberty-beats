@@ -1,5 +1,5 @@
 import { BsFillCursorFill } from 'react-icons/bs'
-import { FaHeadphones } from 'react-icons/fa'
+import { FaHeadphones, FaTrash } from 'react-icons/fa'
 import { RiPencilFill } from 'react-icons/ri'
 
 export const LeftMenuHeader = () => {
@@ -13,9 +13,8 @@ export const LeftMenuHeader = () => {
         <button className="w-[40px] h-[40px] text-xs bg-zinc-800 text-white">
           <RiPencilFill />
         </button>
-
         <button className="w-[40px] h-[40px] text-xs bg-zinc-800 text-white">
-          V
+          <FaTrash />
         </button>
       </div>
 

@@ -1,11 +1,11 @@
-import { MdViewTimeline } from 'react-icons/md'
+import { FaItunesNote } from 'react-icons/fa6'
 import { SCALE_KEYS, SCALE_TYPES } from '../../../../../../model/scale/scale'
 
 export const LeftMenuScaleView = () => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-row gap-2">
-        <MdViewTimeline className="text-orange-500" />
+        <FaItunesNote className="text-orange-500" />
         <p className="text-sm font-bold">Scale View</p>
       </div>
 

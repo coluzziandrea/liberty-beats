@@ -81,7 +81,7 @@ export class Channel {
       time: TimeUtils.beatToToneTime(note.startsAtRelativeTick),
       duration: TimeUtils.beatToToneTime(note.durationTicks),
       note: note.key,
-      velocity: 1, // TODO: handle velocity
+      velocity: note.velocity / 100,
     }
   }
 }
