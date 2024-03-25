@@ -1,4 +1,5 @@
 import { Key } from '../../../../../model/note/key/key'
+import { TrackColor } from '../../../../../model/track/track-color'
 
 export type AddKeyToCurrentTrackPayload = {
   key: Key
@@ -28,4 +29,14 @@ export type ResizeBarPayload = {
   trackId: string
   barId: string
   newDurationTicks: number
+}
+
+export type SetTrackColorPayload = {
+  trackId: string
+  color: TrackColor
+}
+
+export type RenameTrackPayload = {
+  trackId: string
+  newTitle: string
 }

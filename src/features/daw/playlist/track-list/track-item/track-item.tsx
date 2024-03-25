@@ -4,10 +4,12 @@ import { FaVolumeMute } from 'react-icons/fa'
 import { TRACK_HEIGHT } from '../../constants'
 import { MAX_VOLUME } from '../../../player-bar/constants/player-bar-constants'
 import { useDispatch } from 'react-redux'
-import { setTrackVolume } from '../../store/playlist-slice'
+import { renameTrack, setTrackVolume } from '../../store/playlist-slice'
 import { useEffect, useState } from 'react'
 import { useDebounce } from '../../../common/hooks/useDebounce'
 import { Volume } from '../../../../../sequencer/volume/volume'
+import { TrackPopupMenu } from '../track-popup-menu/track-popup-menu'
+import { IoMdSettings } from 'react-icons/io'
 
 export type TrackItemProps = {
   track: Track
@@ -29,6 +31,9 @@ export const TrackItem = ({
   const dispatch = useDispatch()
 
   const [localTrackVolume, setLocalTrackVolume] = useState(track.volume)
+  const [showTrackMenu, setShowTrackMenu] = useState(false)
+  const [isRenaming, setIsRenaming] = useState(false)
+  const [trackName, setTrackName] = useState(track.title)
   const debouncedVolume = useDebounce(localTrackVolume, 500)
 
   const [volumeTooltipVisible, setVolumeTooltipVisible] = useState(false)
@@ -67,7 +72,7 @@ export const TrackItem = ({
       style={{ height: `${TRACK_HEIGHT}px` }}
       onClick={() => onSelectTrack(track)}
     >
-      <div className="flex flex-col divide-y border-r border-slate-600 divide-slate-600 w-8 cursor-pointer">
+      <div className="flex flex-col divide-y border-r border-slate-600 divide-slate-600 min-w-8 max-w-8 w-8 cursor-pointer">
         <div
           className={`flex flex-1 w-full justify-center items-center ${
             track.soloed ? 'bg-orange-400' : ''
@@ -86,8 +91,31 @@ export const TrackItem = ({
         </div>
       </div>
 
-      <div className="flex flex-col p-2 py-2">
-        <span className="select-none">{track.title}</span>
+      <div className="flex-grow flex flex-col px-4 py-2">
+        <div className="h-[50%]">
+          {
+            // Show the input for renaming the track
+            isRenaming ? (
+              <input
+                type="text"
+                className="w-full p-1 mt-1 bg-zinc-800 text-white"
+                value={trackName}
+                autoFocus
+                onBlur={() => {
+                  setIsRenaming(false)
+                  dispatch(
+                    renameTrack({ trackId: track.id, newTitle: trackName })
+                  )
+                }}
+                onChange={(e) => setTrackName(e.target.value)}
+              />
+            ) : (
+              <span className="select-none font-bold text-sm">
+                {track.title}
+              </span>
+            )
+          }
+        </div>
 
         <div className="relative">
           <div
@@ -114,8 +142,29 @@ export const TrackItem = ({
         </div>
       </div>
 
-      <div>
-        <button>{'...'}</button>
+      <div className="relative h-full w-8">
+        <div
+          className="mt-4 cursor-pointer self-center"
+          onClick={() => {
+            if (!showTrackMenu) {
+              setShowTrackMenu(true)
+            }
+          }}
+        >
+          <IoMdSettings />
+        </div>
+        {showTrackMenu && (
+          <div className="fixed mt-2 z-50 h-fit w-fit">
+            <TrackPopupMenu
+              track={track}
+              onClose={() => setShowTrackMenu(false)}
+              onRename={() => {
+                setShowTrackMenu(false)
+                setIsRenaming(true)
+              }}
+            />
+          </div>
+        )}
       </div>
 
       <div className={`h-full w-1 ${isSelected && selectedHighlightColor}`} />

@@ -5,7 +5,9 @@ import {
   AddKeyToCurrentBarPayload,
   AddKeyToCurrentTrackPayload,
   MoveBarPayload,
+  RenameTrackPayload,
   ResizeBarPayload,
+  SetTrackColorPayload,
   SetTrackVolumePayload,
 } from './types'
 import { v4 as uuidv4 } from 'uuid'
@@ -52,6 +54,56 @@ export const playlistSlice = createSlice({
       const track = state.tracks.find((t) => t.id === action.payload)
       if (!track) return
       track.muted = !track.muted
+    },
+    setTrackColor: (state, action: PayloadAction<SetTrackColorPayload>) => {
+      const track = state.tracks.find((t) => t.id === action.payload.trackId)
+      if (!track) return
+      track.color = action.payload.color
+    },
+    renameTrack: (state, action: PayloadAction<RenameTrackPayload>) => {
+      const track = state.tracks.find((t) => t.id === action.payload.trackId)
+      if (!track) return
+      track.title = action.payload.newTitle
+    },
+    deleteTrack: (state, action: PayloadAction<string>) => {
+      state.tracks = state.tracks.filter((t) => t.id !== action.payload)
+    },
+    duplicateTrack: (state, action: PayloadAction<string>) => {
+      const track = state.tracks.find((t) => t.id === action.payload)
+      if (!track) return
+      const newTrack = { ...track, id: uuidv4(), title: track.title + ' Copy' }
+      const oldTrackIndex = state.tracks.findIndex((t) => t.id === track.id)
+      state.tracks = [
+        ...state.tracks.slice(0, oldTrackIndex + 1),
+        newTrack,
+        ...state.tracks.slice(oldTrackIndex + 1),
+      ]
+    },
+    moveTrackUp: (state, action: PayloadAction<string>) => {
+      const track = state.tracks.find((t) => t.id === action.payload)
+      if (!track) return
+      const oldTrackIndex = state.tracks.findIndex((t) => t.id === track.id)
+      if (oldTrackIndex === 0) return
+      state.tracks = state.tracks.filter((t) => t.id !== action.payload)
+      const targetIndex = oldTrackIndex - 1
+      state.tracks = [
+        ...state.tracks.slice(0, targetIndex),
+        track,
+        ...state.tracks.slice(targetIndex),
+      ]
+    },
+    moveTrackDown: (state, action: PayloadAction<string>) => {
+      const track = state.tracks.find((t) => t.id === action.payload)
+      if (!track) return
+      const oldTrackIndex = state.tracks.findIndex((t) => t.id === track.id)
+      if (oldTrackIndex === state.tracks.length - 1) return
+      state.tracks = state.tracks.filter((t) => t.id !== action.payload)
+      const targetIndex = oldTrackIndex + 1
+      state.tracks = [
+        ...state.tracks.slice(0, targetIndex),
+        track,
+        ...state.tracks.slice(targetIndex),
+      ]
     },
     setTrackVolume: (state, action: PayloadAction<SetTrackVolumePayload>) => {
       const track = state.tracks.find((t) => t.id === action.payload.trackId)
@@ -172,6 +224,12 @@ export const {
   selectTrack,
   selectBar,
   addTrackBar,
+  setTrackColor,
+  renameTrack,
+  deleteTrack,
+  duplicateTrack,
+  moveTrackUp,
+  moveTrackDown,
   moveBar,
   resizeBar,
   setTrackVolume,

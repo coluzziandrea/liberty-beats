@@ -8,7 +8,7 @@ export const TickPlaceholder = () => {
   const barOffsetStyle = `${barOffsetPixel}px`
   return (
     <div
-      className="absolute top-0 h-[100%] w-[1px] z-50 bg-white"
+      className="absolute top-0 h-[100%] w-[1px] z-40 bg-white"
       style={{ left: barOffsetStyle }}
     >
       <div
