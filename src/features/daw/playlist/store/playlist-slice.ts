@@ -6,8 +6,10 @@ import {
   AddKeyToCurrentTrackPayload,
   MoveBarPayload,
   RenameTrackPayload,
-  ResizeBarPayload,
   SetTrackColorPayload,
+  MoveNotePayload,
+  ResizeBarPayload,
+  ResizeNotePayload,
   SetTrackVolumePayload,
 } from './types'
 import { v4 as uuidv4 } from 'uuid'
@@ -216,6 +218,59 @@ export const playlistSlice = createSlice({
 
       bar.durationTicks = action.payload.newDurationTicks
     },
+    resizeNote: (state, action: PayloadAction<ResizeNotePayload>) => {
+      const track = state.tracks.find((t) => t.id === action.payload.trackId)
+      if (!track) return
+
+      const bar = track.bars.find((b) => b.id === action.payload.barId)
+      if (!bar) return
+
+      const note = bar.notes.find((note) => note.id === action.payload.noteId)
+      if (!note) return
+
+      note.durationTicks = action.payload.newDurationTicks
+    },
+    moveNote: (state, action: PayloadAction<MoveNotePayload>) => {
+      const track = state.tracks.find((t) => t.id === action.payload.trackId)
+      if (!track) return
+
+      const fromBar = track.bars.find((b) => b.id === action.payload.fromBarId)
+      if (!fromBar) return
+
+      const note = fromBar.notes.find(
+        (note) => note.id === action.payload.noteId
+      )
+      if (!note) return
+
+      let newContainingBar = track.bars.find(
+        (b) =>
+          b.startAtTick <= action.payload.newStartAtTick &&
+          b.startAtTick + b.durationTicks >= action.payload.newStartAtTick
+      )
+
+      if (newContainingBar) {
+        if (newContainingBar.id !== fromBar.id) {
+          // the note is moved to a different bar
+          newContainingBar.notes.push(note)
+          fromBar.notes = fromBar.notes.filter((n) => n.id !== note.id)
+        }
+      } else {
+        // the note is moved to a new bar
+        newContainingBar = {
+          id: uuidv4(),
+          title: track.title + ' ' + (track.bars.length + 1),
+          startAtTick: action.payload.newStartAtTick,
+          durationTicks: note.durationTicks + 8,
+          notes: [note],
+        }
+        track.bars.push(newContainingBar)
+        fromBar.notes = fromBar.notes.filter((n) => n.id !== note.id)
+      }
+
+      note.startsAtRelativeTick =
+        action.payload.newStartAtTick - newContainingBar.startAtTick
+      note.key = action.payload.newKey
+    },
   },
 })
 
@@ -232,6 +287,8 @@ export const {
   moveTrackDown,
   moveBar,
   resizeBar,
+  resizeNote,
+  moveNote,
   setTrackVolume,
   toggleTrackMute,
   toggleTrackSolo,

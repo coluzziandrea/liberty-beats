@@ -2,10 +2,13 @@ import { MouseEvent } from 'react'
 import { Bar } from '../../../../../../model/bar/bar'
 import { Track, TrackUtils } from '../../../../../../model/track/track'
 import { TICK_WIDTH_PIXEL } from '../../../../playlist/constants'
-import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../../constants'
 import { useMidiEditorDimensions } from '../hooks/useMidiEditorDimensions'
 import { PianoRollKey } from '../../../../common/components/piano-roll-key/piano-roll-key'
 import { Key } from '../../../../../../model/note/key/key'
+import { PianoRollBarHeader } from './header/piano-roll-bar-header'
+import { useDragAndDrop } from '../../../../common/hooks/useDragAndDrop'
+import { useDispatch } from 'react-redux'
+import { moveNote } from '../../../../playlist/store/playlist-slice'
 
 export type PianoRollBarProps = {
   track: Track
@@ -28,9 +31,7 @@ export const PianoRollBar = ({
   const barOffsetPixel = bar.startAtTick * TICK_WIDTH_PIXEL
   const barOffsetStyle = `${barOffsetPixel}px`
 
-  const barHeaderColor = TrackUtils.isTrackEffectivelyMuted(track)
-    ? 'bg-gray-600'
-    : `bg-${track.color}-700`
+  const dispatch = useDispatch()
 
   const barColor = TrackUtils.isTrackEffectivelyMuted(track)
     ? 'bg-gray-200'
@@ -50,9 +51,25 @@ export const PianoRollBar = ({
     const relativeBeat = Math.floor(
       barDoubleClickX / midiEditorDimensions.beatWidth
     )
-    console.log(showedKeys[keyIndex])
     onAddKey(bar, showedKeys[keyIndex], relativeBeat)
   }
+
+  const { handleOnDrop } = useDragAndDrop({
+    type: 'drop_note',
+    singleKeyHeight: midiEditorDimensions.keyHeight,
+    gridPaddingTop: 0,
+    onDropNote: (noteId, fromBarId, trackId, newStartAtTick, newKey) => {
+      dispatch(
+        moveNote({
+          noteId,
+          fromBarId,
+          trackId,
+          newStartAtTick: newStartAtTick + bar.startAtTick,
+          newKey,
+        })
+      )
+    },
+  })
 
   return (
     <div
@@ -69,31 +86,25 @@ export const PianoRollBar = ({
         className={`flex flex-col h-full w-full`}
         style={{ width: barLengthPixel, height: '100%' }}
       >
-        <div
-          className={`sticky z-30 ${barHeaderColor} rounded-t-md z-20 pl-2`}
-          style={{
-            top: 0,
-            height: PIANO_ROLL_BAR_HEADER_HEIGHT,
-          }}
-        >
-          <p className="text-white text-sm font-bold select-none">
-            {bar.title}
-          </p>
-        </div>
+        <PianoRollBarHeader bar={bar} track={track} />
 
         <div className="flex-grow relative">
           <div
             className={`absolute left-0 top-0 h-full w-full opacity-30 ${barColor}`}
             onDoubleClick={onBarEmptyDoubleClick}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={handleOnDrop}
           />
           {bar.notes.map((note) => (
             <PianoRollKey
               key={note.id}
+              bar={bar}
               track={track}
               note={note}
               showedKeys={showedKeys}
               beatWidth={midiEditorDimensions.beatWidth}
               keyHeight={midiEditorDimensions.keyHeight}
+              editable
             />
           ))}
         </div>

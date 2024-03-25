@@ -1,45 +1,12 @@
-import { Key } from '../../../../../model/note/key/key'
-import { Note } from '../../../../../model/note/note'
-import { Track, TrackUtils } from '../../../../../model/track/track'
+import { PianoRollKeyProps } from './types'
+import { EditablePianoRollKey } from './editable/editable-piano-roll-key'
+import { ReadonlyPianoRollKey } from './readonly/readonly-piano-roll-key'
+import { PianoRollKeySkeleton } from './common/piano-roll-key-skeleton'
 
-export type PianoRollKeyProps = {
-  note: Note
-  track: Track
-  showedKeys: Readonly<Key[]>
-  beatWidth: number
-  keyHeight: number
-  nonMutedColorTailwindClass?: string
-}
-
-export const PianoRollKey = ({
-  note,
-  track,
-  showedKeys,
-  beatWidth,
-  keyHeight,
-  nonMutedColorTailwindClass,
-}: PianoRollKeyProps) => {
-  const noteLengthPixel = note.durationTicks * beatWidth
-
-  const noteLeftOffsetPixel = note.startsAtRelativeTick * beatWidth
-
-  const noteTopOffsetPixel = showedKeys.indexOf(note.key) * keyHeight
-
-  const noteColor = TrackUtils.isTrackEffectivelyMuted(track)
-    ? 'bg-gray-400'
-    : nonMutedColorTailwindClass
-    ? nonMutedColorTailwindClass
-    : `bg-${track.color}-500`
-
-  return (
-    <div
-      className={`absolute ${noteColor} z-20`}
-      style={{
-        height: `${keyHeight}px`,
-        width: `${noteLengthPixel}px`,
-        left: `${noteLeftOffsetPixel}px`,
-        top: `${noteTopOffsetPixel}px`,
-      }}
-    />
+export const PianoRollKey = ({ editable, ...props }: PianoRollKeyProps) => {
+  return editable ? (
+    <PianoRollKeySkeleton PianoRollKeyBody={EditablePianoRollKey} {...props} />
+  ) : (
+    <PianoRollKeySkeleton PianoRollKeyBody={ReadonlyPianoRollKey} {...props} />
   )
 }

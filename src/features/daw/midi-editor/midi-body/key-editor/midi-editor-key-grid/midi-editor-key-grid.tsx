@@ -1,6 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { useMidiEditorDimensions } from '../hooks/useMidiEditorDimensions'
 import { Key, KeyUtils } from '../../../../../../model/note/key/key'
+import { useDragAndDrop } from '../../../../common/hooks/useDragAndDrop'
+import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../../constants'
+import { useDispatch } from 'react-redux'
+import { moveNote } from '../../../../playlist/store/playlist-slice'
 
 export type MidiEditorKeyGridProps = {
   showedKeys: Readonly<Key[]>
@@ -15,6 +19,7 @@ export const MidiEditorKeyGrid = ({
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   const midiEditorDimensions = useMidiEditorDimensions()
+  const dispatch = useDispatch()
 
   const canvasWidth =
     midiEditorDimensions.maxBars * midiEditorDimensions.barWidth
@@ -25,6 +30,23 @@ export const MidiEditorKeyGrid = ({
 
   const parentBarBorderColor = '#94A3B8' // tailwind slate-500
   const subBarBorderColor = '#64748B' // tailwind slate-400
+
+  const { handleOnDrop } = useDragAndDrop({
+    type: 'drop_note',
+    singleKeyHeight: midiEditorDimensions.keyHeight,
+    gridPaddingTop: PIANO_ROLL_BAR_HEADER_HEIGHT,
+    onDropNote: (noteId, fromBarId, trackId, newStartAtTick, newKey) => {
+      dispatch(
+        moveNote({
+          noteId,
+          fromBarId,
+          trackId,
+          newStartAtTick,
+          newKey,
+        })
+      )
+    },
+  })
 
   useEffect(() => {
     if (!canvasRef.current) return
@@ -78,7 +100,6 @@ export const MidiEditorKeyGrid = ({
         gridDoubleClickY / midiEditorDimensions.keyHeight
       )
       const bar = Math.floor(gridDoubleClickX / midiEditorDimensions.beatWidth)
-      console.log(showedKeys[keyIndex])
       onKeyDoubleClick(showedKeys[keyIndex], bar)
     }
 
@@ -100,6 +121,8 @@ export const MidiEditorKeyGrid = ({
 
   return (
     <canvas
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={handleOnDrop}
       style={{
         width: canvasWidth,
         height: canvasHeight,

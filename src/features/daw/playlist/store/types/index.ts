@@ -40,3 +40,18 @@ export type RenameTrackPayload = {
   trackId: string
   newTitle: string
 }
+
+export type ResizeNotePayload = {
+  trackId: string
+  barId: string
+  noteId: string
+  newDurationTicks: number
+}
+
+export type MoveNotePayload = {
+  trackId: string
+  fromBarId: string
+  noteId: string
+  newStartAtTick: number
+  newKey: Key
+}

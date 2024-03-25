@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Bar } from '../../../../../../model/bar/bar'
 import { NoteUtils } from '../../../../../../model/note/note'
 import { Track, TrackUtils } from '../../../../../../model/track/track'
@@ -12,6 +12,8 @@ import {
 import { useDispatch } from 'react-redux'
 import { resizeBar } from '../../../store/playlist-slice'
 import { useDebounce } from '../../../../common/hooks/useDebounce'
+import { useHorizontalResize } from '../../../../common/hooks/useHorizontalResize'
+import { useDragAndDrop } from '../../../../common/hooks/useDragAndDrop'
 
 export const TrackBar = ({
   track,
@@ -24,9 +26,12 @@ export const TrackBar = ({
   onSelectBar: (bar: Bar) => void
   onBarDetails: (bar: Bar) => void
 }) => {
-  const [barLengthPixel, setBarLengthPixel] = React.useState(
-    bar.durationTicks * TICK_WIDTH_PIXEL
-  )
+  const {
+    elementWidth: barLengthPixel,
+    setElementWidth,
+    handleResizeMouseDown,
+  } = useHorizontalResize(bar.durationTicks * TICK_WIDTH_PIXEL)
+
   const dispatch = useDispatch()
   const debouncedBarLength = useDebounce(barLengthPixel, 500)
 
@@ -35,7 +40,7 @@ export const TrackBar = ({
     if (newDurationTicks === bar.durationTicks) return
 
     dispatch(resizeBar({ trackId: track.id, barId: bar.id, newDurationTicks }))
-    setBarLengthPixel(newDurationTicks * TICK_WIDTH_PIXEL)
+    setElementWidth(newDurationTicks * TICK_WIDTH_PIXEL)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedBarLength, dispatch, track.id])
 
@@ -59,42 +64,7 @@ export const TrackBar = ({
     MIN_FLATBOARD_KEY_HEIGHT
   )
 
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-    const xPositionWithinElement =
-      e.clientX - e.currentTarget.getBoundingClientRect().left
-    const relativeTick = Math.floor(xPositionWithinElement / TICK_WIDTH_PIXEL)
-
-    e.dataTransfer.effectAllowed = 'move'
-    // these will be used to identify the bar when dropping over the piano roll
-    e.dataTransfer.setData('dragging_bar/bar_id', bar.id)
-    e.dataTransfer.setData('dragging_bar/track_id', track.id)
-    e.dataTransfer.setData(
-      'dragging_bar/relative_tick',
-      relativeTick.toString()
-    )
-  }
-
-  const handleResizeMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    const xBeforeResize = e.clientX
-    console.log('resize', xBeforeResize)
-
-    const mouseMoveHandler = (e: MouseEvent) => {
-      const dx = e.clientX - xBeforeResize
-      const newWidth = barLengthPixel + dx
-      setBarLengthPixel(newWidth)
-    }
-
-    const mouseUpHandler = () => {
-      document.removeEventListener('mouseup', mouseUpHandler)
-      document.removeEventListener('mousemove', mouseMoveHandler)
-    }
-
-    document.addEventListener('mousemove', mouseMoveHandler)
-    document.addEventListener('mouseup', mouseUpHandler)
-  }
+  const { handleDragStart } = useDragAndDrop({ type: 'drag_bar', bar, track })
 
   return (
     <div
@@ -128,6 +98,7 @@ export const TrackBar = ({
             {bar.notes.map((note) => (
               <PianoRollKey
                 key={note.id}
+                bar={bar}
                 track={track}
                 note={note}
                 showedKeys={showedKeys}

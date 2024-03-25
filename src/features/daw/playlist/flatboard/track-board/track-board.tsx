@@ -7,7 +7,8 @@ import { requestNewTickPosition } from '../../../playlist-header/store/playlist-
 import { addTrackBar, selectTrack, moveBar } from '../../store/playlist-slice'
 import { MixGrid } from '../../../common/components/mix-grid/mix-grid'
 import { selectBottomUpPanel } from '../../../bottom-bar/store/bottom-bar-slice'
-import { TICK_WIDTH_PIXEL, TRACK_HEIGHT } from '../../constants'
+import { TRACK_HEIGHT } from '../../constants'
+import { useDragAndDrop } from '../../../common/hooks/useDragAndDrop'
 
 export const TrackBoard = ({
   track,
@@ -67,30 +68,14 @@ export const TrackBoard = ({
     return isSelected ? `bg-${track.color}-900` : 'bg-zinc-900'
   }
 
-  const handleOnDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    const barId = e.dataTransfer.getData('dragging_bar/bar_id')
-    console.log(barId)
-    const fromTrackId = e.dataTransfer.getData('dragging_bar/track_id')
-    console.log(fromTrackId)
-    const startDraggingTick = e.dataTransfer.getData(
-      'dragging_bar/relative_tick'
-    )
-
-    const mouseXPositionWithinTrack =
-      e.clientX - e.currentTarget.getBoundingClientRect().left
-    const mouseSelectedTick = Math.floor(
-      mouseXPositionWithinTrack / TICK_WIDTH_PIXEL
-    )
-    // the new startAtTick will be the tick selected by mouse taking into consideration the relative tick where the bar was grabbed
-    const newStartAtTick = Math.max(
-      mouseSelectedTick - parseInt(startDraggingTick),
-      0
-    )
-
-    dispatch(
-      moveBar({ barId, fromTrackId, toTrackId: track.id, newStartAtTick })
-    )
-  }
+  const { handleOnDrop } = useDragAndDrop({
+    type: 'drop_bar',
+    onDropBar: (barId, fromTrackId, newStartAtTick) => {
+      dispatch(
+        moveBar({ barId, fromTrackId, toTrackId: track.id, newStartAtTick })
+      )
+    },
+  })
 
   return (
     <div
