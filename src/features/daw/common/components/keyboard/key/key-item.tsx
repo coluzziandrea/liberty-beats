@@ -9,6 +9,7 @@ export type KeyItemProps = {
   whiteKeySize: number
   minWhiteKeySize?: number
   isSelected: boolean
+  isHighlighted?: boolean
   orientation: 'horizontal' | 'vertical'
   onMouseDown: (key: Key) => void
   onMouseUp: (key: Key) => void
@@ -19,12 +20,12 @@ export type KeyItemProps = {
 export const KeyItem = (props: KeyItemProps) => {
   const itemData = useKeyItemData(props)
 
+  const selectedTrackBgColor = `bg-${props.selectedTrack.color}-400`
+
   const tailwindClasses = itemData.isBlackKey
-    ? `z-10 ${
-        props.isSelected ? `bg-${props.selectedTrack.color}-400` : 'bg-black'
-      }`
+    ? `z-10 ${props.isSelected ? selectedTrackBgColor : 'bg-black'}`
     : `${itemData.isHorizontal ? 'border-r' : 'border-b'}  border-black ${
-        props.isSelected ? `bg-${props.selectedTrack.color}-400` : 'bg-white'
+        props.isSelected ? selectedTrackBgColor : 'bg-white'
       }`
 
   const verticalStyle = {
@@ -67,6 +68,12 @@ export const KeyItem = (props: KeyItemProps) => {
           {props.keyToRender}
         </p>
       )}
+
+      <span
+        className={`w-1 h-1 rounded-full ${
+          props.isHighlighted ? selectedTrackBgColor : ''
+        }`}
+      />
 
       <div
         className={`place-self-stretch rounded-b-md ${

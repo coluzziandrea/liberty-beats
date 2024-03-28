@@ -1,4 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { EditorMode } from './types/types'
+import { SCALE_KEYS, SCALE_TYPES, Scale } from '../../../../model/scale/scale'
 
 export interface MidiEditorSlice {
   rulerSize: number
@@ -7,8 +9,11 @@ export interface MidiEditorSlice {
   whiteKeySize: number
 
   lastKeyDuration: number
-
+  editorMode: EditorMode
   selectedNoteId: string | null
+  notePreviewEnabled: boolean
+  scaleViewEnabled: boolean
+  selectedScale: Scale
 }
 
 const initialState: MidiEditorSlice = {
@@ -18,10 +23,17 @@ const initialState: MidiEditorSlice = {
   lastKeyDuration: 2,
   whiteKeySize: 20,
   selectedNoteId: null,
+  editorMode: 'select',
+  notePreviewEnabled: false,
+  scaleViewEnabled: false,
+  selectedScale: {
+    key: SCALE_KEYS[0],
+    type: SCALE_TYPES[0],
+  },
 }
 
 export const midiEditorSlice = createSlice({
-  name: 'instrument',
+  name: 'midiEditor',
   initialState,
   reducers: {
     setMidiEditorRulerSize: (state, action: PayloadAction<number>) => {
@@ -42,6 +54,18 @@ export const midiEditorSlice = createSlice({
     selectNote: (state, action: PayloadAction<string | null>) => {
       state.selectedNoteId = action.payload
     },
+    setEditorMode: (state, action: PayloadAction<EditorMode>) => {
+      state.editorMode = action.payload
+    },
+    toggleNotePreviewEnabled: (state) => {
+      state.notePreviewEnabled = !state.notePreviewEnabled
+    },
+    toggleScaleViewEnabled: (state) => {
+      state.scaleViewEnabled = !state.scaleViewEnabled
+    },
+    selectScale: (state, action: PayloadAction<Scale>) => {
+      state.selectedScale = action.payload
+    },
   },
 })
 
@@ -52,6 +76,10 @@ export const {
   setMidiEditorVerticalScroll,
   setLastKeyDuration,
   selectNote,
+  setEditorMode,
+  toggleNotePreviewEnabled,
+  toggleScaleViewEnabled,
+  selectScale,
 } = midiEditorSlice.actions
 
 export default midiEditorSlice.reducer

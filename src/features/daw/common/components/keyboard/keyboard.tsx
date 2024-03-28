@@ -12,6 +12,7 @@ export type KeyboardProps = {
   selectedTrack: Track
   paddingTop?: number
   showedKeys: Readonly<Key[]>
+  highlightedKeys?: Readonly<Key[]>
   playingKeys: Readonly<Key[]>
   whiteKeySize: number
   minWhiteKeySize?: number
@@ -86,6 +87,7 @@ export const Keyboard = (props: KeyboardProps) => {
           onMouseLeave={handleOnMouseLeave}
           isSelected={props.playingKeys.includes(keyToRender)}
           orientation={props.orientation || 'horizontal'}
+          isHighlighted={props.highlightedKeys?.includes(keyToRender) || false}
         />
       ))}
     </div>

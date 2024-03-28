@@ -13,6 +13,7 @@ import {
   SetTrackVolumePayload,
 } from './types'
 import { v4 as uuidv4 } from 'uuid'
+import { KeyUtils } from '../../../../model/note/key/key'
 
 export interface PlaylistSlice {
   tracks: Track[]
@@ -244,6 +245,34 @@ export const playlistSlice = createSlice({
 
       note.velocity = action.payload.velocity
     },
+    transposeCurrentTrackNoteKey: (
+      state,
+      action: PayloadAction<{ noteId: string; keyOffset: number }>
+    ) => {
+      const track = state.tracks.find((t) => t.id === state.selectedTrackId)
+      if (!track) return
+
+      const bar = track.bars.find((b) =>
+        b.notes.find((n) => n.id === action.payload.noteId)
+      )
+      if (!bar) return
+
+      const note = bar.notes.find((note) => note.id === action.payload.noteId)
+      if (!note) return
+
+      note.key = KeyUtils.transposeKey(note.key, action.payload.keyOffset)
+    },
+    deleteCurrentTrackNote: (state, action: PayloadAction<string>) => {
+      const track = state.tracks.find((t) => t.id === state.selectedTrackId)
+      if (!track) return
+
+      const bar = track.bars.find((b) =>
+        b.notes.find((n) => n.id === action.payload)
+      )
+      if (!bar) return
+
+      bar.notes = bar.notes.filter((n) => n.id !== action.payload)
+    },
     moveNote: (state, action: PayloadAction<MoveNotePayload>) => {
       const track = state.tracks.find((t) => t.id === action.payload.trackId)
       if (!track) return
@@ -303,12 +332,14 @@ export const {
   resizeBar,
   resizeNote,
   moveNote,
+  deleteCurrentTrackNote,
   setTrackVolume,
   toggleTrackMute,
   toggleTrackSolo,
   setFlatboardScroll,
   addNoteToCurrentTrack,
   addNoteToCurrentBar,
+  transposeCurrentTrackNoteKey,
 } = playlistSlice.actions
 
 export default playlistSlice.reducer

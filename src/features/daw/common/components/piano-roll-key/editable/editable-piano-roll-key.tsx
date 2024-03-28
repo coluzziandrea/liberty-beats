@@ -13,7 +13,8 @@ export const EditablePianoRollKey = ({
   bar,
   track,
   beatWidth,
-  onNoteSelect,
+  cursorStyle,
+  onNoteClick,
 }: PianoRollKeyProps) => {
   const {
     elementWidth: noteLengthPixel,
@@ -57,7 +58,12 @@ export const EditablePianoRollKey = ({
       }}
     >
       <div className="relative w-full h-full">
-        <div className="w-full h-full" onClick={onNoteSelect} />
+        <div
+          className={`w-full h-full ${
+            cursorStyle === 'pointer' ? 'cursor-pointer' : 'cursor-default'
+          }`}
+          onClick={onNoteClick}
+        />
         <div
           className="absolute z-30 top-0 right-0 h-full w-2 cursor-ew-resize"
           onMouseDown={handleResizeMouseDown}

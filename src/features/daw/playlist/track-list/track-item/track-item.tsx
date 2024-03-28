@@ -69,7 +69,7 @@ export const TrackItem = ({
       className={`flex flex-row justify-between w-full ${
         isSelected ? 'bg-zinc-800' : 'bg-zinc-900'
       }`}
-      style={{ height: `${TRACK_HEIGHT}px` }}
+      style={{ height: `${TRACK_HEIGHT}px`, minHeight: `${TRACK_HEIGHT}px` }}
       onClick={() => onSelectTrack(track)}
     >
       <div className="flex flex-col divide-y border-r border-slate-600 divide-slate-600 min-w-8 max-w-8 w-8 cursor-pointer">

@@ -11,19 +11,35 @@ import {
   addNoteToCurrentBar,
   addNoteToCurrentTrack,
 } from '../../../playlist/store/playlist-slice'
-import { selectLastKeyDuration } from '../../store/selectors'
+import {
+  selectEditorMode,
+  selectLastKeyDuration,
+  selectNotePreviewEnabled,
+  selectScaleViewEnabled,
+  selectSelectedScale,
+} from '../../store/selectors'
 import { Bar } from '../../../../../model/bar/bar'
 import { PIANO_ROLL_BAR_HEADER_HEIGHT } from '../../constants'
 import { PianoRollBar } from './piano-roll-bar/piano-roll-bar'
 import { useMidiEditorDimensions } from './hooks/useMidiEditorDimensions'
 import { KEYS, Key } from '../../../../../model/note/key/key'
 import { selectNote } from '../../store/midi-editor-slice'
+import {
+  addPlayingKey,
+  removePlayingKey,
+} from '../../../instrument/store/instrument-slice'
+import { ScaleUtils } from '../../../../../model/scale/scale'
 
 export const KeyEditor = () => {
   const dispatch = useDispatch()
   const selectedTrack = useSelector(selectSelectedTrack)
   const playingKeys = useSelector(selectPlayingKeys)
   const lastKeyDuration = useSelector(selectLastKeyDuration)
+  const editorMode = useSelector(selectEditorMode)
+  const notePreviewEnabled = useSelector(selectNotePreviewEnabled)
+  const scaleViewEnabled = useSelector(selectScaleViewEnabled)
+  const selectedScale = useSelector(selectSelectedScale)
+  const selectedScaleKeys = ScaleUtils.getScaleKeys(selectedScale)
 
   const midiRollRef = React.useRef<HTMLDivElement>(null)
   const keyboardRef = React.useRef<HTMLDivElement>(null)
@@ -65,6 +81,16 @@ export const KeyEditor = () => {
     )
   }
 
+  const previewKey = (key: Key) => {
+    if (notePreviewEnabled) {
+      dispatch(addPlayingKey(key))
+
+      setTimeout(() => {
+        dispatch(removePlayingKey(key))
+      }, 100)
+    }
+  }
+
   return (
     <div className="flex w-full flex-grow  bg-zinc-800">
       <div
@@ -80,6 +106,7 @@ export const KeyEditor = () => {
           playingKeys={playingKeys}
           whiteKeySize={midiEditorDimensions.whiteKeySize}
           orientation="vertical"
+          highlightedKeys={scaleViewEnabled ? selectedScaleKeys : []}
         />
       </div>
 
@@ -95,10 +122,19 @@ export const KeyEditor = () => {
           <div className="flex flex-col">
             <MidiEditorKeyGrid
               showedKeys={showedKeys}
-              onKeyClick={() => {
-                dispatch(selectNote(null))
+              onKeyClick={(key: Key, beat: number) => {
+                if (editorMode === 'draw') {
+                  handleAddKeyFromGrid(key, beat)
+                  previewKey(key)
+                } else {
+                  dispatch(selectNote(null))
+                }
               }}
-              onKeyDoubleClick={handleAddKeyFromGrid}
+              cursorStyle={editorMode === 'draw' ? 'add' : 'default'}
+              onKeyDoubleClick={(key: Key, beat: number) => {
+                handleAddKeyFromGrid(key, beat)
+                previewKey(key)
+              }}
             />
 
             {selectedTrack.bars.map((bar: Bar) => (
@@ -107,7 +143,26 @@ export const KeyEditor = () => {
                 track={selectedTrack}
                 showedKeys={showedKeys}
                 bar={bar}
-                onAddKey={handleAddKeyFromBar}
+                onKeyDoubleClick={(
+                  bar: Bar,
+                  key: Key,
+                  startAtRelativeTick: number
+                ) => {
+                  handleAddKeyFromBar(bar, key, startAtRelativeTick)
+                  previewKey(key)
+                  dispatch(selectNote(null))
+                }}
+                onKeyClick={(
+                  bar: Bar,
+                  key: Key,
+                  startAtRelativeTick: number
+                ) => {
+                  if (editorMode === 'draw') {
+                    handleAddKeyFromBar(bar, key, startAtRelativeTick)
+                    previewKey(key)
+                  }
+                  dispatch(selectNote(null))
+                }}
               />
             ))}
           </div>

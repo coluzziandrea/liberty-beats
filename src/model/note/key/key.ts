@@ -1,3 +1,5 @@
+import { ScaleKey } from '../../scale/scale'
+
 export const KEYS = [
   'C1',
   'C#1',
@@ -132,5 +134,25 @@ export class KeyUtils {
     }
 
     return KEYS.slice(startIndex, endIndex + 1)
+  }
+
+  static transposeKey(key: Key, keyOffset: number) {
+    const index = KEYS.indexOf(key)
+    const newIndex = index + keyOffset
+    if (newIndex >= KEYS.length || newIndex < 0) return key
+    return KEYS[index + keyOffset]
+  }
+
+  static getFirstKeyMatchingScaleKey(scaleKey: ScaleKey): Key {
+    const key = KEYS.find((key) => key.includes(scaleKey))
+    if (!key) return KEYS[0]
+    return key
+  }
+
+  static applyIntervalToKey(key: Key, interval: number) {
+    const keyIndex = KEYS.indexOf(key)
+    const newIndex = keyIndex + interval
+    if (newIndex >= KEYS.length || newIndex < 0) return null
+    return KEYS[newIndex]
   }
 }

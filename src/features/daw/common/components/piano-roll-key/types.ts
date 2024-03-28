@@ -14,5 +14,7 @@ export type PianoRollKeyProps = {
   selected?: boolean
   nonMutedColorTailwindClass?: string
 
-  onNoteSelect?: () => void
+  cursorStyle?: 'default' | 'pointer'
+
+  onNoteClick?: () => void
 }

@@ -9,6 +9,8 @@ import { moveNote } from '../../../../playlist/store/playlist-slice'
 export type MidiEditorKeyGridProps = {
   showedKeys: Readonly<Key[]>
 
+  cursorStyle?: 'default' | 'add'
+
   onKeyClick?: (key: Key, beat: number) => void
   onKeyDoubleClick?: (key: Key, beat: number) => void
 }
@@ -16,6 +18,7 @@ export type MidiEditorKeyGridProps = {
 export const MidiEditorKeyGrid = ({
   showedKeys,
   onKeyClick,
+  cursorStyle,
   onKeyDoubleClick,
 }: MidiEditorKeyGridProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -137,6 +140,7 @@ export const MidiEditorKeyGrid = ({
 
   return (
     <canvas
+      className={`${cursorStyle === 'add' ? 'cursor-cell' : 'cursor-default'}`}
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleOnDrop}
       style={{
