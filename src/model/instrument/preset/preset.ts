@@ -17,4 +17,19 @@ export const INSTRUMENT_PRESETS: InstrumentPreset[] = [
     instrument: 'KEYBOARDS',
     name: 'Accordion',
   },
+  {
+    id: 'drums_standard',
+    instrument: 'DRUMS',
+    name: 'Drums',
+  },
+  {
+    id: 'guitar_acustic',
+    instrument: 'GUITAR',
+    name: 'Acustic Guitar',
+  },
+  {
+    id: 'bass_electric',
+    instrument: 'BASS',
+    name: 'Bass Standard',
+  },
 ]
