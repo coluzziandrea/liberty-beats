@@ -15,6 +15,12 @@
   }
 }
 
+@layer base {
+  select {
+    @apply bg-gray-700 p-2 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full    placeholder-gray-400;
+  }
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

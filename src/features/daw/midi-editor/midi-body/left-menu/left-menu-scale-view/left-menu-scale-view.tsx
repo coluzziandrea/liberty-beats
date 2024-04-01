@@ -30,7 +30,7 @@ export const LeftMenuScaleView = () => {
         <p className="text-sm font-bold">Scale View</p>
       </div>
 
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row items-center gap-2">
         <Switch
           checked={scaleViewEnabled}
           onChange={() => dispatch(toggleScaleViewEnabled())}
