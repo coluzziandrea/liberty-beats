@@ -5,6 +5,11 @@ import React from 'react'
 import { selectPlayingKeys } from '../store/selectors'
 import { Octave } from '../../../../model/note/key/octave/octave'
 import { KEYS } from '../../../../model/note/key/key'
+import {
+  selectScaleViewEnabled,
+  selectSelectedScale,
+} from '../../midi-editor/store/selectors'
+import { ScaleUtils } from '../../../../model/scale/scale'
 
 export type InstrumentKeyboardProps = {
   selectedTrack: Track
@@ -24,9 +29,12 @@ const getShowedKeys = (selectedOctave: Octave) => {
 }
 
 export const InstrumentKeyboard = (props: InstrumentKeyboardProps) => {
+  const scaleViewEnabled = useSelector(selectScaleViewEnabled)
+  const selectedScale = useSelector(selectSelectedScale)
   const showedKeys = getShowedKeys(props.selectedOctave)
   const playingKeys = useSelector(selectPlayingKeys)
 
+  const selectedScaleKeys = ScaleUtils.getScaleKeys(selectedScale)
   const [keySize, setKeySize] = React.useState(0)
 
   const handleResize = (keyboardSize: number) => {
@@ -42,6 +50,7 @@ export const InstrumentKeyboard = (props: InstrumentKeyboardProps) => {
         whiteKeySize={keySize}
         minWhiteKeySize={50}
         onResize={handleResize}
+        highlightedKeys={scaleViewEnabled ? selectedScaleKeys : []}
       />
     </>
   )

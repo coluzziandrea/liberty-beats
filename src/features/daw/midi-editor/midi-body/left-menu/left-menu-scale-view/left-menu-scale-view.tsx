@@ -1,13 +1,7 @@
 import { FaItunesNote } from 'react-icons/fa6'
-import {
-  SCALE_KEYS,
-  SCALE_TYPES,
-  ScaleKey,
-  ScaleType,
-} from '../../../../../../model/scale/scale'
+import { Scale } from '../../../../../../model/scale/scale'
 import { selectSelectedTrack } from '../../../../playlist/store/selectors'
 import { useDispatch, useSelector } from 'react-redux'
-import { Switch } from '../../../../common/components/switch/switch'
 import {
   selectScaleViewEnabled,
   selectSelectedScale,
@@ -16,6 +10,7 @@ import {
   selectScale,
   toggleScaleViewEnabled,
 } from '../../../store/midi-editor-slice'
+import { ScaleSelector } from '../../../../common/components/scale-selector/scale-selector'
 
 export const LeftMenuScaleView = () => {
   const selectedTrack = useSelector(selectSelectedTrack)
@@ -30,52 +25,13 @@ export const LeftMenuScaleView = () => {
         <p className="text-sm font-bold">Scale View</p>
       </div>
 
-      <div className="flex flex-row items-center gap-2">
-        <Switch
-          checked={scaleViewEnabled}
-          onChange={() => dispatch(toggleScaleViewEnabled())}
-          mainColor={selectedTrack?.color}
-        />
-
-        <div className="flex flex-row gap-1">
-          <select
-            className="text-sm"
-            defaultValue={selectedScale?.key}
-            onChange={(e) => {
-              dispatch(
-                selectScale({
-                  key: e.currentTarget.value as ScaleKey,
-                  type: selectedScale?.type as ScaleType,
-                })
-              )
-            }}
-          >
-            {SCALE_KEYS.map((scaleKey) => (
-              <option key={scaleKey} value={scaleKey}>
-                {scaleKey}
-              </option>
-            ))}
-          </select>
-          <select
-            className="text-sm"
-            onChange={(e) => {
-              dispatch(
-                selectScale({
-                  key: selectedScale?.key as ScaleKey,
-                  type: e.currentTarget.value as ScaleType,
-                })
-              )
-            }}
-            defaultValue={selectedScale?.type}
-          >
-            {SCALE_TYPES.map((scaleType) => (
-              <option key={scaleType} value={scaleType}>
-                {scaleType}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+      <ScaleSelector
+        scaleViewEnabled={scaleViewEnabled}
+        selectedTrack={selectedTrack}
+        selectedScale={selectedScale}
+        onToggleScaleViewEnabled={() => dispatch(toggleScaleViewEnabled())}
+        onSelectScale={(scale: Scale) => dispatch(selectScale(scale))}
+      />
     </div>
   )
 }
