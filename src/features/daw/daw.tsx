@@ -1,4 +1,5 @@
 import { BottomBar } from './bottom-bar/bottom-bar'
+import { DrumMachine } from './drum-machine/drum-machine'
 import { InstrumentSetup } from './instrument/instrument-setup'
 import { MidiEditor } from './midi-editor/midi-editor'
 import { PlayerBar } from './player-bar/player-bar'
@@ -23,6 +24,7 @@ export const DAW = () => {
       <div>
         <InstrumentSetup />
         <MidiEditor />
+        <DrumMachine />
       </div>
 
       <div>

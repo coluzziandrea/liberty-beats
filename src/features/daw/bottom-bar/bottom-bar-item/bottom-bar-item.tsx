@@ -6,21 +6,27 @@ import {
 } from '../store/bottom-bar-slice'
 import { Track } from '../../../../model/track/track'
 
-export const MidiEditor = ({
-  selectedTrack,
-  selectedBottomUpPanel,
-}: {
+export type BottomBarItemProps = {
+  label: string
+  bottomUpPanel: BottomUpPanel
   selectedTrack?: Track
   selectedBottomUpPanel: BottomUpPanel | null
-}) => {
+}
+
+export const BottomBarItem = ({
+  selectedTrack,
+  selectedBottomUpPanel,
+  bottomUpPanel,
+  label,
+}: BottomBarItemProps) => {
   const dispatch = useDispatch()
-  const isSelected = selectedBottomUpPanel === 'midiEditor'
+  const isSelected = selectedBottomUpPanel === bottomUpPanel
 
   const handleInstrumentSelection = () => {
     if (isSelected) {
       dispatch(closeAllBottomUpPanels())
     } else {
-      dispatch(selectBottomUpPanel('midiEditor'))
+      dispatch(selectBottomUpPanel(bottomUpPanel))
     }
   }
 
@@ -33,7 +39,7 @@ export const MidiEditor = ({
           isSelected && 'bg-white text-black'
         }`}
       >
-        MIDI Editor
+        {label}
       </button>
     </div>
   )

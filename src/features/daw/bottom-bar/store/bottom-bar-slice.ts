@@ -13,7 +13,10 @@ export const bottomBarSlice = createSlice({
   name: 'bottomBar',
   initialState,
   reducers: {
-    selectBottomUpPanel: (state, action: PayloadAction<BottomUpPanel>) => {
+    selectBottomUpPanel: (
+      state,
+      action: PayloadAction<BottomUpPanel | null>
+    ) => {
       state.selectedBottomUpPanel = action.payload
     },
     closeAllBottomUpPanels: (state) => {

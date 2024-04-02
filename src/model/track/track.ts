@@ -1,6 +1,7 @@
 import { Bar } from '../bar/bar'
 import { InstrumentPreset } from '../instrument/preset/preset'
 import { TrackColor } from './track-color'
+import { TrackDrums } from './track-drums'
 
 export interface Track {
   id: string
@@ -12,6 +13,11 @@ export interface Track {
    */
   color: TrackColor
   instrumentPreset: InstrumentPreset
+
+  /**
+   * Drums track specific data (can be undefined if track is not drums track)
+   */
+  trackDrums?: TrackDrums
   bars: Bar[]
 
   volume: number

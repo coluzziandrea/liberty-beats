@@ -4,8 +4,10 @@ export const TRACK_COLORS = [
   'green',
   'red',
   'yellow',
-  'orange',
+  'pink',
+  'cyan',
   'purple',
+  'orange',
 ] as const
 
 export type TrackColor = (typeof TRACK_COLORS)[number]

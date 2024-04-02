@@ -21,8 +21,6 @@ export const InstrumentConfig = ({ selectedTrack }: InstrumentConfigProps) => {
   const selectedScale = useSelector(selectSelectedScale)
   const dispatch = useDispatch()
 
-  console.log(selectedScale)
-
   return (
     <div className="flex flex-row justify-between gap-4">
       <div className="flex flex-row items-center gap-2">

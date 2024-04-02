@@ -1,10 +1,21 @@
 /** @type {import('tailwindcss').Config} */
-const colorNames = ['red', 'blue', 'green', 'yellow', 'orange', 'purple']
+const colorNames = [
+  'red',
+  'blue',
+  'green',
+  'yellow',
+  'orange',
+  'purple',
+  'cyan',
+  'pink',
+]
 const safelist = colorNames
   .map((color) => [
     `bg-${color}-200`,
     `bg-${color}-400`,
     `bg-${color}-500`,
+    `group-hover:bg-${color}-500`,
+    `hover:bg-${color}-900`,
     `text-${color}-400`,
     `text-${color}-500`,
     `accent-${color}-600`,
