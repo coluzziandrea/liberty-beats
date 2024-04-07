@@ -61,23 +61,22 @@ export class Channel {
 
   generatePartsFromBars(trackBars: Readonly<Bar[]>) {
     // TODO merge the bars on the same time, taking into consideration start and duration for each bar
-    this._parts = trackBars.map((bar) => {
-      const sequencerNotes = bar.notes.map(this.noteToTone.bind(this))
-      const part = new Tone.Part(
-        (time, value: ReturnType<typeof this.noteToTone>) => {
-          if (this._otherTrackIsPreviewing || this._muted) return
-          this._instrument?.play(
-            value.note,
-            value.duration,
-            time,
-            value.velocity
-          )
-        },
-        sequencerNotes
-      )
-      part.start(TimeUtils.beatToToneTime(bar.startAtTick))
-      return part
-    })
+    this._parts = trackBars.map((bar) => this.partFromBar(bar))
+  }
+
+  partFromBar(bar: Bar, isPreviewing: boolean = false) {
+    const sequencerNotes = bar.notes.map(this.noteToTone.bind(this))
+    console.log('sequencerNotes', sequencerNotes)
+    const part = new Tone.Part(
+      (time, value: ReturnType<typeof this.noteToTone>) => {
+        if (!isPreviewing && (this._otherTrackIsPreviewing || this._muted))
+          return
+        this._instrument?.play(value.note, value.duration, time, value.velocity)
+      },
+      sequencerNotes
+    )
+    part.start(TimeUtils.beatToToneTime(bar.startAtTick))
+    return part
   }
 
   setInstrument(instrumentPreset: InstrumentPreset) {
@@ -111,14 +110,7 @@ export class Channel {
   }
 
   setPreviewLoopBar(loopBar: Bar) {
-    this._previewLoopPart = new Tone.Part(
-      (time, value: ReturnType<typeof this.noteToTone>) => {
-        if (!this._isPreviewingLoop) return
-        this._instrument?.play(value.note, value.duration, time, value.velocity)
-      },
-      loopBar.notes.map(this.noteToTone.bind(this))
-    )
-    this._previewLoopPart.start()
+    this._previewLoopPart = this.partFromBar(loopBar, true)
   }
 
   stopPreviewLoop() {
