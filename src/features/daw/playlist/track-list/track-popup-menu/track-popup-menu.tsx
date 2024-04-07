@@ -11,7 +11,8 @@ import {
   moveTrackUp,
   setTrackColor,
 } from '../../store/playlist-slice'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
+import { useCallbackOnOutsideClick } from '../../../common/hooks/use-outside-click'
 
 export type TrackPopupMenuProps = {
   track: Track
@@ -27,24 +28,7 @@ export const TrackPopupMenu = ({
   const dispatch = useDispatch()
   const popupMenuRef = useRef<HTMLDivElement>(null)
 
-  const handleOutsideClick = (e: MouseEvent) => {
-    if (
-      popupMenuRef.current &&
-      !popupMenuRef.current.contains(e.target as Node)
-    ) {
-      // setting a timeout to allow the click event to finish before closing the menu
-      setTimeout(() => {
-        onClose()
-      }, 100)
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleOutsideClick)
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick)
-    }
-  })
+  useCallbackOnOutsideClick(popupMenuRef, onClose)
 
   const menuItems = [
     {

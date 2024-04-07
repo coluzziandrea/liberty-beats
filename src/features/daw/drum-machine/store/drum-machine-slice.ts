@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { TRACK_DRUM_PATTERNS } from '../../../../model/track/drums/track-drums'
 
 export interface DrumMachineState {
   isPlayingPattern: boolean
@@ -8,8 +9,8 @@ export interface DrumMachineState {
 
 const initialState: DrumMachineState = {
   isPlayingPattern: false,
-  maxTrackPatterns: 8,
-  selectedPatternIndex: 1,
+  maxTrackPatterns: TRACK_DRUM_PATTERNS,
+  selectedPatternIndex: 0,
 }
 
 export const drumMachineSlice = createSlice({

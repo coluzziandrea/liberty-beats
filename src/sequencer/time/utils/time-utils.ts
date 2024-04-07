@@ -4,7 +4,7 @@ export class TimeUtils {
   static beatToToneTime(beat: number) {
     const bars = Math.floor(beat / 4)
     const quarters = Math.floor((beat % 4) / 1)
-    const sixteenths = 0
+    const sixteenths = (beat % 1) * 4
     return `${bars}:${quarters}:${sixteenths}`
   }
 

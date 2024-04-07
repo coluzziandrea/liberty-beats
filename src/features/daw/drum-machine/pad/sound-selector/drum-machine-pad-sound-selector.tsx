@@ -1,43 +1,35 @@
-import { DrumSoundUtils } from '../../../../../model/drums/sound/drums-sound'
-import { TRACK_COLORS } from '../../../../../model/track/track-color'
-import { DrumMachinePadProps } from '../drum-machine-pad'
-import { DrumMachineCategoryIcon } from './category/drum-category-icon'
-import { RiArrowDropDownLine } from 'react-icons/ri'
+import { useDispatch } from 'react-redux'
+import { DrumSound } from '../../../../../model/drums/sound/drums-sound'
+import { setCurrentTrackDrumsSounds } from '../../../playlist/store/playlist-slice'
+import { DrumMachinePadSoundItem } from './pad-sound-item/drum-machine-drum-sound-item'
+import { Track } from '../../../../../model/track/track'
+
+export type DrumMachinePadSoundSelectorProps = {
+  selectedTrack: Track
+  selectedSounds: DrumSound[]
+}
 
 export const DrumMachinePadSoundSelector = ({
+  selectedSounds,
   selectedTrack,
-}: DrumMachinePadProps) => {
-  const sounds = DrumSoundUtils.getDrumsSoundSetByPreset(
-    selectedTrack.instrumentPreset
-  )
-  const selectedSounds =
-    selectedTrack.trackDrums?.selectedSounds || sounds.slice(0, 7)
+}: DrumMachinePadSoundSelectorProps) => {
+  const dispatch = useDispatch()
   return (
     <div className="flex flex-col gap-1">
       {selectedSounds.map((sound, index) => {
         return (
-          <div
+          <DrumMachinePadSoundItem
             key={index}
-            className="flex flex-row group items-center justify-start h-8 gap-2 select-none cursor-pointer bg-slate-900 hover:bg-slate-700"
-            onClick={() => {
-              console.log('change sound', sound)
+            selectedTrack={selectedTrack}
+            sound={sound}
+            index={index}
+            onSelectedSound={(sound) => {
+              const newSounds = selectedSounds.map((s, i) =>
+                i === index ? sound : s
+              )
+              dispatch(setCurrentTrackDrumsSounds(newSounds))
             }}
-          >
-            <div
-              className={`w-[2px] h-full group-hover:bg-${TRACK_COLORS[index]}-500`}
-            />
-            <div
-              className={`h-full py-1 w-fit text-${TRACK_COLORS[index]}-500 `}
-            >
-              <DrumMachineCategoryIcon
-                category={sound.category}
-                className="w-6 h-full"
-              />
-            </div>
-            <div className="text-sm font-bold flex-grow">{sound.name}</div>
-
-            <RiArrowDropDownLine />
-          </div>
+          />
         )
       })}
     </div>

@@ -3,11 +3,12 @@ import { INSTRUMENT_PRESETS } from '../../../../../model/instrument/preset/prese
 import { Track } from '../../../../../model/track/track'
 import { TrackColor } from '../../../../../model/track/track-color'
 import { addTrack, selectTrack } from '../../../playlist/store/playlist-slice'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { CgPiano } from 'react-icons/cg'
 import { GiGuitarHead, GiGuitarBassHead } from 'react-icons/gi'
 import { LiaDrumSolid } from 'react-icons/lia'
 import { InstrumentType } from '../../../../../model/instrument/instrument'
+import { useCallbackOnOutsideClick } from '../../../common/hooks/use-outside-click'
 
 export type AddTrackMenuProps = {
   onClose: () => void
@@ -23,6 +24,7 @@ type MenuItem = {
 export const AddTrackMenu = ({ onClose }: AddTrackMenuProps) => {
   const dispatch = useDispatch()
   const popupMenuRef = useRef<HTMLDivElement>(null)
+  useCallbackOnOutsideClick(popupMenuRef, onClose)
 
   const menuItems: MenuItem[] = [
     {
@@ -51,13 +53,6 @@ export const AddTrackMenu = ({ onClose }: AddTrackMenuProps) => {
     },
   ]
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleOutsideClick)
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick)
-    }
-  })
-
   const handleAddTrack = (item: MenuItem) => {
     const instrumentPreset = INSTRUMENT_PRESETS.find(
       (preset) => preset.instrument === item.type
@@ -78,17 +73,6 @@ export const AddTrackMenu = ({ onClose }: AddTrackMenuProps) => {
     dispatch(selectTrack(newTrack))
   }
 
-  const handleOutsideClick = (e: MouseEvent) => {
-    if (
-      popupMenuRef.current &&
-      !popupMenuRef.current.contains(e.target as Node)
-    ) {
-      // setting a timeout to allow the click event to finish before closing the menu
-      setTimeout(() => {
-        onClose()
-      }, 100)
-    }
-  }
   return (
     <div
       className="w-52 flex flex-col bg-zinc-900 shadow-md shadow-zinc-600 rounded-xl overflow-hidden"

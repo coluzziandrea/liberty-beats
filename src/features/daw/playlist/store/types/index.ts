@@ -1,5 +1,6 @@
 import { Key } from '../../../../../model/note/key/key'
 import { TrackColor } from '../../../../../model/track/track-color'
+import { TrackDrumPattern } from '../../../../../model/track/drums/track-drums'
 
 export type AddKeyToCurrentTrackPayload = {
   key: Key
@@ -54,4 +55,9 @@ export type MoveNotePayload = {
   noteId: string
   newStartAtTick: number
   newKey: Key
+}
+
+export type setCurrentTrackDrumsPatternPayload = {
+  patternIndex: number
+  pattern: TrackDrumPattern
 }

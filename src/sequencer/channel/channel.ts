@@ -4,14 +4,23 @@ import { Note } from '../../model/note/note'
 import { Track } from '../../model/track/track'
 import * as Tone from 'tone'
 import { TimeUtils } from '../time/utils/time-utils'
-import { Volume } from '../volume/volume'
+import { ChannelInstrument } from './instrument/channel-instrument'
+import { createChannelInstrument } from './instrument/channel-instrument-factory'
+import { Key } from '../../model/note/key/key'
 
 export class Channel {
-  synth: Tone.PolySynth = new Tone.PolySynth(Tone.FMSynth)
-  parts: Tone.Part[] = []
-  _muted: boolean
+  trackId: string
+
+  private _parts: Tone.Part[] = []
+  private _previewLoopPart: Tone.Part | null = null
+  private _instrument: ChannelInstrument | null = null
+  private _muted: boolean
+
+  private _otherTrackIsPreviewing: boolean = false
+  private _isPreviewingLoop: boolean = false
 
   constructor(track: Track) {
+    this.trackId = track.id
     this._muted = false
     this.updateFromTrack(track)
   }
@@ -22,8 +31,9 @@ export class Channel {
       return
     }
     this.clear()
-    this._muted =
+    this.setMuted(
       track.muted || (track.areThereAnyOtherTrackSoloed && !track.soloed)
+    )
     this.setInstrument(track.instrumentPreset)
     this.generatePartsFromBars(track.bars)
     this.setVolume(track.volume)
@@ -31,24 +41,32 @@ export class Channel {
   }
 
   setVolume(volume: number) {
-    this.synth.volume.value = Volume.transformVolumeToToneVolume(volume)
+    this._instrument?.setVolume(volume)
+  }
+
+  setMuted(muted: boolean) {
+    this._muted = muted
+  }
+
+  setOtherTrackIsPreviewing(otherTrackIsPreviewing: boolean) {
+    this._otherTrackIsPreviewing = otherTrackIsPreviewing
   }
 
   clear() {
-    this.parts.forEach((part) => part.dispose())
-    this.parts = []
-    this.synth.disconnect()
+    this._parts.forEach((part) => part.dispose())
+    this._parts = []
+
+    this._instrument?.disconnect()
   }
 
   generatePartsFromBars(trackBars: Readonly<Bar[]>) {
     // TODO merge the bars on the same time, taking into consideration start and duration for each bar
-    this.parts = trackBars.map((bar) => {
+    this._parts = trackBars.map((bar) => {
       const sequencerNotes = bar.notes.map(this.noteToTone.bind(this))
-      console.log('sequencerNotes', sequencerNotes)
       const part = new Tone.Part(
         (time, value: ReturnType<typeof this.noteToTone>) => {
-          if (this._muted) return
-          this.synth.triggerAttackRelease(
+          if (this._otherTrackIsPreviewing || this._muted) return
+          this._instrument?.play(
             value.note,
             value.duration,
             time,
@@ -64,10 +82,11 @@ export class Channel {
 
   setInstrument(instrumentPreset: InstrumentPreset) {
     console.log('setting instrument', instrumentPreset)
+    this._instrument = createChannelInstrument(instrumentPreset)
   }
 
   connect() {
-    this.synth.toDestination()
+    this._instrument?.connect()
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -83,5 +102,30 @@ export class Channel {
       note: note.key,
       velocity: note.velocity / 100,
     }
+  }
+
+  playKeys(keys: Key[]) {
+    keys.forEach((key) => {
+      this._instrument?.play(key, '8n')
+    })
+  }
+
+  setPreviewLoopBar(loopBar: Bar) {
+    this._previewLoopPart = new Tone.Part(
+      (time, value: ReturnType<typeof this.noteToTone>) => {
+        if (!this._isPreviewingLoop) return
+        this._instrument?.play(value.note, value.duration, time, value.velocity)
+      },
+      loopBar.notes.map(this.noteToTone.bind(this))
+    )
+    this._previewLoopPart.start()
+  }
+
+  stopPreviewLoop() {
+    this._isPreviewingLoop = false
+  }
+
+  startPreviewLoop() {
+    this._isPreviewingLoop = true
   }
 }

@@ -43,25 +43,45 @@ export const Keyboard = (props: KeyboardProps) => {
 
   const handleOnKeyItemMouseDown = (key: Key) => {
     setIsMouseDown(true)
-    dispatch(addPlayingKey(key))
+    dispatch(
+      addPlayingKey({
+        trackId: props.selectedTrack.id,
+        key,
+      })
+    )
   }
 
   const handleOnKeyItemMouseUp = (key: Key) => {
     setIsMouseDown(false)
     if (props.playingKeys.includes(key)) {
-      dispatch(removePlayingKey(key))
+      dispatch(
+        removePlayingKey({
+          trackId: props.selectedTrack.id,
+          key,
+        })
+      )
     }
   }
 
   const handleOnMouseEnter = (key: Key) => {
     if (isMouseDown) {
-      dispatch(addPlayingKey(key))
+      dispatch(
+        addPlayingKey({
+          trackId: props.selectedTrack.id,
+          key,
+        })
+      )
     }
   }
 
   const handleOnMouseLeave = (key: Key) => {
     if (props.playingKeys.includes(key)) {
-      dispatch(removePlayingKey(key))
+      dispatch(
+        removePlayingKey({
+          trackId: props.selectedTrack.id,
+          key,
+        })
+      )
     }
   }
 

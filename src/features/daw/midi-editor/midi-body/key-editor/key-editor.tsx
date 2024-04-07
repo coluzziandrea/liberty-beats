@@ -3,7 +3,7 @@ import { Keyboard } from '../../../common/components/keyboard/keyboard'
 import { selectSelectedTrack } from '../../../playlist/store/selectors'
 import { MidiEditorKeyGrid } from './midi-editor-key-grid/midi-editor-key-grid'
 import { TickPlaceholder } from '../../../common/components/tick-placeholder/tick-placeholder'
-import { selectPlayingKeys } from '../../../instrument/store/selectors'
+import { selectPlayingTrackKeys } from '../../../instrument/store/selectors'
 import { useMidiEditorHorizontalScroll } from '../../hooks/useMidiEditorHorizontalScroll'
 import React from 'react'
 import { useMidiEditorVerticalScroll } from '../../hooks/useMidiEditorVerticalScroll'
@@ -33,13 +33,16 @@ import { ScaleUtils } from '../../../../../model/scale/scale'
 export const KeyEditor = () => {
   const dispatch = useDispatch()
   const selectedTrack = useSelector(selectSelectedTrack)
-  const playingKeys = useSelector(selectPlayingKeys)
+  const playingKeys = useSelector(selectPlayingTrackKeys)
   const lastKeyDuration = useSelector(selectLastKeyDuration)
   const editorMode = useSelector(selectEditorMode)
   const notePreviewEnabled = useSelector(selectNotePreviewEnabled)
   const scaleViewEnabled = useSelector(selectScaleViewEnabled)
   const selectedScale = useSelector(selectSelectedScale)
   const selectedScaleKeys = ScaleUtils.getScaleKeys(selectedScale)
+
+  const currentTrackPlayingKeys =
+    playingKeys.find((item) => item.trackId === selectedTrack?.id)?.keys || []
 
   const midiRollRef = React.useRef<HTMLDivElement>(null)
   const keyboardRef = React.useRef<HTMLDivElement>(null)
@@ -83,10 +86,20 @@ export const KeyEditor = () => {
 
   const previewKey = (key: Key) => {
     if (notePreviewEnabled) {
-      dispatch(addPlayingKey(key))
+      dispatch(
+        addPlayingKey({
+          trackId: selectedTrack.id,
+          key,
+        })
+      )
 
       setTimeout(() => {
-        dispatch(removePlayingKey(key))
+        dispatch(
+          removePlayingKey({
+            trackId: selectedTrack.id,
+            key,
+          })
+        )
       }, 100)
     }
   }
@@ -103,7 +116,7 @@ export const KeyEditor = () => {
           selectedTrack={selectedTrack}
           showedKeys={showedKeys}
           paddingTop={PIANO_ROLL_BAR_HEADER_HEIGHT}
-          playingKeys={playingKeys}
+          playingKeys={currentTrackPlayingKeys}
           whiteKeySize={midiEditorDimensions.whiteKeySize}
           orientation="vertical"
           highlightedKeys={scaleViewEnabled ? selectedScaleKeys : []}

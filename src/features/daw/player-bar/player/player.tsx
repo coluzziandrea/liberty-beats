@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { selectIsPlaying, selectTime } from '../store/selectors'
+import { selectIsPlaying } from '../store/selectors'
 import { togglePlay, stop } from '../store/playerBarSlice'
 import {
   FaPlay,
@@ -15,11 +15,18 @@ import {
   requestForwardTickPosition,
   requestNewTickPosition,
 } from '../../playlist-header/store/playlist-header-slice'
+import { selectTrackIdInPlayingPreviewloop } from '../../instrument/store/selectors'
+import { usePreviewLoopSafeTransportPosition } from '../../common/hooks/use-preview-loop-safe-transport-position'
 // import { TfiLoop } from 'react-icons/tfi'
 
 export const Player = () => {
+  const { time } = usePreviewLoopSafeTransportPosition()
+
   const isPlaying = useSelector(selectIsPlaying)
-  const time = useSelector(selectTime)
+  const previewLoopPlayingTrackId = useSelector(
+    selectTrackIdInPlayingPreviewloop
+  )
+
   const dispatch = useDispatch()
 
   const handleStop = () => {
@@ -41,28 +48,43 @@ export const Player = () => {
   return (
     <div className="flex flex-row gap-1 items-center justify-center">
       {isPlaying ? (
-        <button onClick={handleStop}>
+        <button onClick={handleStop} disabled={!!previewLoopPlayingTrackId}>
           <FaStop />
         </button>
       ) : (
-        <button onClick={() => dispatch(requestNewTickPosition(0))}>
+        <button
+          onClick={() => dispatch(requestNewTickPosition(0))}
+          disabled={!!previewLoopPlayingTrackId}
+        >
           <FaStepBackward />
         </button>
       )}
 
-      <button onClick={() => dispatch(requestBackwardTickPosition())}>
+      <button
+        onClick={() => dispatch(requestBackwardTickPosition())}
+        disabled={!!previewLoopPlayingTrackId}
+      >
         <FaBackward />
       </button>
       {isPlaying ? (
-        <button onClick={() => dispatch(togglePlay())}>
+        <button
+          onClick={() => dispatch(togglePlay())}
+          disabled={!!previewLoopPlayingTrackId}
+        >
           <FaPause />
         </button>
       ) : (
-        <button onClick={() => dispatch(togglePlay())}>
+        <button
+          onClick={() => dispatch(togglePlay())}
+          disabled={!!previewLoopPlayingTrackId}
+        >
           <FaPlay />
         </button>
       )}
-      <button onClick={() => dispatch(requestForwardTickPosition())}>
+      <button
+        onClick={() => dispatch(requestForwardTickPosition())}
+        disabled={!!previewLoopPlayingTrackId}
+      >
         <FaForward />
       </button>
       {/* TODO - Record & Loop buttons */}

@@ -1,22 +1,31 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { DrumMachinePadProps } from '../drum-machine-pad'
-import { FaPlay, FaPlus, FaTrash } from 'react-icons/fa'
-import {
-  selectMaxTrackPatterns,
-  selectSelectedPatternIndex,
-} from '../../store/selectors/drum-machine-selectors'
+import { FaPlay, FaPause, FaPlus, FaTrash } from 'react-icons/fa'
+import { selectMaxTrackPatterns } from '../../store/selectors/drum-machine-selectors'
 import { DrumMachinePatternUtil } from '../../util/drum-machine-pattern-util'
 import { selectPattern } from '../../store/drum-machine-slice'
+import {
+  EMPTY_DRUM_PATTERN,
+  TrackDrumPatternSound,
+} from '../../../../../model/track/drums/track-drums'
+import { setTrackIdInPlayingPreviewLoop } from '../../../instrument/store/instrument-slice'
+import { Track } from '../../../../../model/track/track'
+
+export type DrumMachinePadCommandsProps = {
+  selectedTrack: Track
+
+  selectedPatternIndex: number
+  previewLoopPlayingTrackId: string | null
+
+  onUpdateCurrentPattern: (newPattern: TrackDrumPatternSound[][]) => void
+}
 
 export const DrumMachinePadCommands = ({
   selectedTrack,
-}: DrumMachinePadProps) => {
+  selectedPatternIndex,
+  onUpdateCurrentPattern,
+  previewLoopPlayingTrackId,
+}: DrumMachinePadCommandsProps) => {
   const maxTrackPatterns = useSelector(selectMaxTrackPatterns)
-  const selectedPatternIndex = useSelector(selectSelectedPatternIndex)
-
-  const selectedPattern =
-    DrumMachinePatternUtil.getPatternNameByIndex(selectedPatternIndex)
-
   const dispatch = useDispatch()
 
   return (
@@ -31,7 +40,10 @@ export const DrumMachinePadCommands = ({
               className={`${
                 index === selectedPatternIndex ? 'bg-slate-700' : 'bg-slate-900'
               } text-center py-2 px-4 rounded-lg cursor-pointer hover:bg-slate-700`}
-              onClick={() => dispatch(selectPattern(index))}
+              onClick={() => {
+                dispatch(setTrackIdInPlayingPreviewLoop(null))
+                dispatch(selectPattern(index))
+              }}
             >
               {DrumMachinePatternUtil.getPatternNameByIndex(index)}
             </div>
@@ -40,11 +52,34 @@ export const DrumMachinePadCommands = ({
       </div>
 
       <div className="flex flex-col gap-2 ">
-        <button className="btn btn-primary flex flex-row gap-2 items-center">
-          <FaPlay />
-          <p className="text-sm">Play Pattern</p>
-        </button>
-        <button className="btn btn-primary flex flex-row gap-2 items-center">
+        {previewLoopPlayingTrackId ? (
+          <button
+            className="btn btn-primary flex flex-row gap-2 items-center"
+            onClick={() => {
+              dispatch(setTrackIdInPlayingPreviewLoop(null))
+            }}
+          >
+            <FaPause />
+            <p className="text-sm">Stop Pattern</p>
+          </button>
+        ) : (
+          <button
+            className="btn btn-primary flex flex-row gap-2 items-center"
+            onClick={() => {
+              dispatch(setTrackIdInPlayingPreviewLoop(selectedTrack.id))
+            }}
+          >
+            <FaPlay />
+            <p className="text-sm">Play Pattern</p>
+          </button>
+        )}
+
+        <button
+          className="btn btn-primary flex flex-row gap-2 items-center"
+          onClick={() => {
+            onUpdateCurrentPattern(EMPTY_DRUM_PATTERN)
+          }}
+        >
           <FaTrash />
           <p className="text-sm">Clear Pattern</p>
         </button>

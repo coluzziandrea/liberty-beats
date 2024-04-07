@@ -11,9 +11,11 @@ import {
   ResizeBarPayload,
   ResizeNotePayload,
   SetTrackVolumePayload,
+  setCurrentTrackDrumsPatternPayload,
 } from './types'
 import { v4 as uuidv4 } from 'uuid'
 import { KeyUtils } from '../../../../model/note/key/key'
+import { DrumSound } from '../../../../model/drums/sound/drums-sound'
 
 export interface PlaylistSlice {
   tracks: Track[]
@@ -314,6 +316,36 @@ export const playlistSlice = createSlice({
         action.payload.newStartAtTick - newContainingBar.startAtTick
       note.key = action.payload.newKey
     },
+    setCurrentTrackDrumsPattern: (
+      state,
+      action: PayloadAction<setCurrentTrackDrumsPatternPayload>
+    ) => {
+      const track = state.tracks.find((t) => t.id === state.selectedTrackId)
+      if (!track) return
+
+      if (!track.trackDrums) {
+        track.trackDrums = {
+          patterns: [],
+          selectedSounds: [],
+        }
+      }
+
+      track.trackDrums.patterns[action.payload.patternIndex] =
+        action.payload.pattern
+    },
+    setCurrentTrackDrumsSounds: (state, action: PayloadAction<DrumSound[]>) => {
+      const track = state.tracks.find((t) => t.id === state.selectedTrackId)
+      if (!track) return
+
+      if (!track.trackDrums) {
+        track.trackDrums = {
+          patterns: [],
+          selectedSounds: [],
+        }
+      }
+
+      track.trackDrums.selectedSounds = action.payload
+    },
   },
 })
 
@@ -340,6 +372,8 @@ export const {
   addNoteToCurrentTrack,
   addNoteToCurrentBar,
   transposeCurrentTrackNoteKey,
+  setCurrentTrackDrumsPattern,
+  setCurrentTrackDrumsSounds,
 } = playlistSlice.actions
 
 export default playlistSlice.reducer

@@ -1,10 +1,10 @@
-import { useSelector } from 'react-redux'
-import { selectCurrentTick } from '../../../playlist-header/store/selectors'
 import { TICK_WIDTH_PIXEL } from '../../../playlist/constants'
+import { usePreviewLoopSafeTransportPosition } from '../../hooks/use-preview-loop-safe-transport-position'
 
 export const TickPlaceholder = () => {
-  const currentTick = useSelector(selectCurrentTick)
-  const barOffsetPixel = currentTick * TICK_WIDTH_PIXEL
+  const { tick } = usePreviewLoopSafeTransportPosition()
+
+  const barOffsetPixel = tick * TICK_WIDTH_PIXEL
   const barOffsetStyle = `${barOffsetPixel}px`
   return (
     <div

@@ -1,7 +1,7 @@
 import { Bar } from '../bar/bar'
 import { InstrumentPreset } from '../instrument/preset/preset'
 import { TrackColor } from './track-color'
-import { TrackDrums } from './track-drums'
+import { TrackDrums } from './drums/track-drums'
 
 export interface Track {
   id: string

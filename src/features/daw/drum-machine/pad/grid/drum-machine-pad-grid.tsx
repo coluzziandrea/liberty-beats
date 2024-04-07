@@ -1,21 +1,49 @@
-import { TRACK_COLORS } from '../../../../../model/track/track-color'
-import { DrumMachinePadProps } from '../drum-machine-pad'
+import { useSelector } from 'react-redux'
+import { TrackDrumPatternSound } from '../../../../../model/track/drums/track-drums'
+import { selectCurrentTick } from '../../../playlist-header/store/selectors'
+import { DrumMachinePadPattern } from './pattern/drum-machine-pad-pattern'
+import { DrumSound } from '../../../../../model/drums/sound/drums-sound'
 
-export const DrumMachinePadGrid = ({ selectedTrack }: DrumMachinePadProps) => {
+export type DrumMachinePadGridProps = {
+  selectedSounds: DrumSound[]
+  selectedPatternBeats: TrackDrumPatternSound[][]
+
+  previewLoopPlayingTrackId: string | null
+
+  onUpdateCurrentPattern: (newPattern: TrackDrumPatternSound[][]) => void
+}
+
+export const DrumMachinePadGrid = ({
+  selectedPatternBeats,
+  onUpdateCurrentPattern,
+  previewLoopPlayingTrackId,
+}: DrumMachinePadGridProps) => {
+  const currentTick = useSelector(selectCurrentTick)
+
+  const activeTickBar = previewLoopPlayingTrackId
+    ? Math.floor(currentTick * 4)
+    : null
+
   return (
     <div className="flex flex-col gap-1">
-      {Array.from({ length: 7 }).map((_, indexRow) => (
-        <div className="flex flex-row gap-1">
-          {Array.from({ length: 16 }).map((_, indexCol) => (
-            <div
-              className={`cursor-pointer h-8 w-8 ${
-                Math.floor(indexCol / 4) % 2 === 0
-                  ? 'bg-zinc-600'
-                  : 'bg-zinc-700'
-              } hover:bg-${TRACK_COLORS[indexRow]}-900`}
-            />
-          ))}
-        </div>
+      {selectedPatternBeats.map((patternSounds, soundIndex) => (
+        <DrumMachinePadPattern
+          key={soundIndex}
+          patternSounds={patternSounds}
+          activeTickBar={activeTickBar}
+          soundIndex={soundIndex}
+          onSoundChange={(toChangeSoundIndex, toChangeBeatIndex, newValue) => {
+            const newPattern = selectedPatternBeats.map(
+              (soundBeats, soundIndex) =>
+                soundIndex === toChangeSoundIndex
+                  ? soundBeats.map((sound, beatIndex) =>
+                      beatIndex === toChangeBeatIndex ? newValue : sound
+                    )
+                  : soundBeats
+            )
+            onUpdateCurrentPattern(newPattern)
+          }}
+        />
       ))}
     </div>
   )

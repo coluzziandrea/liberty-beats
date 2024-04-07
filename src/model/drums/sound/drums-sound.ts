@@ -2,11 +2,13 @@ import {
   InstrumentPreset,
   InstrumentPresetId,
 } from '../../instrument/preset/preset'
+import { Key } from '../../note/key/key'
 import { DrumCategory } from '../category/drum-category'
 import { DRUM_KIT_SOUNDS_01 } from './kits/drum-kit-01/drum-kit-01'
 
 export type DrumSound = {
   id: string
+  key: Key
   category: DrumCategory
   name: string
   presetId: InstrumentPresetId

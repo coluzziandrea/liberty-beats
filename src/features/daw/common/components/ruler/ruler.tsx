@@ -1,11 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { RULER_BAR_WIDTH, SUB_BAR_NUM } from './constants'
-import {
-  selectCurrentTick,
-  selectMaxBars,
-} from '../../../playlist-header/store/selectors'
+import { selectMaxBars } from '../../../playlist-header/store/selectors'
 import { requestNewTickPosition } from '../../../playlist-header/store/playlist-header-slice'
 import { TICK_WIDTH_PIXEL } from '../../../playlist/constants'
+import { usePreviewLoopSafeTransportPosition } from '../../hooks/use-preview-loop-safe-transport-position'
 
 type RulerBarProps = {
   barIndex: number
@@ -80,7 +78,7 @@ const RulerThumb = ({ currentTick }: { currentTick: number }) => {
 
 export const Ruler = () => {
   const maxBars = useSelector(selectMaxBars)
-  const currentTick = useSelector(selectCurrentTick)
+  const { tick: currentTick } = usePreviewLoopSafeTransportPosition()
   const dispatch = useDispatch()
 
   const handleSelectTick = (tick: number) => {
