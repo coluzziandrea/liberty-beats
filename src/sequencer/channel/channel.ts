@@ -64,19 +64,30 @@ export class Channel {
     this._parts = trackBars.map((bar) => this.partFromBar(bar))
   }
 
-  partFromBar(bar: Bar, isPreviewing: boolean = false) {
+  partFromBar(bar: Bar, isPreviewLoopBar: boolean = false) {
     const sequencerNotes = bar.notes.map(this.noteToTone.bind(this))
-    console.log('sequencerNotes', sequencerNotes)
     const part = new Tone.Part(
       (time, value: ReturnType<typeof this.noteToTone>) => {
-        if (!isPreviewing && (this._otherTrackIsPreviewing || this._muted))
-          return
+        if (!this._canPlayPartNote(isPreviewLoopBar)) return
         this._instrument?.play(value.note, value.duration, time, value.velocity)
       },
       sequencerNotes
     )
     part.start(TimeUtils.beatToToneTime(bar.startAtTick))
     return part
+  }
+
+  _canPlayPartNote(isPreviewLoopNote: boolean) {
+    /*
+    if the note is a preview loop note, we should check if the track is previewing the loop
+    if the note is a normal note, we should check if the track is not muted and no other track is previewing
+    */
+
+    if (isPreviewLoopNote) {
+      return this._isPreviewingLoop
+    } else {
+      return !this._muted && !this._otherTrackIsPreviewing
+    }
   }
 
   setInstrument(instrumentPreset: InstrumentPreset) {
