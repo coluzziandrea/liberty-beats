@@ -8,7 +8,7 @@ export interface PlaylistHeaderSlice {
 }
 
 const DEFAULT_MAX_BARS = 40
-const TICKS_PER_BAR = 4
+const TICKS_PER_MEASURE = 16
 
 const initialState: PlaylistHeaderSlice = {
   maxBars: DEFAULT_MAX_BARS,
@@ -34,7 +34,7 @@ export const playlistHeaderSlice = createSlice({
     requestForwardTickPosition: (state) => {
       const newTick = Math.min(
         state.currentTick + 1,
-        state.maxBars * TICKS_PER_BAR
+        state.maxBars * TICKS_PER_MEASURE
       )
       state.requestedNewTickPosition = newTick
     },

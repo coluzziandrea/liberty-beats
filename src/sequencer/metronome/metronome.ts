@@ -23,8 +23,8 @@ export class Metronome {
 
   setup() {
     this._loop = new Tone.Loop(() => {
-      const tick = TimeUtils.toneTimeToBeat(Tone.Transport.position)
-      if (Math.floor(tick) % 4 === 0) {
+      const tick = TimeUtils.toneTimeToTicks(Tone.Transport.position)
+      if (Math.floor(tick) % 16 === 0) {
         this._playerUp.start()
       } else {
         this._playerDown.start()

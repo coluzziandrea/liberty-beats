@@ -20,9 +20,7 @@ export const DrumMachinePadGrid = ({
 }: DrumMachinePadGridProps) => {
   const currentTick = useSelector(selectCurrentTick)
 
-  const activeTickBar = previewLoopPlayingTrackId
-    ? Math.floor(currentTick * 4)
-    : null
+  const activeTickBar = previewLoopPlayingTrackId ? currentTick : null
 
   return (
     <div className="flex flex-col gap-1">

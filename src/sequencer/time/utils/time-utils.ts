@@ -1,15 +1,18 @@
 import * as Tone from 'tone'
 
 export class TimeUtils {
-  static beatToToneTime(beat: number) {
-    const bars = Math.floor(beat / 4)
-    const quarters = Math.floor((beat % 4) / 1)
-    const sixteenths = (beat % 1) * 4
-    return `${bars}:${quarters}:${sixteenths}`
+  static tickToToneTime(tick: number) {
+    const measure = Math.floor(tick / 16)
+    const quarters = Math.floor((tick % 16) / 4)
+    const sixteenths = tick % 4
+    return `${measure}:${quarters}:${sixteenths}`
   }
 
-  static toneTimeToBeat(time: Tone.Unit.Time) {
-    const [bars, quarters, sixteenths] = time.toString().split(':').map(Number)
-    return bars * 4 + quarters + sixteenths / 4
+  static toneTimeToTicks(time: Tone.Unit.Time) {
+    const [measures, quarters, sixteenths] = time
+      .toString()
+      .split(':')
+      .map(Number)
+    return measures * 16 + quarters * 4 + sixteenths
   }
 }

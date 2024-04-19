@@ -73,7 +73,7 @@ export class Channel {
       },
       sequencerNotes
     )
-    part.start(TimeUtils.beatToToneTime(bar.startAtTick))
+    part.start(TimeUtils.tickToToneTime(bar.startAtTick))
     return part
   }
 
@@ -107,8 +107,8 @@ export class Channel {
 
   noteToTone(note: Note) {
     return {
-      time: TimeUtils.beatToToneTime(note.startsAtRelativeTick),
-      duration: TimeUtils.beatToToneTime(note.durationTicks),
+      time: TimeUtils.tickToToneTime(note.startsAtRelativeTick),
+      duration: TimeUtils.tickToToneTime(note.durationTicks),
       note: note.key,
       velocity: note.velocity / 100,
     }

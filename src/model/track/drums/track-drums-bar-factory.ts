@@ -16,7 +16,7 @@ export const createTrackDrumsBar = (
     id: uuidv4(),
     title: DrumMachinePatternUtil.getPatternNameByIndex(patternIndex), // TODO - include track name
     startAtTick,
-    durationTicks: 4,
+    durationTicks: 16,
     notes: createTrackDrumsBarNotes(patternSounds, selectedSounds),
   }
 }
@@ -37,8 +37,8 @@ const createTrackDrumsBarNotes = (
       if (patternSoundTicks[tickIndex] === 'on') {
         notes.push({
           id: uuidv4(),
-          startsAtRelativeTick: (1 / 4) * tickIndex,
-          durationTicks: 1.0 / 4.0,
+          startsAtRelativeTick: tickIndex,
+          durationTicks: 1,
           key: selectedSounds[soundIndex].key,
           velocity: 100,
         })

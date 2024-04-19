@@ -37,7 +37,7 @@ export const TrackBoard = ({
       id: Date.now().toString(),
       title: track.title + ' ' + (track.bars.length + 1),
       startAtTick: actualTick,
-      durationTicks: 8,
+      durationTicks: 32,
       notes: [],
     }
 

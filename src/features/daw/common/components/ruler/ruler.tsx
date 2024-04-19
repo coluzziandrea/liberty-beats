@@ -19,7 +19,7 @@ const RulerSubBar = ({
 }: {
   subBarIndex: number
 } & RulerBarProps) => {
-  const tick = barIndex * SUB_BAR_NUM + subBarIndex
+  const tick = barIndex * SUB_BAR_NUM * 4 + subBarIndex * 4
   return (
     <div
       key={subBarIndex}

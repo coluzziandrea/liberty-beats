@@ -32,7 +32,7 @@ export class Clock {
   requestNewTickPosition(newTick: number | null) {
     if (newTick === null) return
 
-    Tone.Transport.position = TimeUtils.beatToToneTime(newTick)
+    Tone.Transport.position = TimeUtils.tickToToneTime(newTick)
     this.getTickAndTimeFromToneTransport()
 
     if (Tone.Transport.state !== 'started') {
@@ -62,7 +62,7 @@ export class Clock {
   }
 
   private getTickAndTimeFromToneTransport() {
-    this.currentTick = TimeUtils.toneTimeToBeat(Tone.Transport.position)
+    this.currentTick = TimeUtils.toneTimeToTicks(Tone.Transport.position)
     // sometimes the transport position is negative, so we need to clamp it to 0
     this._time = Math.max(Tone.Transport.seconds, 0)
   }

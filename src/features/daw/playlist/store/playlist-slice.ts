@@ -144,7 +144,7 @@ export const playlistSlice = createSlice({
           id: newBarId,
           title: track.title + ' ' + (track.bars.length + 1),
           startAtTick: action.payload.startAtTick,
-          durationTicks: action.payload.duration + 20,
+          durationTicks: action.payload.duration + 32,
           notes: [],
         }
         track.bars.push(bar)
@@ -305,7 +305,7 @@ export const playlistSlice = createSlice({
           id: uuidv4(),
           title: track.title + ' ' + (track.bars.length + 1),
           startAtTick: action.payload.newStartAtTick,
-          durationTicks: note.durationTicks + 8,
+          durationTicks: note.durationTicks + 16,
           notes: [note],
         }
         track.bars.push(newContainingBar)

@@ -21,7 +21,7 @@ const MixGridItem = ({
   onSelectTick: (tick: number) => void
   onCreateBar: (startTick: number) => void
 }) => {
-  const tick = barIndex * SUB_BAR_NUM + currentSubBar
+  const tick = barIndex * SUB_BAR_NUM * 4 + currentSubBar * 4
   return (
     <p
       key={currentSubBar}
