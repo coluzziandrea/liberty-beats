@@ -121,6 +121,9 @@ export class Channel {
   }
 
   setPreviewLoopBar(loopBar: Bar) {
+    if (this._previewLoopPart) {
+      this._previewLoopPart.dispose()
+    }
     this._previewLoopPart = this.partFromBar(loopBar, true)
   }
 

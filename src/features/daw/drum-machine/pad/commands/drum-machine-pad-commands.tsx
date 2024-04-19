@@ -9,10 +9,15 @@ import {
 } from '../../../../../model/track/drums/track-drums'
 import { setTrackIdInPlayingPreviewLoop } from '../../../instrument/store/instrument-slice'
 import { Track } from '../../../../../model/track/track'
+import { addTrackBar } from '../../../playlist/store/playlist-slice'
+import { createTrackDrumsBar } from '../../../../../model/track/drums/track-drums-bar-factory'
+import { DrumSound } from '../../../../../model/drums/sound/drums-sound'
+import { selectCurrentTick } from '../../../playlist-header/store/selectors'
 
 export type DrumMachinePadCommandsProps = {
   selectedTrack: Track
-
+  selectedPatternBeats: TrackDrumPatternSound[][]
+  selectedSounds: DrumSound[]
   selectedPatternIndex: number
   previewLoopPlayingTrackId: string | null
 
@@ -23,9 +28,12 @@ export const DrumMachinePadCommands = ({
   selectedTrack,
   selectedPatternIndex,
   onUpdateCurrentPattern,
+  selectedPatternBeats,
+  selectedSounds,
   previewLoopPlayingTrackId,
 }: DrumMachinePadCommandsProps) => {
   const maxTrackPatterns = useSelector(selectMaxTrackPatterns)
+  const currentTick = useSelector(selectCurrentTick)
   const dispatch = useDispatch()
 
   return (
@@ -84,7 +92,22 @@ export const DrumMachinePadCommands = ({
           <p className="text-sm">Clear Pattern</p>
         </button>
 
-        <button className="btn btn-primary flex flex-row gap-2 items-center">
+        <button
+          className="btn btn-primary flex flex-row gap-2 items-center"
+          onClick={() => {
+            dispatch(
+              addTrackBar({
+                track: selectedTrack,
+                bar: createTrackDrumsBar(
+                  selectedPatternBeats,
+                  selectedSounds,
+                  selectedPatternIndex,
+                  currentTick
+                ),
+              })
+            )
+          }}
+        >
           <FaPlus />
           <p className="text-sm">Add Pattern</p>
         </button>

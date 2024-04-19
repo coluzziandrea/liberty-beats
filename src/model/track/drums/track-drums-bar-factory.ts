@@ -8,16 +8,15 @@ import { v4 as uuidv4 } from 'uuid'
 export const createTrackDrumsBar = (
   patternSounds: TrackDrumPatternSound[][],
   selectedSounds: DrumSound[],
-  patternIndex: number
+  patternIndex: number,
+  startAtTick: number = 0
 ): Bar => {
   console.log('recreating track drums bar')
   return {
     id: uuidv4(),
-    title:
-      'Drum Bar - ' +
-      DrumMachinePatternUtil.getPatternNameByIndex(patternIndex), // TODO - include track name
-    startAtTick: 0,
-    durationTicks: 16,
+    title: DrumMachinePatternUtil.getPatternNameByIndex(patternIndex), // TODO - include track name
+    startAtTick,
+    durationTicks: 4,
     notes: createTrackDrumsBarNotes(patternSounds, selectedSounds),
   }
 }
@@ -39,7 +38,7 @@ const createTrackDrumsBarNotes = (
         notes.push({
           id: uuidv4(),
           startsAtRelativeTick: (1 / 4) * tickIndex,
-          durationTicks: 1 / 4,
+          durationTicks: 1.0 / 4.0,
           key: selectedSounds[soundIndex].key,
           velocity: 100,
         })

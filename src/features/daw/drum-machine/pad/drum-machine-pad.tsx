@@ -45,7 +45,6 @@ export const DrumMachinePad = ({ selectedTrack }: DrumMachinePadProps) => {
   }
 
   useEffect(() => {
-    console.log('DrumMachinePad useEffect 2')
     if (selectedPatternBeats.length === 0 || selectedSounds.length === 0) return
 
     // Update also the preview loop in the instrument slice when the pattern changes
@@ -90,6 +89,8 @@ export const DrumMachinePad = ({ selectedTrack }: DrumMachinePadProps) => {
         />
         <DrumMachinePadCommands
           selectedTrack={selectedTrack}
+          selectedPatternBeats={selectedPatternBeats}
+          selectedSounds={selectedSounds}
           selectedPatternIndex={selectedPatternIndex}
           previewLoopPlayingTrackId={previewLoopPlayingTrackId}
           onUpdateCurrentPattern={handleUpdateCurrentPattern}
