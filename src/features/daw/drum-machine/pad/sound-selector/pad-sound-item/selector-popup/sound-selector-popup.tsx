@@ -42,8 +42,9 @@ export const SoundSelectorPopup = ({
     selectedTrack.instrumentPreset
   )
   const defaultSounds = sounds.slice(0, TRACK_DRUM_PATTERN_SIZE)
+  const selectedSoundsFromStore = selectedTrack.trackDrums?.selectedSounds
   const selectedSounds =
-    selectedTrack.trackDrums?.selectedSounds || defaultSounds
+      selectedSoundsFromStore === undefined  || selectedSoundsFromStore?.length === 0 ? defaultSounds : selectedSoundsFromStore
 
   const currentSound = selectedSounds[currentSoundIndex]
 

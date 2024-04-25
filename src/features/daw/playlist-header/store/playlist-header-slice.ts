@@ -25,7 +25,7 @@ export const playlistHeaderSlice = createSlice({
       state.rulerScrollPosition = action.payload
     },
     setCurrentTickFromSequencer: (state, action: PayloadAction<number>) => {
-      state.currentTick = action.payload
+      state.currentTick = Math.floor(action.payload)
       state.requestedNewTickPosition = null
     },
     requestNewTickPosition: (state, action: PayloadAction<number>) => {

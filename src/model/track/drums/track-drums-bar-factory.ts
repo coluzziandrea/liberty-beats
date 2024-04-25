@@ -11,7 +11,6 @@ export const createTrackDrumsBar = (
   patternIndex: number,
   startAtTick: number = 0
 ): Bar => {
-  console.log('recreating track drums bar')
   return {
     id: uuidv4(),
     title: DrumMachinePatternUtil.getPatternNameByIndex(patternIndex), // TODO - include track name
@@ -31,7 +30,6 @@ const createTrackDrumsBarNotes = (
 
   for (let soundIndex = 0; soundIndex < patternSounds.length; soundIndex++) {
     const patternSoundTicks = patternSounds[soundIndex]
-    console.log('patternSoundTicks', patternSoundTicks.length)
 
     for (let tickIndex = 0; tickIndex < patternSoundTicks.length; tickIndex++) {
       if (patternSoundTicks[tickIndex] === 'on') {
@@ -45,8 +43,6 @@ const createTrackDrumsBarNotes = (
       }
     }
   }
-
-  console.log('notes', notes)
 
   return notes
 }

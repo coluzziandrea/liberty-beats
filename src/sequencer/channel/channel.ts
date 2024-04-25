@@ -27,7 +27,6 @@ export class Channel {
 
   updateFromTrack(track: Track) {
     if (!this.hasChanged(track)) {
-      console.log('track not changed')
       return
     }
     this.clear()
@@ -91,7 +90,6 @@ export class Channel {
   }
 
   setInstrument(instrumentPreset: InstrumentPreset) {
-    console.log('setting instrument', instrumentPreset)
     this._instrument = createChannelInstrument(instrumentPreset)
   }
 

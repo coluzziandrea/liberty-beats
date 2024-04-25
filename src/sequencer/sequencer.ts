@@ -41,12 +41,10 @@ export default class Sequencer {
     })
 
     observeStore(this._store, selectPlayingTrackKeys, (newPlayingTrackKeys) => {
-      console.log('playing keys', newPlayingTrackKeys)
       newPlayingTrackKeys.forEach((item) => {
         const { keys, trackId } = item
 
         const trackChannel = this._channelsByTrackID.get(trackId)
-        console.log('trackChannel', trackChannel)
         trackChannel?.playKeys(keys)
       })
     })
@@ -57,7 +55,6 @@ export default class Sequencer {
     })
 
     observeStore(this._store, selectTrackPreviewLoop, (newPreviewLoop) => {
-      console.log('setting preview loop', newPreviewLoop)
       if (!newPreviewLoop || !newPreviewLoop.loopBar) return
 
       this._channelsByTrackID
@@ -98,7 +95,6 @@ export default class Sequencer {
 
             // reset the preview loop
             if (channel.trackId === oldPreviewLoopPlayingTrackId) {
-              console.log('stopping preview loop', channel.trackId)
               channel.stopPreviewLoop()
             }
           })
@@ -108,7 +104,6 @@ export default class Sequencer {
   }
 
   async startTracks() {
-    console.log('startTracks')
     await Tone.start()
     Tone.Transport.start()
   }
@@ -116,10 +111,8 @@ export default class Sequencer {
   generateTracks(newTracks: Readonly<Track[]>) {
     newTracks.forEach((track) => {
       if (this._channelsByTrackID.has(track.id)) {
-        console.log('updating track', track.id)
         this._channelsByTrackID.get(track.id)?.updateFromTrack(track)
       } else {
-        console.log('creating channel from track', track.id)
         const channel = new Channel(track)
         this._channelsByTrackID.set(track.id, channel)
       }
