@@ -122,7 +122,8 @@ export const MidiEditorKeyGrid = ({
     canvas.addEventListener('dblclick', onDoubleClick)
     canvas.addEventListener('click', onClick)
 
-    drawRulerGridLines(midiEditorDimensions.beatWidth, subBarBorderColor)
+    // draw ruler grid lines for quarter notes and measures
+    drawRulerGridLines(midiEditorDimensions.beatWidth * 4, subBarBorderColor)
     drawRulerGridLines(midiEditorDimensions.barWidth, parentBarBorderColor)
 
     return () => {

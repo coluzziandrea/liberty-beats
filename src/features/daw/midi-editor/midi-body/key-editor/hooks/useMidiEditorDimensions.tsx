@@ -9,7 +9,7 @@ export const useMidiEditorDimensions = () => {
   const maxBars = useSelector(selectMaxBars)
 
   const keyHeight = whiteKeySize * 0.599
-  const beatWidth = RULER_BAR_WIDTH / 4
+  const beatWidth = RULER_BAR_WIDTH / 16
   const barWidth = RULER_BAR_WIDTH
   const barHeaderHeight = PIANO_ROLL_BAR_HEADER_HEIGHT
 
