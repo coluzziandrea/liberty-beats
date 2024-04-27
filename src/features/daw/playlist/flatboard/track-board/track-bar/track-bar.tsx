@@ -1,80 +1,41 @@
-import { useEffect } from 'react'
-import { Bar } from '../../../../../../model/bar/bar'
-import { NoteUtils } from '../../../../../../model/note/note'
-import { Track, TrackUtils } from '../../../../../../model/track/track'
 import { PianoRollKey } from '../../../../common/components/piano-roll-key/piano-roll-key'
 import {
   FLATBOARD_BAR_HEADER_HEIGHT,
-  MIN_FLATBOARD_KEY_HEIGHT,
   TICK_WIDTH_PIXEL,
   TRACK_HEIGHT,
 } from '../../../constants'
-import { useDispatch } from 'react-redux'
-import { resizeBar } from '../../../store/playlist-slice'
-import { useDebounce } from '../../../../common/hooks/useDebounce'
-import { useHorizontalResize } from '../../../../common/hooks/useHorizontalResize'
-import { useDragAndDrop } from '../../../../common/hooks/useDragAndDrop'
+import { TrackBarPopupMenu } from './track-bar-popup-menu/track-bar-popup-menu'
+import { TrackBarProps } from './types'
+import { useTrackBarData } from './use-track-bar-data'
 
-export const TrackBar = ({
-  track,
-  bar,
-  onSelectBar,
-  onBarDetails,
-}: {
-  track: Track
-  bar: Bar
-  onSelectBar: (bar: Bar) => void
-  onBarDetails: (bar: Bar) => void
-}) => {
+export const TrackBar = (props: TrackBarProps) => {
   const {
-    elementWidth: barLengthPixel,
-    setElementWidth,
+    bar,
+    track,
+    barLengthPixel,
+    barOffsetStyle,
+    barColor,
+    onSelectBar,
+    onBarDetails,
+    handleDragStart,
+    headerColor,
+    showedKeys,
+    keyHeight,
     handleResizeMouseDown,
-  } = useHorizontalResize(bar.durationTicks * TICK_WIDTH_PIXEL)
-
-  const dispatch = useDispatch()
-  const debouncedBarLength = useDebounce(barLengthPixel, 500)
-
-  useEffect(() => {
-    const newDurationTicks = Math.floor(barLengthPixel / TICK_WIDTH_PIXEL)
-    if (newDurationTicks === bar.durationTicks) return
-
-    dispatch(resizeBar({ trackId: track.id, barId: bar.id, newDurationTicks }))
-    setElementWidth(newDurationTicks * TICK_WIDTH_PIXEL)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedBarLength, dispatch, track.id])
-
-  const barOffsetStyle = `${bar.startAtTick * TICK_WIDTH_PIXEL}px`
-
-  const headerColor = TrackUtils.isTrackEffectivelyMuted(track)
-    ? 'bg-gray-700'
-    : `bg-${track.color}-700`
-
-  const barColor = TrackUtils.isTrackEffectivelyMuted(track)
-    ? 'bg-gray-500'
-    : `bg-${track.color}-500`
-
-  const showedKeys = NoteUtils.getSmallerKeySetContainingNotes(
-    bar.notes,
-    2
-  ).reverse()
-
-  const keyHeight = Math.min(
-    (TRACK_HEIGHT - FLATBOARD_BAR_HEADER_HEIGHT) / showedKeys.length,
-    MIN_FLATBOARD_KEY_HEIGHT
-  )
-
-  const { handleDragStart } = useDragAndDrop({ type: 'drag_bar', bar, track })
-
+    onContextMenu,
+    menuIsOpen,
+    menuProps,
+  } = useTrackBarData(props)
   return (
     <div
       key={bar.id}
-      className="absolute z-10"
+      className="absolute"
       style={{
         width: barLengthPixel,
         left: barOffsetStyle,
         height: `${TRACK_HEIGHT}px`,
       }}
+      onContextMenu={onContextMenu}
     >
       <div className="relative w-full h-full">
         <div
@@ -113,6 +74,12 @@ export const TrackBar = ({
           className="absolute z-20 right-0 h-full w-2 cursor-ew-resize"
           onMouseDown={handleResizeMouseDown}
         />
+
+        {menuIsOpen && (
+          <div className="fixed mt-4 ml-4 z-50 h-fit w-fit">
+            <TrackBarPopupMenu {...menuProps} />
+          </div>
+        )}
       </div>
     </div>
   )

@@ -207,6 +207,15 @@ export const playlistSlice = createSlice({
       bar.startAtTick = action.payload.newStartAtTick
       toTrack.bars.push(bar)
     },
+    removeBar: (
+      state,
+      action: PayloadAction<{ trackId: string; barId: string }>
+    ) => {
+      const track = state.tracks.find((t) => t.id === action.payload.trackId)
+      if (!track) return
+
+      track.bars = track.bars.filter((b) => b.id !== action.payload.barId)
+    },
     resizeBar: (state, action: PayloadAction<ResizeBarPayload>) => {
       const track = state.tracks.find((t) => t.id === action.payload.trackId)
       if (!track) return
@@ -361,6 +370,7 @@ export const {
   moveTrackUp,
   moveTrackDown,
   moveBar,
+  removeBar,
   resizeBar,
   resizeNote,
   moveNote,
