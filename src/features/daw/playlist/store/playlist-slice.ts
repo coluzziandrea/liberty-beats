@@ -12,6 +12,7 @@ import {
   ResizeNotePayload,
   SetTrackVolumePayload,
   setCurrentTrackDrumsPatternPayload,
+  TrackBarIdentifier,
 } from './types'
 import { v4 as uuidv4 } from 'uuid'
 import { KeyUtils } from '../../../../model/note/key/key'
@@ -20,13 +21,17 @@ import { DrumSound } from '../../../../model/drums/sound/drums-sound'
 export interface PlaylistSlice {
   tracks: Track[]
   selectedTrackId: string | null
+  selectedBarId: string | null
   flatboardScroll: number
+  toCopyBar: Bar | null
 }
 
 const initialState: PlaylistSlice = {
   tracks: [],
   selectedTrackId: null,
+  selectedBarId: null,
   flatboardScroll: 0,
+  toCopyBar: null,
 }
 
 export const playlistSlice = createSlice({
@@ -43,6 +48,8 @@ export const playlistSlice = createSlice({
       state.tracks
         .find((t) => t.id === action.payload.track.id)
         ?.bars.push(action.payload.bar)
+      state.selectedTrackId = action.payload.track.id
+      state.selectedBarId = action.payload.bar.id
     },
     selectTrack: (state, action: PayloadAction<Track>) => {
       state.selectedTrackId = action.payload.id
@@ -186,6 +193,13 @@ export const playlistSlice = createSlice({
         velocity: 100,
       })
     },
+    setToCopyBar: (state, action: PayloadAction<Bar | null>) => {
+      state.toCopyBar = action.payload
+    },
+    selectBar(state, action: PayloadAction<{ track: Track; bar: Bar }>) {
+      state.selectedTrackId = action.payload.track.id
+      state.selectedBarId = action.payload.bar.id
+    },
     moveBar: (state, action: PayloadAction<MoveBarPayload>) => {
       const fromTrack = state.tracks.find(
         (t) => t.id === action.payload.fromTrackId
@@ -207,14 +221,28 @@ export const playlistSlice = createSlice({
       bar.startAtTick = action.payload.newStartAtTick
       toTrack.bars.push(bar)
     },
-    removeBar: (
-      state,
-      action: PayloadAction<{ trackId: string; barId: string }>
-    ) => {
+    removeBar: (state, action: PayloadAction<TrackBarIdentifier>) => {
       const track = state.tracks.find((t) => t.id === action.payload.trackId)
       if (!track) return
 
       track.bars = track.bars.filter((b) => b.id !== action.payload.barId)
+    },
+    renameBar: (
+      state,
+      action: PayloadAction<{
+        trackId: string
+        barId: string
+        newTitle: string
+      }>
+    ) => {
+      const track = state.tracks.find((t) => t.id === action.payload.trackId)
+      if (!track) return
+
+      const bar = track.bars.find((b) => b.id === action.payload.barId)
+
+      if (!bar) return
+
+      bar.title = action.payload.newTitle
     },
     resizeBar: (state, action: PayloadAction<ResizeBarPayload>) => {
       const track = state.tracks.find((t) => t.id === action.payload.trackId)
@@ -365,12 +393,15 @@ export const {
   setTrackColor,
   renameTrack,
   deleteTrack,
+  setToCopyBar,
   setCurrentTrackNoteVelocity,
   duplicateTrack,
   moveTrackUp,
   moveTrackDown,
   moveBar,
+  selectBar,
   removeBar,
+  renameBar,
   resizeBar,
   resizeNote,
   moveNote,

@@ -4,11 +4,18 @@ import { Track, TrackUtils } from '../../../../../model/track/track'
 import { Bar } from '../../../../../model/bar/bar'
 import { TrackBar } from './track-bar/track-bar'
 import { requestNewTickPosition } from '../../../playlist-header/store/playlist-header-slice'
-import { addTrackBar, selectTrack, moveBar } from '../../store/playlist-slice'
+import {
+  addTrackBar,
+  selectTrack,
+  moveBar,
+  selectBar,
+} from '../../store/playlist-slice'
 import { MixGrid } from '../../../common/components/mix-grid/mix-grid'
 import { selectBottomUpPanel } from '../../../bottom-bar/store/bottom-bar-slice'
 import { TRACK_HEIGHT } from '../../constants'
 import { useDragAndDrop } from '../../../common/hooks/useDragAndDrop'
+import { selectToCopyBar } from '../../store/selectors'
+import { v4 as uuidv4 } from 'uuid'
 
 export const TrackBoard = ({
   track,
@@ -18,6 +25,7 @@ export const TrackBoard = ({
   selectedTrack?: Track
 }) => {
   const maxBars = useSelector(selectMaxBars)
+  const toCopyBar = useSelector(selectToCopyBar)
 
   const isSelected =
     selectedTrack?.id === track.id && !TrackUtils.isTrackEffectivelyMuted(track)
@@ -31,7 +39,6 @@ export const TrackBoard = ({
 
   const handleCreateBar = (actualTick: number) => {
     dispatch(requestNewTickPosition(actualTick))
-    dispatch(selectTrack(track))
 
     const newBar: Bar = {
       id: Date.now().toString(),
@@ -49,8 +56,21 @@ export const TrackBoard = ({
     )
   }
 
-  const handleSelectBar = () => {
-    dispatch(selectTrack(track))
+  const handlePasteBar = (actualTick: number) => {
+    const newBar: Bar = {
+      id: uuidv4(),
+      title: toCopyBar?.title + ' Copy',
+      startAtTick: actualTick,
+      durationTicks: toCopyBar?.durationTicks || 32,
+      notes: toCopyBar?.notes || [],
+    }
+
+    dispatch(
+      addTrackBar({
+        track: track,
+        bar: newBar,
+      })
+    )
   }
 
   const handleBarDetails = (bar: Bar) => {
@@ -88,6 +108,7 @@ export const TrackBoard = ({
           maxBars={maxBars}
           onSelectTick={handleSelectTick}
           onCreateBar={handleCreateBar}
+          onPasteBar={handlePasteBar}
           evenColumnsColor={getEvenColumnsColor()}
           oddColumnsColor={getOddColumnsColor()}
         />
@@ -97,7 +118,9 @@ export const TrackBoard = ({
             key={bar.id}
             track={track}
             bar={bar}
-            onSelectBar={handleSelectBar}
+            onSelectBar={() => {
+              dispatch(selectBar({ track, bar }))
+            }}
             onBarDetails={handleBarDetails}
           />
         ))}

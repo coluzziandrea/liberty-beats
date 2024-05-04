@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NoteUtils } from '../../../../../../model/note/note'
 import { useHorizontalResize } from '../../../../common/hooks/useHorizontalResize'
 import {
@@ -10,9 +10,18 @@ import {
 import { TrackBarProps } from './types'
 import { useDebounce } from '../../../../common/hooks/useDebounce'
 import { useEffect, useState } from 'react'
-import { resizeBar, selectTrack } from '../../../store/playlist-slice'
+import {
+  removeBar,
+  renameBar,
+  resizeBar,
+  setToCopyBar,
+} from '../../../store/playlist-slice'
 import { TrackUtils } from '../../../../../../model/track/track'
 import { useDragAndDrop } from '../../../../common/hooks/useDragAndDrop'
+import { selectSelectedBar } from '../../../store/selectors'
+import { MdDelete } from 'react-icons/md'
+import { FaRegCopy } from 'react-icons/fa'
+import { BiRename } from 'react-icons/bi'
 
 export const useTrackBarData = ({
   track,
@@ -23,13 +32,17 @@ export const useTrackBarData = ({
   const {
     elementWidth: barLengthPixel,
     setElementWidth,
-    handleResizeMouseDown,
+    handleResizeMouseDown: onResizeMouseDown,
   } = useHorizontalResize(bar.durationTicks * TICK_WIDTH_PIXEL)
 
   const dispatch = useDispatch()
   const debouncedBarLength = useDebounce(barLengthPixel, 500)
 
   const [menuIsOpen, setMenuIsOpen] = useState(false)
+  const [isRenaming, setIsRenaming] = useState(false)
+  const [renameInput, setRenameInput] = useState(bar.title)
+
+  const selectedBar = useSelector(selectSelectedBar)
 
   useEffect(() => {
     const newDurationTicks = Math.floor(barLengthPixel / TICK_WIDTH_PIXEL)
@@ -50,6 +63,8 @@ export const useTrackBarData = ({
     ? 'bg-gray-500'
     : `bg-${track.color}-500`
 
+  const barBorder = selectedBar?.id === bar.id ? 'border-white border-2' : ''
+
   const showedKeys = NoteUtils.getSmallerKeySetContainingNotes(
     bar.notes,
     2
@@ -60,7 +75,7 @@ export const useTrackBarData = ({
     MIN_FLATBOARD_KEY_HEIGHT
   )
 
-  const { handleDragStart } = useDragAndDrop({
+  const { handleDragStart: onDragStart } = useDragAndDrop({
     type: 'drag_bar',
     bar,
     track,
@@ -68,7 +83,7 @@ export const useTrackBarData = ({
 
   const onContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault()
-    dispatch(selectTrack(track))
+    onSelectBar(bar)
     if (!menuIsOpen) {
       setMenuIsOpen(true)
     }
@@ -77,21 +92,71 @@ export const useTrackBarData = ({
   return {
     bar,
     track,
-    barLengthPixel,
-    barOffsetStyle,
-    barColor,
+    showedKeys,
+
+    isSelected: selectedBar?.id === bar.id,
+
+    style: {
+      barLengthPixel,
+      barOffsetStyle,
+      barColor,
+      headerColor,
+      keyHeight,
+      barBorder,
+    },
+
     onSelectBar,
     onBarDetails,
-    handleDragStart,
-    headerColor,
-    showedKeys,
-    keyHeight,
-    handleResizeMouseDown,
-    menuIsOpen,
+    onDragStart,
+    onResizeMouseDown,
     onContextMenu,
-    menuProps: {
+
+    renameInput: {
+      isEnabled: isRenaming,
+      value: renameInput,
+      onInputChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+        setRenameInput(e.target.value),
+      onInputBlur: () => {
+        setIsRenaming(false)
+        dispatch(
+          renameBar({
+            trackId: track.id,
+            barId: bar.id,
+            newTitle: renameInput,
+          })
+        )
+      },
+    },
+
+    menu: {
+      isOpen: menuIsOpen,
       onClose: () => setMenuIsOpen(false),
-      onRename: () => {},
+
+      items: [
+        {
+          label: 'Rename',
+          icon: <BiRename />,
+          action: () => {
+            setMenuIsOpen(false)
+            setIsRenaming(true)
+          },
+        },
+        {
+          label: 'Copy',
+          icon: <FaRegCopy />,
+          action: () => {
+            dispatch(setToCopyBar(bar))
+            setMenuIsOpen(false)
+          },
+        },
+        {
+          label: 'Delete',
+          icon: <MdDelete />,
+          action: () => {
+            dispatch(removeBar({ trackId: track.id, barId: bar.id }))
+          },
+        },
+      ],
       bar,
       track,
     },

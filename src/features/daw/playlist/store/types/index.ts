@@ -61,3 +61,8 @@ export type setCurrentTrackDrumsPatternPayload = {
   patternIndex: number
   pattern: TrackDrumPattern
 }
+
+export type TrackBarIdentifier = {
+  trackId: string
+  barId: string
+}
