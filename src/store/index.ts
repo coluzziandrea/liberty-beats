@@ -6,6 +6,7 @@ import bottomBarSlice from '../features/daw/bottom-bar/store/bottom-bar-slice'
 import instrumentSlice from '../features/daw/instrument/store/instrument-slice'
 import midiEditorSlice from '../features/daw/midi-editor/store/midi-editor-slice'
 import drumMachineSlice from '../features/daw/drum-machine/store/drum-machine-slice'
+import menuSlice from '../features/daw/menu/store/menu-slice'
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     instrument: instrumentSlice,
     midiEditor: midiEditorSlice,
     drumMachine: drumMachineSlice,
+    menu: menuSlice,
   },
 })
 
