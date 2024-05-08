@@ -17,7 +17,7 @@ export const InstrumentSetup = () => {
 
   return (
     <div className={`${!isSelected && 'hidden'}`}>
-      <div className="flex flex-col bg-stone-900 h-96 divide-y divide-slate-600 border-t border-slate-600 mx-1">
+      <div className="flex flex-col bg-stone-200 dark:bg-stone-900 h-96 divide-y divide-slate-600 border-t border-slate-600 mx-1 px-2">
         <div className="flex h-[15%] w-full">
           <InstrumentHeader
             selectedTrack={selectedTrack}

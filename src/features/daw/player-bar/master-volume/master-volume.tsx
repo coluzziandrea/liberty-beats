@@ -23,7 +23,7 @@ export const MasterVolume = () => {
           onChange={(e) => {
             dispatch(setVolume(e.target.valueAsNumber))
           }}
-          className="h-2 w-full cursor-ew-resize appearance-none rounded-lg bg-gray-700"
+          className="h-2 w-full cursor-ew-resize appearance-none rounded-lg dark:bg-gray-700 bg-gray-300 accent-blue-500 dark:accent-blue-400"
         ></input>
       </div>
 

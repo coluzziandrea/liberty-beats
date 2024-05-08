@@ -1,4 +1,4 @@
-import { RULER_SUB_BAR_WIDTH, SUB_BAR_NUM } from '../../ruler/constants'
+import { SUB_BAR_NUM } from '../../ruler/constants'
 
 export type MixGridItemProps = {
   barIndex: number
@@ -20,14 +20,14 @@ export const MixGridItem = ({
 }: MixGridItemProps) => {
   const tick = barIndex * SUB_BAR_NUM * 4 + currentSubBar * 4
   return (
-    <p
+    <div
       key={currentSubBar}
-      className={`w-[${RULER_SUB_BAR_WIDTH}px] border-slate-500 ${
+      className={`border-slate-500 w-[20px] ${
         currentSubBar == SUB_BAR_NUM - 1 ? '' : 'border-r'
       }`}
       onClick={() => onSelectTick(tick)}
       onDoubleClick={() => onCreateBar(tick)}
       onContextMenu={(e) => onContextMenu(e, tick)}
-    ></p>
+    />
   )
 }

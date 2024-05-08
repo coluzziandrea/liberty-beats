@@ -1,10 +1,6 @@
 import { useState } from 'react'
 import { PopupMenu } from '../popup-menu/popup-menu'
-import {
-  RULER_BAR_WIDTH,
-  RULER_SUB_BAR_WIDTH,
-  SUB_BAR_NUM,
-} from '../ruler/constants'
+import { RULER_SUB_BAR_WIDTH, SUB_BAR_NUM } from '../ruler/constants'
 import { MixGridItem } from './mix-grid-item/mix-grid-item'
 import { FaPaste } from 'react-icons/fa6'
 
@@ -31,7 +27,7 @@ export const MixGrid = (props: MixGridProps) => {
       {Array.from({ length: props.maxBars }).map((_, barIndex) => (
         <div
           key={barIndex}
-          className={`flex flex-col justify-end opacity-50 h-full w-[${RULER_BAR_WIDTH}px] border-l border-slate-400 ${
+          className={`flex flex-col w-[80px] justify-end opacity-50 h-full border-l border-slate-400 ${
             barIndex == props.maxBars - 1 ? 'border-r' : ''
           }  ${getTrackColorClass(barIndex)}`}
         >

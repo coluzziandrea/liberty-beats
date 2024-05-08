@@ -105,7 +105,7 @@ export const KeyEditor = () => {
   }
 
   return (
-    <div className="flex w-full flex-grow  bg-zinc-800">
+    <div className="flex w-full flex-grow bg-zinc-300 dark:bg-zinc-800">
       <div
         ref={keyboardRef}
         onScroll={handleMidiVerticalScroll}
@@ -133,22 +133,24 @@ export const KeyEditor = () => {
       >
         <div className="relative h-max min-h-full">
           <div className="flex flex-col">
-            <MidiEditorKeyGrid
-              showedKeys={showedKeys}
-              onKeyClick={(key: Key, beat: number) => {
-                if (editorMode === 'draw') {
+            <>
+              <MidiEditorKeyGrid
+                showedKeys={showedKeys}
+                onKeyClick={(key: Key, beat: number) => {
+                  if (editorMode === 'draw') {
+                    handleAddKeyFromGrid(key, beat)
+                    previewKey(key)
+                  } else {
+                    dispatch(selectNote(null))
+                  }
+                }}
+                cursorStyle={editorMode === 'draw' ? 'add' : 'default'}
+                onKeyDoubleClick={(key: Key, beat: number) => {
                   handleAddKeyFromGrid(key, beat)
                   previewKey(key)
-                } else {
-                  dispatch(selectNote(null))
-                }
-              }}
-              cursorStyle={editorMode === 'draw' ? 'add' : 'default'}
-              onKeyDoubleClick={(key: Key, beat: number) => {
-                handleAddKeyFromGrid(key, beat)
-                previewKey(key)
-              }}
-            />
+                }}
+              />
+            </>
 
             {selectedTrack.bars.map((bar: Bar) => (
               <PianoRollBar

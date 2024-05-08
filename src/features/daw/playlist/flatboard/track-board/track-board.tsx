@@ -81,11 +81,15 @@ export const TrackBoard = ({
   }
 
   const getEvenColumnsColor = () => {
-    return isSelected ? `bg-${track.color}-800` : 'bg-zinc-800'
+    return isSelected
+      ? `bg-${track.color}-400 dark:bg-${track.color}-800`
+      : 'bg-zinc-400 dark:bg-zinc-800'
   }
 
   const getOddColumnsColor = () => {
-    return isSelected ? `bg-${track.color}-900` : 'bg-zinc-900'
+    return isSelected
+      ? `bg-${track.color}-300 dark:bg-${track.color}-900`
+      : 'bg-zinc-300 dark:bg-zinc-900'
   }
 
   const { handleOnDrop } = useDragAndDrop({

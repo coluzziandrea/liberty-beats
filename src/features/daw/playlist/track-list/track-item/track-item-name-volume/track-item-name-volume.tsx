@@ -38,7 +38,7 @@ export const TrackItemNameVolume = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedVolume, dispatch, track.id])
   const sliderColor = effectivelyMuted
-    ? 'accent-gray-500'
+    ? 'accent-gray-800 dark:accent-gray-500'
     : `accent-${track.color}-600`
 
   const volumeInDb =
@@ -51,7 +51,7 @@ export const TrackItemNameVolume = ({
           isRenaming ? (
             <input
               type="text"
-              className="w-full p-1 mt-1 bg-zinc-800 text-white"
+              className="w-full p-1 mt-1 bg-zinc-200 dark:bg-zinc-800"
               value={trackName}
               autoFocus
               onBlur={() => {
@@ -71,7 +71,7 @@ export const TrackItemNameVolume = ({
         <div
           id="tooltip-top"
           role="tooltip"
-          className="tooltip absolute -top-8 left-4 z-10 bg-zinc-600 font-medium shadow-sm text-white py-1 px-3  rounded-lg"
+          className="tooltip absolute -top-8 left-4 z-10 bg-zinc-600 font-medium shadow-sm py-1 px-3  rounded-lg"
           style={{ visibility: volumeTooltipVisible ? 'visible' : 'hidden' }}
         >
           <span className="font-bold">{volumeInDb}</span>{' '}

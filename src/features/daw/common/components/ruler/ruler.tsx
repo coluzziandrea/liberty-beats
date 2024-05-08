@@ -40,11 +40,13 @@ const RulerBar = ({
   return (
     <div
       key={barIndex + 1}
-      className={`flex flex-col justify-end gap-4 w-[${RULER_BAR_WIDTH}px] border-l border-slate-400 ${
+      className={`flex flex-col justify-end gap-4 w-[${RULER_BAR_WIDTH}px] border-l border-slate-700 dark:border-slate-400 ${
         barIndex == maxBars - 1 ? 'border-r' : ''
       }`}
     >
-      <div className="px-2 text-slate-400 select-none">{barIndex + 1}</div>
+      <div className="px-2 text-slate-700 dark:text-slate-400  select-none">
+        {barIndex + 1}
+      </div>
 
       <div className="flex flex-row h-[40%]">
         {Array.from({ length: SUB_BAR_NUM }).map((_, j) => (
@@ -69,7 +71,7 @@ const RulerThumb = ({ currentTick }: { currentTick: number }) => {
     <div
       className="absolute bottom-0 w-0 h-0 
   border-l-[8px] border-l-transparent
-  border-t-[17px] border-t-white-500
+  border-t-[17px] border-t-black dark:border-t-white
   border-r-[8px] border-r-transparent"
       style={{ left: `${leftOffset}px` }}
     />
@@ -87,7 +89,7 @@ export const Ruler = () => {
 
   return (
     <div className="relative">
-      <div className="h-full flex flex-row bg-slate-950">
+      <div className="h-full flex flex-row bg-slate-100 dark:bg-slate-900">
         {Array.from({ length: maxBars }).map((_, i) => (
           <RulerBar
             key={i}

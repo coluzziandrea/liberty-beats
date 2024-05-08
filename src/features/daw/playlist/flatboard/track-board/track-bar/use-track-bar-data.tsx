@@ -63,7 +63,8 @@ export const useTrackBarData = ({
     ? 'bg-gray-500'
     : `bg-${track.color}-500`
 
-  const barBorder = selectedBar?.id === bar.id ? 'border-white border-2' : ''
+  const barBorder =
+    selectedBar?.id === bar.id ? 'border-black dark:border-white border-2' : ''
 
   const showedKeys = NoteUtils.getSmallerKeySetContainingNotes(
     bar.notes,

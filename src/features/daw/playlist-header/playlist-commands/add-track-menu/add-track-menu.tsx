@@ -75,13 +75,13 @@ export const AddTrackMenu = ({ onClose }: AddTrackMenuProps) => {
 
   return (
     <div
-      className="w-52 flex flex-col bg-zinc-900 shadow-md shadow-zinc-600 rounded-xl overflow-hidden"
+      className="w-52 flex flex-col bg-zinc-200 dark:bg-zinc-900 shadow-md shadow-zinc-600 rounded-xl overflow-hidden"
       ref={popupMenuRef}
     >
       {menuItems.map((item, index) => (
         <div
           key={index}
-          className="p-2 hover:bg-zinc-600 select-none cursor-pointer flex flex-row gap-2 items-center"
+          className="p-2 hover:bg-zinc-300 dark:hover:bg-zinc-600 select-none cursor-pointer flex flex-row gap-2 items-center"
           onClick={() => {
             handleAddTrack(item)
             onClose()

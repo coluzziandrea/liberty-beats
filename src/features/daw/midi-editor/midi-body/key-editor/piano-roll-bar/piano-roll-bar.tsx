@@ -48,8 +48,8 @@ export const PianoRollBar = ({
   const dispatch = useDispatch()
 
   const barColor = TrackUtils.isTrackEffectivelyMuted(track)
-    ? 'bg-gray-200'
-    : `bg-${track.color}-200`
+    ? 'bg-gray-400 dark:bg-gray-200'
+    : `bg-${track.color}-400 dark:bg-${track.color}-200`
 
   const getKeyFromClick = (e: MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()

@@ -46,8 +46,8 @@ export const LeftMenuHeader = () => {
             key={mode.id}
             className={`w-[40px] h-[40px] text-xs ${
               editorMode === mode.id
-                ? 'bg-white text-black'
-                : 'bg-zinc-800 text-white'
+                ? 'dark:bg-white dark:text-zinc-800 bg-zinc-800 text-white'
+                : 'dark:bg-zinc-800 dark:text-white bg-white zinc-800'
             }`}
             onClick={() => {
               dispatch(selectNote(null))

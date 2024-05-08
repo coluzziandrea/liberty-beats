@@ -52,7 +52,7 @@ export const TrackBar = (props: TrackBarProps) => {
           onDragStart={onDragStart}
         >
           <div
-            className={`flex flex-row ${headerColor} pl-2 rounded-t-md text-white text-sm font-bold select-none`}
+            className={`flex flex-row ${headerColor} pl-2 rounded-t-md text-sm font-bold select-none`}
             style={{
               height: `${FLATBOARD_BAR_HEADER_HEIGHT}px`,
               minHeight: `${FLATBOARD_BAR_HEADER_HEIGHT}px`,
@@ -64,14 +64,14 @@ export const TrackBar = (props: TrackBarProps) => {
               renameInput.isEnabled ? (
                 <input
                   type="text"
-                  className="w-full p-1 mt-1 bg-zinc-800 text-white"
+                  className="w-full p-1 mt-1 bg-zinc-300 dark:bg-zinc-800"
                   value={renameInput.value}
                   autoFocus
                   onBlur={renameInput.onInputBlur}
                   onChange={renameInput.onInputChange}
                 />
               ) : (
-                <span className="select-none font-bold text-sm">
+                <span className="select-none font-bold text-white text-sm">
                   {bar.title}
                 </span>
               )

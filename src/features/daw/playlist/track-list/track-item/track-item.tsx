@@ -31,13 +31,15 @@ export const TrackItem = ({
     track.muted || (track.areThereAnyOtherTrackSoloed && !track.soloed)
 
   const selectedHighlightColor = effectivelyMuted
-    ? 'bg-gray-500'
+    ? 'bg-gray-800 dark:bg-gray-500'
     : `bg-${track.color}-500`
 
   return (
     <div
       className={`flex flex-row justify-between w-full ${
-        isSelected ? 'bg-zinc-800' : 'bg-zinc-900'
+        isSelected
+          ? 'bg-zinc-300 dark:bg-zinc-800'
+          : 'bg-zinc-100 dark:bg-zinc-900'
       }`}
       style={{ height: `${TRACK_HEIGHT}px`, minHeight: `${TRACK_HEIGHT}px` }}
       onClick={() => onSelectTrack(track)}

@@ -35,7 +35,7 @@ export const TrackSetColorMenu = ({
   const [showColorMenu, setShowColorMenu] = useState(false)
   return (
     <div
-      className="p-2 hover:bg-zinc-600 select-none flex flex-row gap-2 items-center"
+      className="p-2 hover:bg-zinc-300 dark:hover:bg-zinc-600 select-none flex flex-row gap-2 items-center"
       onMouseEnter={() => setShowColorMenu(true)}
       onMouseLeave={() => setShowColorMenu(false)}
     >
@@ -49,7 +49,7 @@ export const TrackSetColorMenu = ({
             hidden={!showColorMenu}
             className="fixed ml-4 -mt-4 z-50 h-fit w-fit"
           >
-            <div className="w-fit flex flex-col bg-zinc-900 shadow-sm shadow-zinc-600 rounded-md overflow-hidden p-2">
+            <div className="w-fit flex flex-col bg-zinc-200 dark:bg-zinc-900 shadow-sm shadow-zinc-600 rounded-md overflow-hidden p-2">
               <ColorGrid currentColor={currentColor} onSetColor={onSetColor} />
             </div>
           </div>

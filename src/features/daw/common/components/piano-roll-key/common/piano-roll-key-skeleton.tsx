@@ -13,7 +13,7 @@ export const PianoRollKeySkeleton = ({
   const noteTopOffsetPixel =
     props.showedKeys.indexOf(props.note.key) * props.keyHeight
   const noteColor = TrackUtils.isTrackEffectivelyMuted(props.track)
-    ? 'bg-gray-400'
+    ? 'bg-gray-600 dark:bg-gray-400'
     : props.nonMutedColorTailwindClass
     ? props.nonMutedColorTailwindClass
     : `bg-${props.track.color}-500`
