@@ -46,8 +46,10 @@ export const DrumMachinePadCommands = ({
             <div
               key={index}
               className={`${
-                index === selectedPatternIndex ? 'bg-slate-700' : 'bg-slate-900'
-              } text-center py-2 px-4 rounded-lg cursor-pointer hover:bg-slate-700`}
+                index === selectedPatternIndex
+                  ? 'bg-slate-400 dark:bg-slate-700'
+                  : 'bg-slate-300 dark:bg-slate-900'
+              } text-center py-2 px-4 rounded-lg cursor-pointer hover:bg-slate-400 dark:hover:bg-slate-700`}
               onClick={() => {
                 dispatch(setTrackIdInPlayingPreviewLoop(null))
                 dispatch(selectPattern(index))

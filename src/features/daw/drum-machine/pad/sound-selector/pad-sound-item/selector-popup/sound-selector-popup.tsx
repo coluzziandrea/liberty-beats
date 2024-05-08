@@ -44,7 +44,10 @@ export const SoundSelectorPopup = ({
   const defaultSounds = sounds.slice(0, TRACK_DRUM_PATTERN_SIZE)
   const selectedSoundsFromStore = selectedTrack.trackDrums?.selectedSounds
   const selectedSounds =
-      selectedSoundsFromStore === undefined  || selectedSoundsFromStore?.length === 0 ? defaultSounds : selectedSoundsFromStore
+    selectedSoundsFromStore === undefined ||
+    selectedSoundsFromStore?.length === 0
+      ? defaultSounds
+      : selectedSoundsFromStore
 
   const currentSound = selectedSounds[currentSoundIndex]
 
@@ -55,13 +58,13 @@ export const SoundSelectorPopup = ({
 
   return (
     <div
-      className="w-52 max-h-60 overflow-y-auto flex flex-col bg-zinc-900 shadow-md shadow-zinc-600 rounded-xl "
+      className="w-52 max-h-60 overflow-y-auto flex flex-col bg-zinc-100 dark:bg-zinc-900 shadow-md shadow-zinc-600 rounded-xl "
       ref={popupMenuRef}
     >
       {selectable.map((item, index) => (
         <div
           key={index}
-          className="p-2 hover:bg-zinc-600 select-none cursor-pointer flex flex-row gap-2 items-center"
+          className="p-2 hover:bg-zinc-300 dark:hover:bg-zinc-600 select-none cursor-pointer flex flex-row gap-2 items-center"
           onClick={() => {
             onClosePopup()
             onSelectedSound(item)

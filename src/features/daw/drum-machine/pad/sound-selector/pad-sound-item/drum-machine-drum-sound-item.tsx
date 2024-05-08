@@ -25,7 +25,7 @@ export const DrumMachinePadSoundItem = ({
     <div className="relative">
       <div
         key={index}
-        className="flex flex-row group items-center justify-start h-8 gap-2 select-none cursor-pointer bg-slate-900 hover:bg-slate-700"
+        className="flex flex-row group items-center justify-start h-8 gap-2 select-none cursor-pointer bg-slate-100 hover:bg-slate-300 dark:bg-slate-900 dark:hover:bg-slate-700"
         onClick={() => {
           setShowPopup(!showPopup)
         }}

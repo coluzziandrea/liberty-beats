@@ -7,6 +7,7 @@ import instrumentSlice from '../features/daw/instrument/store/instrument-slice'
 import midiEditorSlice from '../features/daw/midi-editor/store/midi-editor-slice'
 import drumMachineSlice from '../features/daw/drum-machine/store/drum-machine-slice'
 import menuSlice from '../features/daw/menu/store/menu-slice'
+import dialogSlice from '../features/daw/dialog/store/dialog-slice'
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +19,16 @@ export const store = configureStore({
     midiEditor: midiEditorSlice,
     drumMachine: drumMachineSlice,
     menu: menuSlice,
+    dialog: dialogSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore warnings, see https://redux-toolkit.js.org/usage/usage-guide#working-with-non-serializable-data
+        ignoredActions: ['dialog/pushDialog'],
+        ignoredPaths: ['dialog.queue'],
+      },
+    }),
 })
 
 export type RootStore = typeof store

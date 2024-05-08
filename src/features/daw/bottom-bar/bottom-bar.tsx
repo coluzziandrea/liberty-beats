@@ -60,7 +60,7 @@ export const BottomBar = () => {
   }, [dipatch, selectedBottomUpPanel, selectedTrack])
 
   return (
-    <div className="flex flex-row p-1">
+    <div className="flex flex-row py-1 px-2 gap-2">
       {items.map((item) => (
         <BottomBarItem
           key={item.label}

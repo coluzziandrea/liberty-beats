@@ -35,9 +35,9 @@ export const BottomBarItem = ({
       <button
         disabled={!selectedTrack}
         onClick={handleInstrumentSelection}
-        className={`text-xs font-bold  ${!selectedTrack && 'bg-gray-600'} ${
-          isSelected && 'bg-white text-black'
-        }`}
+        className={`text-xs font-bold  ${
+          !selectedTrack && 'bg-gray-300 dark:bg-gray-600'
+        } ${isSelected && 'bg-black text-white dark:bg-white dark:text-black'}`}
       >
         {label}
       </button>

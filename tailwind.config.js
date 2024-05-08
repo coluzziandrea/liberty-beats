@@ -11,12 +11,15 @@ const colorNames = [
 ]
 const safelist = colorNames
   .map((color) => [
+    `bg-${color}-100`,
     `bg-${color}-200`,
     `bg-${color}-300`,
     `bg-${color}-400`,
     `bg-${color}-500`,
     `group-hover:bg-${color}-500`,
-    `hover:bg-${color}-900`,
+    `hover:bg-${color}-100`,
+    `hover:bg-${color}-600`,
+    `dark:hover:bg-${color}-900`,
     `text-${color}-400`,
     `text-${color}-500`,
     `accent-${color}-600`,
@@ -27,7 +30,9 @@ const safelist = colorNames
     `ring-${color}-800`,
     `bg-${color}-800`,
     `bg-${color}-900`,
+    `dark:bg-${color}-100`,
     `dark:bg-${color}-200`,
+    `dark:bg-${color}-500`,
     `dark:bg-${color}-800`,
     `dark:bg-${color}-900`,
   ])

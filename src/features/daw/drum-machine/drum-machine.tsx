@@ -15,7 +15,7 @@ export const DrumMachine = () => {
 
   return (
     <div className={`${!isSelected && 'hidden'}`}>
-      <div className="flex flex-col bg-stone-900 h-96 divide-y divide-slate-600 border-t border-slate-600 mx-1">
+      <div className="flex flex-col bg-stone-200 dark:bg-stone-900 h-96 divide-y divide-slate-600 border-t border-slate-600 mx-1 px-2">
         <div className="flex h-[15%] w-full">
           <DrumMachineHeader selectedTrack={selectedTrack} />
         </div>
@@ -24,7 +24,7 @@ export const DrumMachine = () => {
           <DrumMachineConfig selectedTrack={selectedTrack} />
         </div>
 
-        <div className="flex w-full flex-grow overflow-auto bg-zinc-800">
+        <div className="flex w-full flex-grow overflow-auto bg-zinc-200 dark:bg-zinc-800">
           <DrumMachinePad selectedTrack={selectedTrack} />
         </div>
       </div>

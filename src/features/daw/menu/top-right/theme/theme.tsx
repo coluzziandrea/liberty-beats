@@ -21,7 +21,7 @@ export const Theme = () => {
 
         <div
           className={`p-1 rounded-full  ${
-            currentMode === 'dark' ? 'bg-zinc-400' : ''
+            currentMode === 'dark' ? 'bg-zinc-400 text-zinc-800' : ''
           }`}
           onClick={() => dispatch(setTheme('dark'))}
         >

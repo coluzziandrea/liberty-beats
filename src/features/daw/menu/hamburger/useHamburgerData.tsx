@@ -5,11 +5,13 @@ import { IoIosHelpBuoy } from 'react-icons/io'
 import { VscJson } from 'react-icons/vsc'
 
 import { useExport } from '../hooks/useExport'
+import { useImport } from './import/useImport'
 
 export const useHamburgerData = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   const { exportTracksToJSON } = useExport()
+  const { showImportDialog } = useImport()
 
   return {
     onHamburgerClick: () => setIsOpen(!isOpen),
@@ -27,6 +29,7 @@ export const useHamburgerData = () => {
               icon: <VscJson />,
               action: () => {
                 setIsOpen(false)
+                showImportDialog()
               },
             },
           ],

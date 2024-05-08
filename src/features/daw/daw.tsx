@@ -1,4 +1,5 @@
 import { BottomBar } from './bottom-bar/bottom-bar'
+import { Dialog } from './dialog/dialog'
 import { DrumMachine } from './drum-machine/drum-machine'
 import { InstrumentSetup } from './instrument/instrument-setup'
 import { Menu } from './menu/menu'
@@ -38,6 +39,8 @@ export const DAW = () => {
       <div>
         <BottomBar />
       </div>
+
+      <Dialog />
     </main>
   )
 }

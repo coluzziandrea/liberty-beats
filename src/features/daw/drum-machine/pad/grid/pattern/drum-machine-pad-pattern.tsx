@@ -18,20 +18,23 @@ export const DrumMachinePadPattern = ({
   onSoundChange,
   activeTickBar,
 }: DrumMachinePadPatternProps) => {
-  const getItemBackground = (indexCol: number) => {
+  const getItemBackgroundClasses = (indexCol: number) => {
+    const hoverClasses = `hover:bg-${TRACK_COLORS[soundIndex]}-100 dark:hover:bg-${TRACK_COLORS[soundIndex]}-900`
     if (indexCol === activeTickBar) {
-      return 'bg-white'
+      return `bg-black dark:bg-white ${hoverClasses}`
     }
-    return Math.floor(indexCol / 4) % 2 === 0 ? 'bg-zinc-600' : 'bg-zinc-700'
+    return Math.floor(indexCol / 4) % 2 === 0
+      ? `bg-zinc-300 dark:bg-zinc-600 ${hoverClasses}`
+      : `bg-zinc-400 dark:bg-zinc-700 ${hoverClasses}`
   }
 
   return (
     <div className="flex flex-row gap-1">
       {patternSounds.map((sound, indexCol) => (
         <div
-          className={`cursor-pointer h-8 w-8 p-[2px] ${getItemBackground(
+          className={`cursor-pointer h-8 w-8 p-[2px] ${getItemBackgroundClasses(
             indexCol
-          )} hover:bg-${TRACK_COLORS[soundIndex]}-900`}
+          )}`}
           key={indexCol}
           onClick={() =>
             onSoundChange(soundIndex, indexCol, sound === 'on' ? 'off' : 'on')
