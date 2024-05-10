@@ -26,15 +26,15 @@ export const LeftMenuHeader = () => {
   }[] = [
     {
       id: 'select',
-      icon: <BsFillCursorFill />,
+      icon: <BsFillCursorFill size={16} />,
     },
     {
       id: 'draw',
-      icon: <RiPencilFill />,
+      icon: <RiPencilFill size={16} />,
     },
     {
       id: 'delete',
-      icon: <FaTrash />,
+      icon: <FaTrash size={16} />,
     },
   ]
 
@@ -44,7 +44,7 @@ export const LeftMenuHeader = () => {
         {modes.map((mode) => (
           <button
             key={mode.id}
-            className={`w-[40px] h-[40px] text-xs ${
+            className={`flex items-center justify-center text-xs ${
               editorMode === mode.id
                 ? 'dark:bg-white dark:text-zinc-800 bg-zinc-800 text-white'
                 : 'dark:bg-zinc-800 dark:text-white bg-white zinc-800'
