@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { VscJson } from 'react-icons/vsc'
-import { useExport } from '../../hooks/useExport'
+import { useExport } from '../../hooks/import-export/useExport'
 
 export const useExportData = () => {
   const [isOpen, setIsOpen] = useState(false)

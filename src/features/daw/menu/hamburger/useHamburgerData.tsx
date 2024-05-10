@@ -4,14 +4,14 @@ import { FiDownload, FiUpload } from 'react-icons/fi'
 import { IoIosHelpBuoy } from 'react-icons/io'
 import { VscJson } from 'react-icons/vsc'
 
-import { useExport } from '../hooks/useExport'
+import { useExport } from '../hooks/import-export/useExport'
 import { useImportWizard } from './import/useImport'
 
 export const useHamburgerData = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   const { exportTracksToJSON } = useExport()
-  const { showFileDialog } = useImportWizard()
+  const { showImportDialog } = useImportWizard()
 
   return {
     onHamburgerClick: () => setIsOpen(!isOpen),
@@ -29,7 +29,7 @@ export const useHamburgerData = () => {
               icon: <VscJson />,
               action: () => {
                 setIsOpen(false)
-                showFileDialog()
+                showImportDialog()
               },
             },
           ],

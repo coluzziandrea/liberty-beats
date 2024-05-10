@@ -1,11 +1,21 @@
 import { useState } from 'react'
+import { useWizardContext } from '../../../../../common/components/wizard/use-wizard-context'
 
-export type FileDialogProps = {
-  execute: (file: File) => void
+export type FileChooserDialogStepProps = {
+  handleFileImport: (file: File) => void
 }
 
-export const FileDialog = ({ execute }: FileDialogProps) => {
-  const [currentFile, setCurrentFile] = useState<File | null>(null)
+export const FileChooserDialogStep = ({
+  handleFileImport,
+}: FileChooserDialogStepProps) => {
+  const [fileToImport, setFileToImport] = useState<File | null>(null)
+
+  const { goToNextStep, setNextStepHandler } = useWizardContext()
+
+  setNextStepHandler(() => {
+    // Here we would execute the import action
+    fileToImport && handleFileImport(fileToImport)
+  })
 
   return (
     <div className="flex flex-col w-full h-full justify-start items-center mt-4 mx-2 gap-4">
@@ -20,7 +30,7 @@ export const FileDialog = ({ execute }: FileDialogProps) => {
           type="file"
           onChange={(e) => {
             if (e?.target?.files && e.target.files.length > 0) {
-              setCurrentFile(e?.target?.files[0])
+              setFileToImport(e?.target?.files[0])
             }
           }}
         />
@@ -35,12 +45,8 @@ export const FileDialog = ({ execute }: FileDialogProps) => {
       <div className="flex flex-row gap-4">
         <button
           className="bg-green-500 hover:bg-green-700 dark:bg-green-800 dark:hover:bg-green-600 dark:hover:border-slate-400 text-white rounded-lg px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          onClick={() => {
-            if (currentFile) {
-              execute(currentFile)
-            }
-          }}
-          disabled={!currentFile}
+          onClick={goToNextStep}
+          disabled={!fileToImport}
         >
           Import
         </button>

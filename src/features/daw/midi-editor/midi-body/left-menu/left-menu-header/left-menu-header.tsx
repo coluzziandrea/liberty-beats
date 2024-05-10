@@ -63,7 +63,7 @@ export const LeftMenuHeader = () => {
         <button
           className={`rounded-full ${
             notePreviewEnabled
-              ? `bg-${selectedTrack?.color}-900 text-${selectedTrack?.color}-400`
+              ? `bg-${selectedTrack?.color}-900 text-${selectedTrack?.color}-200 dark:bg-${selectedTrack?.color}-100 dark:text-${selectedTrack?.color}-800`
               : ''
           }`}
           onClick={() => {

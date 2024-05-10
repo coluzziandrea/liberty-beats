@@ -9,4 +9,3 @@ export interface ChannelInstrument {
 
   play(note: Key, duration: string, time?: number, velocity?: number): void
 }
-//

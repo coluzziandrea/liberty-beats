@@ -9,7 +9,7 @@ export const ModalContent = ({ onClose, dialog }: ModalProps) => {
   const sizesByType = {
     sm: {
       width: '350px',
-      height: '250px',
+      height: '280px',
     },
     md: {
       width: '250px',

@@ -5,10 +5,19 @@ export const readJSONFile = (file: File) => {
     reader.addEventListener('load', (event) => {
       const result = event.target?.result
       if (typeof result === 'string') {
-        resolve(JSON.parse(result))
+        try {
+          const jsonRes = JSON.parse(result)
+          resolve(jsonRes)
+        } catch (error) {
+          reject(new Error('Invalid JSON content'))
+        }
       } else {
         reject(new Error('Invalid file content'))
       }
+    })
+
+    reader.addEventListener('error', (event) => {
+      reject(new Error('Error reading file'))
     })
 
     reader.readAsText(file)

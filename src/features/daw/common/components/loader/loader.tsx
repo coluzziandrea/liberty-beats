@@ -1,12 +1,9 @@
-export const LoaderDialog = () => {
+export const Loader = () => {
   return (
-    <div
-      className="flex flex-row w-full h-full mt-8 justify-center"
-      role="status"
-    >
+    <div className="flex flex-row w-full h-full justify-center" role="status">
       <svg
         aria-hidden="true"
-        className="w-24 h-24 text-gray-400 animate-spin dark:text-gray-600 fill-blue-600"
+        className="w-full h-full text-gray-400 fill-blue-400 animate-spin dark:text-gray-600 dark:fill-blue-400"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
