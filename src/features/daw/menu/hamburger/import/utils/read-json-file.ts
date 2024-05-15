@@ -16,7 +16,7 @@ export const readJSONFile = (file: File) => {
       }
     })
 
-    reader.addEventListener('error', (event) => {
+    reader.addEventListener('error', () => {
       reject(new Error('Error reading file'))
     })
 
