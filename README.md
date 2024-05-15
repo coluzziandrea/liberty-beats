@@ -1,30 +1,130 @@
-# React + TypeScript + Vite
+<div style="display: flex; flex-direction:column; align-items:center; justify-centent:center;">
+  <a href="https://libertybeats.netlify.app/">
+    <img alt="LibertyBeats" src="https://cdn.jsdelivr.net/gh/coluzziandrea/liberty-beats/src/assets/image/logo.webp">
+  </a>
+   <h1 align="center">Liberty Beats</h1>
+</div>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  The Digital Audio Workstation you were waiting for.
+</p>
 
-Currently, two official plugins are available:
+<p align="center">
+  <a href="https://twitter.com/andreacoluzzi94">
+    <img src="https://img.shields.io/twitter/follow/andreacoluzzi94?style=flat&label=andreacoluzzi94&logo=twitter&color=0bf&logoColor=fff" alt="Twitter" />
+  </a>
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p align="center">
+  <a href="#-about"><strong>About</strong></a> ·
+  <a href="#%EF%B8%8F-demo"><strong>Demo</strong></a> ·
+  <a href="#sparkles-features"><strong>Features</strong></a> ·
+  <a href="#rocket-technologies"><strong>Technologies</strong></a> ·
+  <a href="#-screenshots"><strong>Screenshots</strong></a> ·
+  <a href="#-run-locally"><strong>Run Locally</strong></a> ·
+  <a href="#white_check_mark-requirements"><strong>Requirements</strong></a> ·
+  <a href="#-license"><strong>License</strong></a>
+</p>
+<br/>
 
-## Expanding the ESLint configuration
+## 🎯 About
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+I started this project to improve my skills with React and Redux.
 
-- Configure the top-level `parserOptions` property like this:
+I wanted to create a product that could be useful for musicians, like me.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+Liberty Beats is a digital audio workstation that allows you to create, edit, and produce music.
+
+It is a web application that allows you to create music by combining different sounds and effects. It is a great tool for musicians, producers, and DJs who want to create music on the go. The application is easy to use and has a user-friendly interface. It is a great tool for beginners and professionals alike.
+
+The application is free to use and does not require any installation. It is a web-based application that can be accessed from any device with an internet connection.
+
+If you like it, please give it a star! :star:
+
+<br/>
+
+## ▶️ Demo
+
+Here you can find the demo link:
+
+- [Demo](https://libertybeats.netlify.app/)
+
+## :sparkles: Features
+
+:heavy_check_mark: &nbsp;&nbsp;Play and manage multi-track song<br />
+:heavy_check_mark: &nbsp;&nbsp;Dark Mode support<br />
+:heavy_check_mark: &nbsp;&nbsp;Use of React hooks and custom hooks<br />
+:heavy_check_mark: &nbsp;&nbsp;Responsive layout<br />
+:heavy_check_mark: &nbsp;&nbsp;Use of Redux for state management<br />
+:heavy_check_mark: &nbsp;&nbsp;Use of Tone.js for audio manipulation<br />
+:heavy_check_mark: &nbsp;&nbsp;Use of Tailwind CSS for styling<br />
+:heavy_check_mark: &nbsp;&nbsp;Use of Vite for the build process<br />
+:heavy_check_mark: &nbsp;&nbsp;Use of Netlify for the deploy and CI<br />
+:heavy_check_mark: &nbsp;&nbsp;MIDI Editor<br />
+:heavy_check_mark: &nbsp;&nbsp;Drum Machine<br />
+:heavy_check_mark: &nbsp;&nbsp;Synthesizer<br />
+:heavy_check_mark: &nbsp;&nbsp;Project Import/Export<br />
+
+<br/>
+
+## :rocket: Technologies
+
+- [React](https://reactjs.org/)
+- [Tone.js](https://tonejs.github.io/)
+- [Redux](https://redux.js.org/)
+- [React Icons](https://react-icons.github.io/react-icons/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Vite](https://vitejs.dev/)
+- [Netlify](https://www.netlify.com) (have a look below) and [Vercel](https://vercel.com/) for the deploy and CI.
+
+<br/>
+
+## 📸 Screenshots
+
+**Studio**
+![Screenshot of Studio](https://cdn.jsdelivr.net/gh/coluzziandrea/liberty-beats/docs/images/screen_light.png)
+<br/>
+
+**Dark Mode Supported!**
+![Screenshot of Dark Mode Supported](https://cdn.jsdelivr.net/gh/coluzziandrea/liberty-beats/docs/images/drums_dark.png)
+<br/>
+
+<br/>
+
+## 👨🏻‍💻 Run Locally
+
+- Clone the project
+
+```bash
+  git clone https://github.com/coluzziandrea/liberty-beats
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Go to the project directory
+
+```bash
+  cd liberty-beats
+```
+
+- Install dependencies
+
+```bash
+  npm install
+```
+
+- Start the server
+
+```bash
+  npm start
+```
+
+<br/>
+
+## :white_check_mark: Requirements
+
+Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
+
+<br/>
+
+## 📝 License
+
+[MIT](https://github.com/coluzziandrea/liberty-beats/blob/main/LICENSE)
