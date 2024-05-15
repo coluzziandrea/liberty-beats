@@ -1,19 +1,14 @@
-<div style="display: flex; flex-direction:column; align-items:center; justify-centent:center;">
-  <a href="https://libertybeats.netlify.app/">
-    <img alt="LibertyBeats" src="https://cdn.jsdelivr.net/gh/coluzziandrea/liberty-beats/src/assets/image/logo.webp">
-  </a>
-   <h1 align="center">Liberty Beats</h1>
-</div>
+<div align="center">
 
-<p align="center">
-  The Digital Audio Workstation you were waiting for.
-</p>
+<img src="https://cdn.jsdelivr.net/gh/coluzziandrea/liberty-beats/src/assets/image/logo.webp" width="250" alt="LibertyBeats logo">
 
-<p align="center">
-  <a href="https://twitter.com/andreacoluzzi94">
-    <img src="https://img.shields.io/twitter/follow/andreacoluzzi94?style=flat&label=andreacoluzzi94&logo=twitter&color=0bf&logoColor=fff" alt="Twitter" />
-  </a>
-</p>
+# Liberty Beats
+
+The Digital Audio Workstation you were waiting for.
+
+[![Shield: Contributions Welcome](https://img.shields.io/badge/contributions-welcome-blue)](#Contributing)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Twitter](https://img.shields.io/twitter/follow/andreacoluzzi94?style=flat&label=andreacoluzzi94&logo=twitter&color=0bf&logoColor=fff)](https://twitter.com/andreacoluzzi94)
 
 <p align="center">
   <a href="#-about"><strong>About</strong></a> ·
@@ -25,6 +20,8 @@
   <a href="#white_check_mark-requirements"><strong>Requirements</strong></a> ·
   <a href="#-license"><strong>License</strong></a>
 </p>
+</div>
+
 <br/>
 
 ## 🎯 About
